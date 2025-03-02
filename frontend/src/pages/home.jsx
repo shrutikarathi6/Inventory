@@ -1,14 +1,16 @@
 import React from "react";
-import ExampleForm from "../components/exampleForm.jsx";
-// import Form from "../components/form.jsx";
-import { Link } from "react-router-dom";
+import Exampleform from "../components/exampleform.jsx";
+
+import Navbar from "../components/Navbar/navbar.jsx";
 
 const Home = () => {
     return (
         <div>
-            <ExampleForm />
+
+            <Navbar/>
+            <Exampleform />
             {/* <Link to="/search">Go to Search Page</Link> */}
-            
+
         </div>
     );
 };
