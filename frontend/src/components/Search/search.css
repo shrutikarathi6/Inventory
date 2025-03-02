@@ -1,0 +1,60 @@
+
+
+  .background {
+    background-color: skyblue;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.foreground {
+  width: 70%;
+  height: 80vh;
+  margin-top: 10vh;
+  margin-bottom: 10vh;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.add-filter-btn, .search-btn {
+    padding: 10px 10px;
+    background-color: #4a9fd6;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.add-filter-btn:hover, .search-btn:hover {
+    background-color: #3579a8;
+}
+
+.filter-row {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    width: 70%;
+    margin-bottom: 20px;
+}
+
+.filter-row select, .filter-row input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    flex: 1;
+}
+
+.remove-filter-btn {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+}

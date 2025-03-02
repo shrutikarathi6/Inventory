@@ -1,5 +1,5 @@
 import React from "react";
-import Exampleform from "../components/exampleform.jsx";
+import Exampleform from "../components/Form/form.jsx";
 
 import Navbar from "../components/Navbar/navbar.jsx";
 
