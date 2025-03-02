@@ -2,7 +2,9 @@
 
   .background {
     background-color: skyblue;
-    height: 100vh;
+    height: relative;
+    padding-top: 7%;
+    padding-bottom: 7%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -10,7 +12,7 @@
 
 .foreground {
   width: 70%;
-  height: 80vh;
+  height: relative;
   margin-top: 10vh;
   margin-bottom: 10vh;
   background-color: white;
@@ -57,4 +59,25 @@
     border: none;
     padding: 8px 12px;
     border-radius: 5px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background-color: #4a9fd6;
+    color: white;
+}
+
+td {
+    background-color: #f9f9f9;
 }

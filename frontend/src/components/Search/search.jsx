@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import axios from "axios";
 import "./search.css";
 import { FaPlus, FaTimes } from "react-icons/fa";
+import { FaEdit, FaTrash } from "react-icons/fa";
 
 const Search = () => {
     const [filters, setFilters] = useState([]);
@@ -50,14 +51,21 @@ const Search = () => {
             setsearchkiya(true);
             
             // Construct query string
+            // const queryParams = filters
+            //     .filter(f => f.type && f.value)
+            //     .map(f => `${f.type}=${encodeURIComponent(f.value)}`)
+            //     .join("&");
+
+            // if (!queryParams) return;
+
+            // const response = await axios.get(`http://localhost:5000/api/students/search?${queryParams}`);
             const queryParams = filters
-                .filter(f => f.type && f.value)
-                .map(f => `${f.type}=${encodeURIComponent(f.value)}`)
-                .join("&");
+                    .filter(f => f.type && f.value)
+                    .map(f => `${f.type}=${encodeURIComponent(f.value)}`)
+                    .join("&");
 
-            if (!queryParams) return;
+                const response = await axios.get(`http://localhost:5000/api/students/search?${queryParams}`);
 
-            const response = await axios.get(`http://localhost:5000/search?${queryParams}`);
             setResults(response.data.results);
         } catch (error) {
             console.error("Error searching data:", error);
@@ -80,8 +88,10 @@ const Search = () => {
                         >
                             <option value="">Select Filter</option>
                             <option value="name">Name</option>
+                            <option value="uniqueid">UniqueID</option>
                             <option value="roll">Roll No</option>
                             <option value="age">Age</option>
+
                         </select>
                         
                         {filter.type && (
@@ -103,26 +113,49 @@ const Search = () => {
                 <button className="search-btn" onClick={handleSearch}>Search</button>
                 
                 {results.length > 0 ? (
+                    
+
                     <table border="1">
                         <thead>
                             <tr>
                                 <th>Name</th>
+                                <th>UniqueID</th>
                                 <th>Roll No</th>
                                 <th>Age</th>
+                                <th>Actions</th> {/* Added Actions Column */}
                             </tr>
                         </thead>
                         <tbody>
                             {results.map((student, index) => (
                                 <tr key={index}>
                                     <td>{student.name}</td>
+                                    <td>{student.uniqueid}</td>
                                     <td>{student.roll}</td>
                                     <td>{student.age}</td>
+                                    <td>
+                                        {/* Edit Button */}
+                                        <button 
+                                            onClick={() => handleEdit(student)} 
+                                            className="edit-btn"
+                                        >
+                                            <FaEdit />
+                                        </button>
+                    
+                                        {/* Delete Button */}
+                                        <button 
+                                            onClick={() => handleDelete(student.uniqueid)} 
+                                            className="delete-btn"
+                                        >
+                                            <FaTrash />
+                                        </button>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
+                    
                 ) : (
-                    searchkiya ? <p>No results found</p> : <p></p>
+                    <p>No results found</p>
                 )}
             </div>
         </div>
