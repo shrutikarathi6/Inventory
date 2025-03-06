@@ -1,3 +1,4 @@
+// Frontend - React (Fixed Age Filter & OR Condition)
 import React, { useState, useRef } from "react";
 import axios from "axios";
 import "./search.css";
@@ -8,31 +9,24 @@ const Search = () => {
     const [filters, setFilters] = useState([]);
     const [results, setResults] = useState([]);
     const [searchkiya, setsearchkiya] = useState(false);
-    
-    const inputRefs = useRef([]); // 🔥 Store references for input fields
+    const inputRefs = useRef([]);
 
-    // Add a new filter row
     const handleAddFilter = () => {
-        setFilters((prevFilters) => {
+        setFilters(prevFilters => {
             const newFilters = [...prevFilters, { type: "", value: "" }];
-
             setTimeout(() => {
                 if (inputRefs.current.length > 0) {
                     inputRefs.current[newFilters.length - 1]?.focus();
                 }
             }, 0);
-
             return newFilters;
         });
     };
 
-    // Update a filter's value
     const handleFilterChange = (index, key, value) => {
         const newFilters = [...filters];
         newFilters[index][key] = value;
         setFilters(newFilters);
-
-        // 🔥 Jaise hi filter select karega, next input field focus ho jayega
         if (key === "type" && value) {
             setTimeout(() => {
                 inputRefs.current[index]?.focus();
@@ -40,32 +34,24 @@ const Search = () => {
         }
     };
 
-    // Remove a filter row
     const handleRemoveFilter = (index) => {
         setFilters(filters.filter((_, i) => i !== index));
     };
 
-    // Perform search based on filters
     const handleSearch = async () => {
         try {
             setsearchkiya(true);
-            
-            // Construct query string
-            // const queryParams = filters
-            //     .filter(f => f.type && f.value)
-            //     .map(f => `${f.type}=${encodeURIComponent(f.value)}`)
-            //     .join("&");
+            const groupedFilters = filters.reduce((acc, filter) => {
+                if (!acc[filter.type]) acc[filter.type] = [];
+                acc[filter.type].push(filter.value);
+                return acc;
+            }, {});
 
-            // if (!queryParams) return;
+            const queryParams = Object.keys(groupedFilters)
+                .map(type => `${type}=${groupedFilters[type].map(val => encodeURIComponent(val)).join(",")}`)
+                .join("&");
 
-            // const response = await axios.get(`http://localhost:5000/api/students/search?${queryParams}`);
-            const queryParams = filters
-                    .filter(f => f.type && f.value)
-                    .map(f => `${f.type}=${encodeURIComponent(f.value)}`)
-                    .join("&");
-
-                const response = await axios.get(`http://localhost:5000/api/students/search?${queryParams}`);
-
+            const response = await axios.get(`http://localhost:5000/api/students/search?${queryParams}`);
             setResults(response.data.results);
         } catch (error) {
             console.error("Error searching data:", error);
@@ -79,7 +65,7 @@ const Search = () => {
                 <button className="add-filter-btn" onClick={handleAddFilter}>
                     <FaPlus /> Add Filter
                 </button>
-                
+
                 {filters.map((filter, index) => (
                     <div key={index} className="filter-row">
                         <select
@@ -91,72 +77,63 @@ const Search = () => {
                             <option value="uniqueid">UniqueID</option>
                             <option value="roll">Roll No</option>
                             <option value="age">Age</option>
-
                         </select>
-                        
+
                         {filter.type && (
                             <input
-                                ref={(el) => (inputRefs.current[index] = el)} // 🔥 Store reference
+                                ref={(el) => (inputRefs.current[index] = el)}
                                 type="text"
                                 placeholder={`Enter ${filter.type}`}
                                 value={filter.value}
                                 onChange={(e) => handleFilterChange(index, "value", e.target.value)}
                             />
                         )}
-                        
+
                         <button className="remove-filter-btn" onClick={() => handleRemoveFilter(index)}>
                             <FaTimes />
                         </button>
                     </div>
                 ))}
-                
-                <button className="search-btn" onClick={handleSearch}>Search</button>
-                
-                {results.length > 0 ? (
-                    
 
-                    <table border="1">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>UniqueID</th>
-                                <th>Roll No</th>
-                                <th>Age</th>
-                                <th>Actions</th> {/* Added Actions Column */}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {results.map((student, index) => (
-                                <tr key={index}>
-                                    <td>{student.name}</td>
-                                    <td>{student.uniqueid}</td>
-                                    <td>{student.roll}</td>
-                                    <td>{student.age}</td>
-                                    <td>
-                                        {/* Edit Button */}
-                                        <button 
-                                            onClick={() => handleEdit(student)} 
-                                            className="edit-btn"
-                                        >
-                                            <FaEdit />
-                                        </button>
-                    
-                                        {/* Delete Button */}
-                                        <button 
-                                            onClick={() => handleDelete(student.uniqueid)} 
-                                            className="delete-btn"
-                                        >
-                                            <FaTrash />
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                    
-                ) : (
-                    <p>No results found</p>
-                )}
+                <button className="search-btn" onClick={handleSearch}>Search</button>
+
+                <div className="table-container">
+                    {results.length > 0 ? (
+                        <div className="table-scroll">
+                            <table border="1">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>UniqueID</th>
+                                        <th>Roll No</th>
+                                        <th>Age</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {results.map((student, index) => (
+                                        <tr key={index}>
+                                            <td>{student.name}</td>
+                                            <td>{student.uniqueid}</td>
+                                            <td>{student.roll}</td>
+                                            <td>{student.age}</td>
+                                            <td>
+                                                <button onClick={() => handleEdit(student)} className="edit-btn">
+                                                    <FaEdit />
+                                                </button>
+                                                <button onClick={() => handleDelete(student.uniqueid)} className="delete-btn">
+                                                    <FaTrash />
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    ) : (
+                        searchkiya && <p>No results found</p>
+                    )}
+                </div>
             </div>
         </div>
     );
