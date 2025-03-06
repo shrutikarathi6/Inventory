@@ -1,10 +1,11 @@
 .navbar {
-    background-color: #4a9fd6; /* Darker than sky blue */
+    background-color: #14213d; /* Darker than sky blue */
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 30px;
+    padding: 15px 10px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    
     /* width: 100%; */
   }
   

@@ -1,17 +1,18 @@
 const express = require("express");
 const cors = require("cors");
-const bodyParser = require("body-parser");
-const connectDB = require("./db.jsx");
-const studentRoutes = require("./routes/studentRoutes.jsx");
-const errorHandler = require("./middleware/errorHandler.jsx");
+const connectDB = require("./db");
+const studentRoutes = require("./routes/studentRoutes");
+const errorHandler = require("./middleware/errorHandler");
 require("dotenv").config();
 
 const app = express();
 
 // Middleware
 app.use(cors());
-app.use(bodyParser.json());
+app.use(express.json()); // Replaces bodyParser.json()
 app.use("/api/students", studentRoutes);
+
+// Error Handling Middleware (Should be after all routes)
 app.use(errorHandler);
 
 // Connect to MongoDB
