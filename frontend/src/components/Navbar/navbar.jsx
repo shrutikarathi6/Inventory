@@ -3,6 +3,7 @@ import './Navbar.css';
 import { FaPlus, FaSearch } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
+
 const Navbar = () => {
   const navigate = useNavigate();
 
@@ -14,6 +15,7 @@ const Navbar = () => {
         </div>
         <div className="nav-icon" onClick={() => navigate('/search')}>
           <FaSearch /> Search
+          
         </div>
       </div>
       <div className="company-name">MyCompany</div>
