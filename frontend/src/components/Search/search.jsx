@@ -35,6 +35,7 @@ const Search = () => {
             }, 0);
         }
     };
+    
 
     const handleRemoveFilter = (index) => {
         setFilters(filters.filter((_, i) => i !== index));
@@ -42,23 +43,32 @@ const Search = () => {
 
     const handleSearch = async () => {
         try {
-
             const groupedFilters = filters.reduce((acc, filter) => {
-                if (!acc[filter.type]) acc[filter.type] = [];
-                acc[filter.type].push(filter.value);
+                if (filter.type === "uniqueid" || filter.type === "roll" || filter.type === "age" ) {
+                    if (filter.valueFrom || filter.valueTo) {
+                        if (filter.valueFrom) acc[`${filter.type}From`] = encodeURIComponent(filter.valueFrom);
+                        if (filter.valueTo) acc[`${filter.type}To`] = encodeURIComponent(filter.valueTo);
+                    } else if (filter.value) {
+                        acc[filter.type] = encodeURIComponent(filter.value);
+                    }
+                } else {
+                    if (!acc[filter.type]) acc[filter.type] = [];
+                    acc[filter.type].push(filter.value);
+                }
                 return acc;
             }, {});
-
+    
             const queryParams = Object.keys(groupedFilters)
-                .map(type => `${type}=${groupedFilters[type].map(val => encodeURIComponent(val)).join(",")}`)
+                .map(type => `${type}=${Array.isArray(groupedFilters[type]) ? groupedFilters[type].map(val => encodeURIComponent(val)).join(",") : encodeURIComponent(groupedFilters[type])}`)
                 .join("&");
-
+    
             const response = await axios.get(`http://localhost:5000/api/students/search?${queryParams}`);
             setResults(response.data.results);
         } catch (error) {
             console.error("Error searching data:", error);
         }
     };
+    
 
     const handleDelete = async (uniqueid) => {
         if (!window.confirm("Are you sure you want to delete this student?")) return;
@@ -97,15 +107,32 @@ const Search = () => {
                             <option value="age">Age</option>
                         </select>
 
-                        {filter.type && (
+                        {filter.type && (filter.type === "uniqueid" || filter.type === "roll" || filter.type==="age") ? (
+                            <div className="range-inputs">
+                                <input
+                                    type="text"
+                                    placeholder={`From ${filter.type}`}
+                                    value={filter.valueFrom}
+                                    onChange={(e) => handleFilterChange(index, "valueFrom", e.target.value)}
+                                />
+                                <input
+                                    type="text"
+                                    placeholder={`To ${filter.type}`}
+                                    value={filter.valueTo}
+                                    onChange={(e) => handleFilterChange(index, "valueTo", e.target.value)}
+                                />
+                            </div>
+                        ) : (
                             <input
-                                ref={(el) => (inputRefs.current[index] = el)}
                                 type="text"
                                 placeholder={`Enter ${filter.type}`}
                                 value={filter.value}
                                 onChange={(e) => handleFilterChange(index, "value", e.target.value)}
                             />
                         )}
+
+
+                       
 
                         <button className="remove-filter-btn" onClick={() => handleRemoveFilter(index)}>
                             <FaTimes />

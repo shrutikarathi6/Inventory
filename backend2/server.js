@@ -3,6 +3,7 @@ const cors = require("cors");
 const connectDB = require("./db");
 const studentRoutes = require("./routes/studentRoutes");
 const authRoutes=require("./routes/authRoutes");
+const excelRoute=require("./routes/excelroute")
 const errorHandler = require("./middleware/errorHandler");
 require("dotenv").config();
 
@@ -13,6 +14,8 @@ app.use(cors());
 app.use(express.json()); // Replaces bodyParser.json()
 app.use("/api/students", studentRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/excel", excelRoute);
+
 
 // Error Handling Middleware (Should be after all routes)
 app.use(errorHandler);
