@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./register.css"
+import "./register.css";
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -32,14 +32,30 @@ const Register = () => {
   };
 
   return (
-    <div>
-      <h2>Registejjjjjr</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <form onSubmit={handleRegister}>
-        <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-        <button type="submit">Register</button>
-      </form>
+    <div className="register-container">
+      <div className="register-box">
+        <h2 className="register-title">Register</h2>
+        {error && <p className="register-error">{error}</p>}
+        <form onSubmit={handleRegister} className="register-form">
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="register-input"
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className="register-input"
+          />
+          <button type="submit" className="register-button">Register</button>
+        </form>
+      </div>
     </div>
   );
 };

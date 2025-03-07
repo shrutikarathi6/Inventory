@@ -1,32 +1,52 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import "./navbar.css"
+import { Home, Search, FileText, LogOut, LogIn, UserPlus } from "lucide-react"; // Icons import kiye
+import "./navbar.css";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const token = localStorage.getItem("token"); // Check if user is logged in
+  const token = localStorage.getItem("token");
 
   const handleLogout = () => {
-    localStorage.removeItem("token"); // Remove token
-    navigate("/login"); // Redirect to login page
+    localStorage.removeItem("token");
+    navigate("/login");
   };
 
   return (
     <nav className="navbar">
-      {token ? (
-        <>
-          <button onClick={() => navigate("/")}>Home</button>
-          <button onClick={() => navigate("/search")}>Search</button>
-          <button onClick={() => navigate("/excel")}>Download Excel</button>
-          <button onClick={handleLogout}>Logout</button>
-        </>
-      ) : (
-        <>
-          {location.pathname !== "/login" && <button onClick={() => navigate("/login")}>Login</button>}
-          {location.pathname !== "/register" && <button onClick={() => navigate("/register")}>Register</button>}
-        </>
-      )}
+      <div className="nav-left">
+        {token ? (
+          <>
+            <button className={`nav-btn ${location.pathname === "/" ? "active" : ""}`} onClick={() => navigate("/")}>
+              <Home size={18} /> Home
+            </button>
+            <button className={`nav-btn ${location.pathname === "/search" ? "active" : ""}`} onClick={() => navigate("/search")}>
+              <Search size={18} /> Search
+            </button>
+            <button className={`nav-btn ${location.pathname === "/excel" ? "active" : ""}`} onClick={() => navigate("/excel")}>
+              <FileText size={18} /> Download
+            </button>
+            <button className="nav-btn logout-btn" onClick={handleLogout}>
+              <LogOut size={18} /> Logout
+            </button>
+          </>
+        ) : (
+          <>
+            {location.pathname !== "/login" && (
+              <button className="nav-btn" onClick={() => navigate("/login")}>
+                <LogIn size={18} /> Login
+              </button>
+            )}
+            {location.pathname !== "/register" && (
+              <button className="nav-btn" onClick={() => navigate("/register")}>
+                <UserPlus size={18} /> Register
+              </button>
+            )}
+          </>
+        )}
+      </div>
+      <div className="nav-right">MY COMPANY</div>
     </nav>
   );
 };

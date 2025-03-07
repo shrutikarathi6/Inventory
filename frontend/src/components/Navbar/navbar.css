@@ -1,42 +1,61 @@
 .navbar {
-    background-color: #14213d; /* Darker than sky blue */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    
-    /* width: 100%; */
-  }
-  
-  .left-icons {
-    display: flex;
-    gap: 20px;
-  }
-  
-  .nav-icon {
-    color: white;
-    font-size: 16px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    cursor: pointer;
-    padding: 5px 10px;
-    border-bottom: 2px solid transparent;
-    transition: all 0.3s ease;
-  }
-  
-  .nav-icon:hover {
-    border-bottom: 2px solid white;
-  }
-  
-  .nav-icon.active {
-    border-bottom: 2px solid white;
-  }
-  
-  .company-name {
-    font-size: 20px;
-    font-weight: bold;
-    color: white;
-  }
-  
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #003366; /* Dark blue */
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px; /* Reduced padding */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+.nav-left {
+  display: flex;
+  gap: 20px;
+}
+
+.nav-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding-bottom: 5px; /* Space for underline */
+  transition: 0.3s;
+  position: relative;
+}
+
+.nav-btn:hover {
+  color: #a8d1ff; /* Light blue on hover */
+}
+
+/* Underline for active page */
+.nav-btn.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 100%;
+  height: 2px;
+  background-color: white;
+}
+
+.nav-right {
+  font-size: 1rem; /* Chhota font size */
+  font-weight: bold;
+  margin-right: 60px; /* Aur andar shift kiya */
+  white-space: nowrap; /* Text cut na ho */
+}
+
+
+.logout-btn {
+  color: #ff6666; /* Logout button color */
+}
+
+.logout-btn:hover {
+  color: #ff9999;
+}
