@@ -3,7 +3,7 @@ const cors = require("cors");
 const connectDB = require("./db");
 const studentRoutes = require("./routes/studentRoutes");
 const authRoutes=require("./routes/authRoutes");
-const excelRoute=require("./routes/excelroute")
+const excelRoute=require("./routes/excelroute");
 const errorHandler = require("./middleware/errorHandler");
 require("dotenv").config();
 

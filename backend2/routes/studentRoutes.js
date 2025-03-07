@@ -1,7 +1,5 @@
 const express = require("express");
 const Student = require("../models/Student");
-const ExcelJS = require("exceljs");
-
 const router = express.Router();
 
 // ✅ Submit Student Data
