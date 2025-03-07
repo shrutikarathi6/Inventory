@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const connectDB = require("./db");
 const studentRoutes = require("./routes/studentRoutes");
+const authRoutes=require("./routes/authRoutes");
 const errorHandler = require("./middleware/errorHandler");
 require("dotenv").config();
 
@@ -11,6 +12,7 @@ const app = express();
 app.use(cors());
 app.use(express.json()); // Replaces bodyParser.json()
 app.use("/api/students", studentRoutes);
+app.use("/api/auth", authRoutes);
 
 // Error Handling Middleware (Should be after all routes)
 app.use(errorHandler);
