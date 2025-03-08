@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import "./updateform.css";
 
 const UpdateForm = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const studentData = location.state?.student || { name: "", uniqueid: "", roll: "", age: "" };
 
   const [formData, setFormData] = useState(studentData);
@@ -23,6 +24,7 @@ const UpdateForm = () => {
     try {
       const response = await axios.put(`http://localhost:5000/api/students/update/${formData.uniqueid}`, formData);
       alert(response.data.message);
+      navigate("/search");
     } catch (error) {
       console.error("Error updating student:", error);
       alert("Failed to update data!");
