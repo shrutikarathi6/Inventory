@@ -5,14 +5,24 @@ import axios from "axios";
 const ExampleForm = () => {
   const [formData, setFormData] = useState({ name: "", uniqueid: "", roll: "", age: "" });
   const [isManualAge, setIsManualAge] = useState(false);
+  const [suggestions, setSuggestions] = useState([]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    if (name === "age") {
-      setIsManualAge(true);
-    }
-    setFormData({ ...formData, [name]: value });
-  };
+  useEffect(() => {
+    const fetchNames = async () => {
+      try {
+        if (formData.name.length > 0) { // Fetch when input is not empty
+          const response = await axios.get(`http://localhost:5000/api/suggestions/names?q=${formData.name}`);
+
+          setSuggestions(response.data);
+        } else {
+          setSuggestions([]); // Clear suggestions if input is empty
+        }
+      } catch (error) {
+        console.error("Error fetching names:", error);
+      }
+    };
+    fetchNames();
+  }, [formData.name]);
 
   useEffect(() => {
     if (!isManualAge) {
@@ -22,6 +32,19 @@ const ExampleForm = () => {
       }
     }
   }, [formData.uniqueid, formData.roll]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name === "age") {
+      setIsManualAge(true);
+    }
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSuggestionClick = (selectedName) => {
+    setFormData({ ...formData, name: selectedName });
+    setSuggestions([]); // Hide suggestions after selection
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -52,6 +75,13 @@ const ExampleForm = () => {
               onChange={handleChange}
               required
             />
+            {suggestions.length > 0 && (
+              <ul className="suggestions-list">
+                {suggestions.map((s, index) => (
+                  <li key={index} onClick={() => handleSuggestionClick(s)}>{s}</li>
+                ))}
+              </ul>
+            )}
           </div>
           <div className="input-container">
             <label className="input-label">Unique ID:</label>
@@ -65,7 +95,6 @@ const ExampleForm = () => {
               required
             />
           </div>
-
           <div className="bajubaju">
             <div className="input-container">
               <label className="input-label">Roll:</label>
@@ -80,19 +109,17 @@ const ExampleForm = () => {
               />
             </div>
             <div className="input-container">
-                <label className="input-label">Age:</label>
-                <input
-                  type="number"
-                  name="age"
-                  placeholder="Calculated Age"
-                  className="input-field"
-                  value={formData.age}
-                  readOnly // 👈 Read-only set kiya
-                />
-              </div>
-
+              <label className="input-label">Age:</label>
+              <input
+                type="number"
+                name="age"
+                placeholder="Calculated Age"
+                className="input-field"
+                value={formData.age}
+                readOnly 
+              />
+            </div>
           </div>
-
           <button type="submit" className="submit-button">Submit</button>
         </form>
       </div>
