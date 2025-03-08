@@ -18,56 +18,44 @@ router.post("/submit", async (req, res) => {
 
 // ✅ Get Students by Search Query (Supports UniqueID Range)
 router.get("/search", async (req, res) => {
-    try {
-        let query = { $and: [] };
+  try {
+      let query = { $and: [] };
 
-        if (req.query.name) {
-            const namesArray = req.query.name.split(",");
-            query.$and.push({ name: { $in: namesArray.map(n => new RegExp(n, "i")) } });
-        }
+      // Name filter (Handles multiple names using $in)
+      if (req.query.name) {
+          const namesArray = req.query.name.split(",");
+          query.$and.push({ name: { $in: namesArray.map(n => new RegExp(n, "i")) } });
+      }
 
-        
-        if (req.query.uniqueidFrom || req.query.uniqueidTo) {
-            let uniqueidFilter = {};
-            if (req.query.uniqueidFrom) uniqueidFilter.$gte = Number(req.query.uniqueidFrom);
-            if (req.query.uniqueidTo) uniqueidFilter.$lte = Number(req.query.uniqueidTo);
-            query.$and.push({ uniqueid: uniqueidFilter });
-        }
+      // Filters for uniqueid, roll, and age
+      ["uniqueid", "roll", "age"].forEach(field => {
+          let filter = {};
+          if (req.query[`${field}From`]) filter.$gte = Number(req.query[`${field}From`]); // ✅ Fixed Syntax
+          if (req.query[`${field}To`]) filter.$lte = Number(req.query[`${field}To`]);   // ✅ Fixed Syntax
+          if (Object.keys(filter).length > 0) query.$and.push({ [field]: filter });
+      });
 
-        
-        if (req.query.rollFrom || req.query.rollTo) {
-            let rollArray = {};
-            if (req.query.rollFrom) rollArray.$gte = Number(req.query.rollFrom);
-            if (req.query.rollTo) rollArray.$lte = Number(req.query.rollTo);
-            query.$and.push({ roll: rollArray });
-        }
+      // If no filter was applied, reset query to empty (fetch all)
+      if (query.$and.length === 0) {
+          query = {};
+      }
 
+      console.log("Generated Query:", JSON.stringify(query, null, 2));
 
-        if (req.query.ageFrom || req.query.ageTo) {
-            let ageFilter = {};
-            if (req.query.ageFrom) ageFilter.$gte = Number(req.query.ageFrom);
-            if (req.query.ageTo) ageFilter.$lte = Number(req.query.ageTo);
-            query.$and.push({ age: ageFilter });
-        }
+      // Fetch results from MongoDB
+      const students = await Student.find(query);
 
-        if (query.$and.length === 0) {
-            query = {};
-        }
+      if (students.length === 0) {
+          return res.status(404).json({ error: "No students found matching the criteria!" });
+      }
 
-        console.log("Generated Query:", JSON.stringify(query, null, 2));
+      res.json({ results: students });
 
-        const students = await Student.find(query);
-
-        if (students.length === 0) {
-            return res.status(404).json({ error: "No students found matching the criteria!" });
-        }
-
-        res.json({ results: students });
-
-    } catch (error) {
-        res.status(500).json({ error: "Error retrieving students!", details: error.message });
-    }
+  } catch (error) {
+      res.status(500).json({ error: "Error retrieving students!", details: error.message });
+  }
 });
+
 
 
 router.delete("/delete/:uniqueid", async (req, res) => {
