@@ -1,4 +1,4 @@
-import './formcss.css';
+import "./formcss.css";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -6,16 +6,18 @@ const ExampleForm = () => {
   const [formData, setFormData] = useState({ name: "", uniqueid: "", roll: "", age: "" });
   const [isManualAge, setIsManualAge] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
   useEffect(() => {
     const fetchNames = async () => {
       try {
-        if (formData.name.length > 0) { // Fetch when input is not empty
+        if (formData.name.length > 0) {
           const response = await axios.get(`http://localhost:5000/api/suggestions/names?q=${formData.name}`);
-
           setSuggestions(response.data);
+          setShowSuggestions(true);
         } else {
-          setSuggestions([]); // Clear suggestions if input is empty
+          setSuggestions([]);
+          setShowSuggestions(false);
         }
       } catch (error) {
         console.error("Error fetching names:", error);
@@ -43,7 +45,8 @@ const ExampleForm = () => {
 
   const handleSuggestionClick = (selectedName) => {
     setFormData({ ...formData, name: selectedName });
-    setSuggestions([]); // Hide suggestions after selection
+    setSuggestions([]);
+    setShowSuggestions(false);
   };
 
   const handleSubmit = async (e) => {
@@ -64,7 +67,7 @@ const ExampleForm = () => {
       <div className="foreground">
         <h2>Add Details</h2>
         <form onSubmit={handleSubmit} className="form-container">
-          <div className="input-container">
+          <div className="input-container" style={{ position: "relative" }}>
             <label className="input-label">Name:</label>
             <input
               type="text"
@@ -74,11 +77,15 @@ const ExampleForm = () => {
               value={formData.name}
               onChange={handleChange}
               required
+              onFocus={() => setShowSuggestions(true)}
+              onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
             />
-            {suggestions.length > 0 && (
-              <ul className="suggestions-list">
+            {showSuggestions && suggestions.length > 0 && (
+              <ul className="suggestions-dropdown">
                 {suggestions.map((s, index) => (
-                  <li key={index} onClick={() => handleSuggestionClick(s)}>{s}</li>
+                  <li key={index} onClick={() => handleSuggestionClick(s)}>
+                    {s}
+                  </li>
                 ))}
               </ul>
             )}
@@ -116,7 +123,7 @@ const ExampleForm = () => {
                 placeholder="Calculated Age"
                 className="input-field"
                 value={formData.age}
-                readOnly 
+                readOnly
               />
             </div>
           </div>
