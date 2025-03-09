@@ -1,4 +1,4 @@
-import './formcss.css';
+import "./formcss.css";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -22,25 +22,27 @@ const ExampleForm = () => {
     });
   
   const [suggestions, setSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
 
+  useEffect(() => {
+    const fetchNames = async () => {
+      try {
+        if (formData.name.length > 0) {
+          const response = await axios.get(`http://localhost:5000/api/suggestions/names?q=${formData.name}`);
+          setSuggestions(response.data);
+          setShowSuggestions(true);
+        } else {
+          setSuggestions([]);
+          setShowSuggestions(false);
+        }
+      } catch (error) {
+        console.error("Error fetching names:", error);
+      }
+    };
+    fetchNames();
+  }, [formData.name]);
 
-  // useEffect(() => {
-  //   const fetchNames = async () => {
-  //     try {
-  //       if (formData.name.length > 0) { // Fetch when input is not empty
-  //         const response = await axios.get(`http://localhost:5000/api/suggestions/names?q=${formData.name}`);
-
-  //         setSuggestions(response.data);
-  //       } else {
-  //         setSuggestions([]); // Clear suggestions if input is empty
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching names:", error);
-  //     }
-  //   };
-  //   fetchNames();
-  // }, [formData.name]);
 
   useEffect(() => {
 
@@ -106,7 +108,8 @@ useEffect(() => {
 
   const handleSuggestionClick = (selectedName) => {
     setFormData({ ...formData, name: selectedName });
-    setSuggestions([]); // Hide suggestions after selection
+    setSuggestions([]);
+    setShowSuggestions(false);
   };
 
   const handleSubmit = async (e) => {
@@ -129,6 +132,7 @@ useEffect(() => {
         <h2>Add Details</h2>
        
         <form onSubmit={handleSubmit} className="form-container">
+
 
           {/* voucher No */}
         <div className="input-container">
@@ -703,6 +707,8 @@ useEffect(() => {
             />
           </div>
           {/* <div className="input-container">
+          <div className="input-container" style={{ position: "relative" }}>
+>>>>>>> b662c2c78c76adf2f9ea01ded599c74d71a1c8cc
             <label className="input-label">Name:</label>
             <input
               type="text"
@@ -712,18 +718,23 @@ useEffect(() => {
               value={formData.name}
               onChange={handleChange}
               required
+              onFocus={() => setShowSuggestions(true)}
+              onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
             />
-            {suggestions.length > 0 && (
-              <ul className="suggestions-list">
+            {showSuggestions && suggestions.length > 0 && (
+              <ul className="suggestions-dropdown">
                 {suggestions.map((s, index) => (
-                  <li key={index} onClick={() => handleSuggestionClick(s)}>{s}</li>
+                  <li key={index} onClick={() => handleSuggestionClick(s)}>
+                    {s}
+                  </li>
                 ))}
               </ul>
-            )}
+            )
           </div> */}
 
           
           
+
           <button type="submit" className="submit-button">Submit</button>
         </form>
       </div>

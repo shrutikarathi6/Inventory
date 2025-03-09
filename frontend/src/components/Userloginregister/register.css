@@ -18,7 +18,9 @@
 }
 
 .register-input {
-    width: 100%;
+    width: 80%;
+    margin-left: 7%;
+    margin-right: 10%;
     padding: 10px;
     margin-bottom: 15px;
     border: 1px solid #ccc;
@@ -33,7 +35,9 @@
 }
 
 .register-button {
-    width: 100%;
+    width: 50%;
+    margin-left: 25%;
+    margin-right: 25%;
     padding: 10px;
     background-color: #4a9fd6;
     color: white;
