@@ -25,28 +25,28 @@ const ExampleForm = () => {
   const [showSuggestions, setShowSuggestions] = useState(false);
 
 
-  useEffect(() => {
-    const fetchNames = async () => {
-      try {
-        if (formData.name.length > 0) {
-          const response = await axios.get(`http://localhost:5000/api/suggestions/names?q=${formData.name}`);
-          setSuggestions(response.data);
-          setShowSuggestions(true);
-        } else {
-          setSuggestions([]);
-          setShowSuggestions(false);
-        }
-      } catch (error) {
-        console.error("Error fetching names:", error);
-      }
-    };
-    fetchNames();
-  }, [formData.name]);
+  // useEffect(() => {
+  //   const fetchNames = async () => {
+  //     try {
+  //       if (formData.name.length > 0) {
+  //         const response = await axios.get(`http://localhost:5000/api/suggestions/names?q=${formData.name}`);
+  //         setSuggestions(response.data);
+  //         setShowSuggestions(true);
+  //       } else {
+  //         setSuggestions([]);
+  //         setShowSuggestions(false);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching names:", error);
+  //     }
+  //   };
+  //   fetchNames();
+  // }, [formData.name]);
 
 
   useEffect(() => {
 
-      const newcgstamount =(formData.amount*cgstpercent)/100;
+    const newcgstamount = (parseFloat(formData.amount) * parseFloat(cgstpercent)) / 100 || 0;
       if (!isNaN(newcgstamount)) {
         setFormData((prev) => ({ ...prev, cgstamount: newcgstamount }));
       }
@@ -56,7 +56,7 @@ const ExampleForm = () => {
 
    useEffect(() => {
 
-      const newsgstamount =(formData.amount*sgstpercent)/100;
+    const newsgstamount = (parseFloat(formData.amount) * parseFloat(sgstpercent)) / 100 || 0;
       if (!isNaN(newsgstamount)) {
         setFormData((prev) => ({ ...prev, sgstamount: newsgstamount }));
       }
@@ -72,7 +72,7 @@ const ExampleForm = () => {
 
   useEffect(() => {
 
-    const newigstamount =(formData.amount*igstpercent)/100;
+    const newigstamount = (parseFloat(formData.amount) * parseFloat(igstpercent)) / 100 || 0;
     if (!isNaN(newigstamount)) {
       setFormData((prev) => ({ ...prev, igstamount: newigstamount }));
     }
@@ -82,7 +82,7 @@ const ExampleForm = () => {
 
 useEffect(() => {
 
-  const newamount =(Number(formData.amount)+Number(formData.sgstamount)+Number(formData.cgstamount)+Number(formData.igstamount));
+  const newamount =(parseFloat(formData.amount)+parseFloat(formData.sgstamount)+parseFloat(formData.cgstamount)+parseFloat(formData.igstamount));
   if (!isNaN(newamount)) {
     setFormData((prev) => ({ ...prev, total: newamount }));
   }
@@ -117,7 +117,17 @@ useEffect(() => {
     try {
       const response = await axios.post("http://localhost:5000/api/students/submit", formData);
       alert(response.data.message);
-      setFormData({ });
+      setFormData({
+        voucherno: "", date:"", referenceno:"", partyname:"", ledgergroup:"", 
+        registrationtype:"", gstinno:"", country:"", state:"", pincode:"",
+        address1:"", address2:"", address3:"", purchaseledger:"",
+        amount: "", salescostcenter:"", purchaseamount:"", additionalledge:"",
+        ledgeamount:0, cgstledger:"", cgstamount:0, sgstledger:"", sgstamount:0, 
+        igstledger:"", igstamount:0, cessledger:"", cessamount:0, total:0, 
+        narration:"", tallyimportstatus:"", km:0, category:"", subcategory:"",
+        details:""
+      });
+      
       
     } catch (error) {
       console.error("Error submitting form:", error);

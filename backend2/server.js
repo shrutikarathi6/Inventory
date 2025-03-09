@@ -7,7 +7,7 @@ const excelRoute=require("./routes/excelroute");
 const errorHandler = require("./middleware/errorHandler");
 const suggestionRoutes = require("./routes/suggestionRoutes");
 require("dotenv").config();
-const Student = require("./models/Student");
+
 
 const app = express();
 
@@ -17,7 +17,7 @@ app.use(express.json()); // Replaces bodyParser.json()
 app.use("/api/students", studentRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/excel", excelRoute);
-app.use("/api/suggestions", suggestionRoutes);
+// app.use("/api/suggestions", suggestionRoutes);
 
 
 // Error Handling Middleware (Should be after all routes)

@@ -9,7 +9,7 @@ const ExcelSheet = () => {
 
     const handleAddFilter = () => {
         setFilters((prevFilters) => {
-            const newFilters = [...prevFilters, { type: "", value: "" }];
+            const newFilters = [...prevFilters, { type: "", value: "", valueFrom: "", valueTo: "" }];
 
             setTimeout(() => {
                 if (inputRefs.current.length > 0) {
@@ -22,9 +22,12 @@ const ExcelSheet = () => {
     };
 
     const handleFilterChange = (index, key, value) => {
-        const newFilters = [...filters];
-        newFilters[index][key] = value;
-        setFilters(newFilters);
+        setFilters((prevFilters) =>
+            prevFilters.map((filter, i) =>
+                i === index ? { ...filter, [key]: value } : filter
+            )
+        );
+
         if (key === "type" && value) {
             setTimeout(() => {
                 inputRefs.current[index]?.focus();
@@ -33,19 +36,22 @@ const ExcelSheet = () => {
     };
 
     const handleRemoveFilter = (index) => {
-        setFilters(filters.filter((_, i) => i !== index));
+        setFilters((prevFilters) => prevFilters.filter((_, i) => i !== index));
     };
 
     const generateQueryParams = () => {
         const groupedFilters = filters.reduce((acc, filter) => {
-            if (["uniqueid", "roll", "age"].includes(filter.type)) {
-                if (filter.valueFrom || filter.valueTo) {
-                    if (filter.valueFrom) acc[`${filter.type}From`] = encodeURIComponent(filter.valueFrom);
-                    if (filter.valueTo) acc[`${filter.type}To`] = encodeURIComponent(filter.valueTo);
-                } else if (filter.value) {
-                    acc[filter.type] = encodeURIComponent(filter.value);
-                }
-            } else {
+            if (!filter.type) return acc; // Ignore empty filters
+
+            if (["amount", "km", "total"].includes(filter.type)) {
+                if (filter.valueFrom) acc[`${filter.type}From`] = filter.valueFrom;
+                if (filter.valueTo) acc[`${filter.type}To`] = filter.valueTo;
+            } else if (filter.type === "date") {
+                normaldatefrom=new Date(filter.valueFrom).toISOString();
+                normaldateto=new Date(filter.valueTo).toISOString();
+                if (filter.valueFrom) acc["dateFrom"] = normaldatefrom.split("T")[0];
+                if (filter.valueTo) acc["dateTo"] = normaldateto.split("T")[0];
+            } else if (filter.value) {
                 if (!acc[filter.type]) acc[filter.type] = [];
                 acc[filter.type].push(filter.value);
             }
@@ -66,24 +72,19 @@ const ExcelSheet = () => {
     const handleDownload = async (isAll = false) => {
         try {
             let url = "http://localhost:5000/api/excel/export";
-
             if (!isAll) {
                 const queryParams = generateQueryParams();
-                if (queryParams) {
-                    url += "?" + queryParams;
-                }
+                if (queryParams) url += "?" + queryParams;
             }
 
             const response = await axios.get(url, { responseType: "blob" });
 
-            if (response.status !== 200) {
-                throw new Error("Failed to download Excel file!");
-            }
+            if (response.status !== 200) throw new Error("Failed to download Excel file!");
 
             const blob = new Blob([response.data]);
             const link = document.createElement("a");
             link.href = window.URL.createObjectURL(blob);
-            link.setAttribute("download", "students.xlsx");
+            link.setAttribute("download", isAll ? "all_data.xlsx" : "filtered_data.xlsx");
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
@@ -109,23 +110,46 @@ const ExcelSheet = () => {
                             onChange={(e) => handleFilterChange(index, "type", e.target.value)}
                         >
                             <option value="">Select Filter</option>
-                            <option value="name">Name</option>
-                            <option value="uniqueid">Unique ID</option>
-                            <option value="roll">Roll No</option>
-                            <option value="age">Age</option>
+                            <option value="uniqueid">Unique Id</option>
+                            <option value="date">Date</option>
+                            <option value="referenceno">Reference No</option>
+                            <option value="partyname">Party Name</option>
+                            <option value="category">Category</option>
+                            <option value="subcategory">SubCategory</option>
+                            <option value="amount">Amount</option>
+                            <option value="km">Kilometers</option>
+                            <option value="total">Total</option>
                         </select>
 
-                        {["uniqueid", "roll", "age"].includes(filter.type) ? (
+                        {/* Date Range Input */}
+                        {filter.type === "date" ? (
+                            <div className="range-inputs">
+                                <input
+                                    type="date"
+                                    placeholder="From"
+                                    value={filter.valueFrom || ""}
+                                    onChange={(e) => handleFilterChange(index, "valueFrom", e.target.value)}
+                                    ref={(el) => (inputRefs.current[index] = el)}
+                                />
+                                <input
+                                    type="date"
+                                    placeholder="To"
+                                    value={filter.valueTo || ""}
+                                    onChange={(e) => handleFilterChange(index, "valueTo", e.target.value)}
+                                />
+                            </div>
+                        ) : ["amount", "km", "total"].includes(filter.type) ? (
                             <div className="range-inputs">
                                 <input
                                     type="text"
-                                    placeholder={"From " + filter.type}
+                                    placeholder="From"
                                     value={filter.valueFrom || ""}
                                     onChange={(e) => handleFilterChange(index, "valueFrom", e.target.value)}
+                                    ref={(el) => (inputRefs.current[index] = el)}
                                 />
                                 <input
                                     type="text"
-                                    placeholder={"To " + filter.type}
+                                    placeholder="To"
                                     value={filter.valueTo || ""}
                                     onChange={(e) => handleFilterChange(index, "valueTo", e.target.value)}
                                 />
@@ -133,9 +157,10 @@ const ExcelSheet = () => {
                         ) : (
                             <input
                                 type="text"
-                                placeholder={"Enter " + filter.type}
+                                placeholder="Enter value"
                                 value={filter.value || ""}
                                 onChange={(e) => handleFilterChange(index, "value", e.target.value)}
+                                ref={(el) => (inputRefs.current[index] = el)}
                             />
                         )}
 

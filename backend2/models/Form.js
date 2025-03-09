@@ -1,0 +1,42 @@
+const mongoose = require("mongoose");
+
+const formSchema = new mongoose.Schema({
+  uniqueid: { type: String, required: true, unique: true }, 
+  voucherno: { type: String },
+  date: { type: Date, required: true }, // Updated to Date type
+  referenceno: { type: String, required: true },
+  partyname: { type: String, required: true },
+  ledgergroup: { type: String },
+  registrationtype: { type: String },
+  gstinno: { type: String },
+  country: { type: String },
+  state: { type: String },
+  pincode: { type: Number },
+  address1: { type: String },
+  address2: { type: String },
+  address3: { type: String },
+  purchaseledger: { type: String },
+  amount: { type: Number, required: true },
+  salescostcenter: { type: String },
+  purchaseamount: { type: Number },
+  additionalledge: { type: String },
+  ledgeamount: { type: Number },
+  cgstledger: { type: String },
+  cgstamount: { type: Number },
+  sgstledger: { type: String },
+  sgstamount: { type: Number },
+  igstledger: { type: String },
+  igstamount: { type: Number },
+  cessledger: { type: String },
+  cessamount: { type: Number },
+  total: { type: Number },
+  narration: { type: String },
+  tallyimportstatus: { type: String },
+  km: { type: Number },
+  category: { type: String },
+  subcategory: { type: String },
+  details: { type: String },
+  modifiedby: { type: String },
+});
+
+module.exports = mongoose.model("Form", formSchema);
