@@ -5,17 +5,17 @@ import axios from "axios";
 
 const ExampleForm = () => {
 
-  const [cgstpercent, setCgstPercent] = useState(0);
-  const [sgstpercent, setSgstPercent] = useState(0);
-  const [igstpercent, setIgstPercent] = useState(0);
+  const [cgstpercent, setCgstPercent] = useState("");
+  const [sgstpercent, setSgstPercent] = useState("");
+  const [igstpercent, setIgstPercent] = useState("");
 
   const [formData, setFormData] = useState({
 
     voucherno: "", date:"", referenceno:"", partyname:"", ledgergroup:"", registrationtype:"", gstinno:"",
   country:"", state:"", pincode:"", address1:"", address2:"", address3:"", purchaseledger:"",
-  amount: "", salescostcenter:"", purchaseamount:"", additionalledge:"", ledgeamount:0,
-  cgstledger:"", cgstamount:0, sgstledger:"", sgstamount:0, igstledger:"", igstamount:0,
-  cessledger:"", cessamount:0, total:0, narration:"", tallyimportstatus:"", km:0,
+  amount: "", salescostcenter:"", purchaseamount:"", additionalledge:"", ledgeamount:"",
+  cgstledger:"", cgstamount:"", sgstledger:"", sgstamount:"", igstledger:"", igstamount:"",
+  cessledger:"", cessamount:"", total:"", narration:"", tallyimportstatus:"", km:"",
   category:"", subcategory:"", details:""
 
 
@@ -122,9 +122,9 @@ useEffect(() => {
         registrationtype:"", gstinno:"", country:"", state:"", pincode:"",
         address1:"", address2:"", address3:"", purchaseledger:"",
         amount: "", salescostcenter:"", purchaseamount:"", additionalledge:"",
-        ledgeamount:0, cgstledger:"", cgstamount:0, sgstledger:"", sgstamount:0, 
-        igstledger:"", igstamount:0, cessledger:"", cessamount:0, total:0, 
-        narration:"", tallyimportstatus:"", km:0, category:"", subcategory:"",
+        ledgeamount:"", cgstledger:"", cgstamount:"", sgstledger:"", sgstamount:"", 
+        igstledger:"", igstamount:"", cessledger:"", cessamount:"", total:"", 
+        narration:"", tallyimportstatus:"", km:"", category:"", subcategory:"",
         details:""
       });
       
@@ -139,7 +139,8 @@ useEffect(() => {
     <div className="backgroundhome">
       <div className="foregroundhome">
         <div className='scroll-container'>
-        <h2>Add Details</h2>
+        <h2 style={{ marginLeft: "40%", marginRight: "40%" }}>Add Details</h2>
+
        
         <form onSubmit={handleSubmit} className="form-container">
 
@@ -186,6 +187,8 @@ useEffect(() => {
           </div>
           </div>
 
+
+          <div className="bajubaju">
            {/* Reference No */}
           <div className="input-container">
             <label className="input-label">Reference No</label>
@@ -214,141 +217,11 @@ useEffect(() => {
               required
             />
             </div>
-
-
-            {/* Ledger Group */}
-          <div className="input-container">
-            <label className="input-label">Ledger Group</label>
-            <input
-              type="text"
-              name="ledgergroup"
-              placeholder="Enter Ledger Group"
-              className="input-field"
-              value={formData.ledgergroup}
-              onChange={handleChange}
-      
-            />
-          </div>
-
-
-          {/* Registration Type*/}
-          <div className="input-container">
-            <label className="input-label">Registration Type</label>
-            <input
-              type="text"
-              name="registrationtype"
-              placeholder="Enter Registration Type"
-              className="input-field"
-              value={formData.registrationtype}
-              onChange={handleChange}
-      
-            />
-          </div>
-
-          {/* GSTIN No*/}
-          <div className="input-container">
-            <label className="input-label">GSTIN No</label>
-            <input
-              type="text"
-              name="gstinno"
-              placeholder="Enter GSTIN No"
-              className="input-field"
-              value={formData.gstinno}
-              onChange={handleChange}
-      
-            />
-          </div>
-
-          {/* Country*/}
-          <div className="input-container">
-            <label className="input-label">Country</label>
-            <input
-              type="text"
-              name="country"
-              placeholder="Enter Country"
-              className="input-field"
-              value={formData.country}
-              onChange={handleChange}
-      
-            />
-          </div>
-
-          {/* State*/}
-          <div className="input-container">
-            <label className="input-label">State</label>
-            <input
-              type="text"
-              name="state"
-              placeholder="Enter State"
-              className="input-field"
-              value={formData.state}
-              onChange={handleChange}
-      
-            />
-          </div>
-
-
-          {/* Pincode*/}
-          <div className="input-container">
-            <label className="input-label">Pincode</label>
-            <input
-              type="number"
-              name="pincode"
-              placeholder="Enter Pincode"
-              className="input-field"
-              value={formData.pincode}
-              onChange={handleChange}
-      
-            />
-          </div>
-
-
-          {/* address1*/}
-          <div className="input-container">
-            <label className="input-label">Address 1</label>
-            <input
-              type="text"
-              name="address1"
-              placeholder="Enter Address 1"
-              className="input-field"
-              value={formData.address1}
-              onChange={handleChange}
-      
-            />
-          </div>
-
-
-          {/* address2*/}
-          <div className="input-container">
-            <label className="input-label">Address 2</label>
-            <input
-              type="text"
-              name="address2"
-              placeholder="Enter Address 2"
-              className="input-field"
-              value={formData.address2}
-              onChange={handleChange}
-      
-            />
-          </div>
-
-
-          {/* address3*/}
-          <div className="input-container">
-            <label className="input-label">Address 3</label>
-            <input
-              type="text"
-              name="address3"
-              placeholder="Enter Address 3"
-              className="input-field"
-              value={formData.address3}
-              onChange={handleChange}
-      
-            />
-          </div>
+            </div>
 
 
           {/* purchaseledger*/}
+          <div className="bajubaju">
           <div className="input-container">
             <label className="input-label">Purchase Ledger</label>
             <input
@@ -363,8 +236,25 @@ useEffect(() => {
             />
           </div>
 
+          {/* Sales cost center */}
+          <div className="input-container">
+              <label className="input-label">Sales cost center</label>
+              <input
+                type="text"
+                name="salescostcenter"
+                placeholder="Enter Sales cost center"
+                className="input-field"
+                value={formData.salescostcenter}
+                onChange={handleChange}
 
-         {/* Amount */}
+              />
+            </div>
+            </div>
+
+
+            
+            <div className="bajubaju">
+              {/* Amount */}
             <div className="input-container">
               <label className="input-label">Amount</label>
               <input
@@ -378,21 +268,7 @@ useEffect(() => {
                 required
               />
             </div>
-
-
-            {/* Sales cost center */}
-            <div className="input-container">
-              <label className="input-label">Sales cost center</label>
-              <input
-                type="text"
-                name="salescostcenter"
-                placeholder="Enter Sales cost center"
-                className="input-field"
-                value={formData.salescostcenter}
-                onChange={handleChange}
-
-              />
-            </div>
+            
 
            {/* Purchase cost center */}
            <div className="input-container">
@@ -406,40 +282,11 @@ useEffect(() => {
                  step="any"
               />
             </div>
-            
-          {/* Additional Ledge*/}
-          <div className="input-container">
-            <label className="input-label">Additional Ledge</label>
-            <input
-              type="text"
-              name="additionalledge"
-              placeholder="Enter Additional Ledge"
-              className="input-field"
-              value={formData.additionalledge}
-              onChange={handleChange}
-      
-            />
-          </div>
-
-
-           {/* Ledge Amount */}
-           <div className="input-container">
-              <label className="input-label">Ledge Amount</label>
-              <input
-                type="number"
-                name="ledgeamount"
-                placeholder="Enter Ledge Amount"
-                className="input-field"
-                value={formData.ledgeamount}
-                onChange={handleChange}
-                step="any" // Allows decimal values
-                
-              />
             </div>
-
-
-
+            
+        
             {/* Cgst Ledger*/}
+            <div className="bajubaju">
           <div className="input-container">
             <label className="input-label">Cgst Ledger</label>
             <input
@@ -481,9 +328,11 @@ useEffect(() => {
                 step="any"
               />
             </div>
+            </div>
 
 
               {/* sgst Ledger*/}
+              <div className="bajubaju">
           <div className="input-container">
             <label className="input-label">Sgst Ledger</label>
             <input
@@ -525,10 +374,12 @@ useEffect(() => {
                 step="any"
               />
             </div>
+            </div>
 
 
 
               {/* Igst Ledger*/}
+              <div className="bajubaju">
           <div className="input-container">
             <label className="input-label">Igst Ledger</label>
             <input
@@ -571,92 +422,24 @@ useEffect(() => {
                 
               />
             </div>
-
-
-
-               {/* Cess Ledger*/}
-          <div className="input-container">
-            <label className="input-label">CEss Ledger</label>
-            <input
-              type="text"
-              name="cessledger"
-              placeholder="Enter Cess Ledger"
-              className="input-field"
-              value={formData.cessledger}
-              onChange={handleChange}
-      
-            />
-          </div>
-
-
-          {/* Cess Amount */}
-          <div className="input-container">
-              <label className="input-label">cess Amount</label>
-              <input
-                type="number"
-                name="cessamount"
-                placeholder="Enter Cess Amount"
-                className="input-field"
-                value={formData.cessamount}
-                onChange={handleChange}
-                step="any"
-              />
             </div>
 
+
        {/* total Amount */}
+       <div className="bajubaju">
        <div className="input-container">
               <label className="input-label">Total Amount</label>
               <input
                 type="number"
                 name="total"
-                className="input-field"
+                className="input-field1"
                 value={formData.total}
                 step="any"
               />
             </div>
 
 
-             {/* total Amount */}
-            <div className="input-container">
-              <label className="input-label">Total Amount</label>
-              <input
-                type="number"
-                name="total"
-                className="input-field"
-                value={formData.total}
-                step="any"
-              />
-            </div>
-
-
-             {/* Narration*/}
-          <div className="input-container">
-            <label className="input-label">Narration</label>
-            <input
-              type="text"
-              name="narration"
-              placeholder="Enter Narration"
-              className="input-field"
-              value={formData.narration}
-              onChange={handleChange}
-      
-            />
-          </div>
-
-
-           {/* Tally Import Status*/}
-           <div className="input-container">
-            <label className="input-label">Tally Import Status</label>
-            <input
-              type="text"
-              name="tallyimportstatus"
-              placeholder="Enter Tally Import Status"
-              className="input-field"
-              value={formData.tallyimportstatus}
-              onChange={handleChange}
-      
-            />
-          </div>
+             
 
 
            {/* Km */}
@@ -666,22 +449,24 @@ useEffect(() => {
                 type="number"
                 name="km"
                 placeholder="Enter km"
-                className="input-field"
+                className="input-field1"
                 value={formData.km}
                 onChange={handleChange}
                 step="any"
               />
             </div>
+            </div>
 
 
             {/* category*/}
+            <div className="bajubaju">
            <div className="input-container">
             <label className="input-label">Category</label>
             <input
               type="text"
               name="category"
               placeholder="Enter Category"
-              className="input-field"
+              className="input-field1"
               value={formData.category}
               onChange={handleChange}
       
@@ -696,8 +481,24 @@ useEffect(() => {
               type="text"
               name="subcategory"
               placeholder="Enter Subcategory"
-              className="input-field"
+              className="input-field1"
               value={formData.subcategory}
+              onChange={handleChange}
+      
+            />
+          </div>
+          </div>
+
+          {/* Narration*/}
+          <div className="bajubaju">
+          <div className="input-container">
+            <label className="input-label">Narration</label>
+            <input
+              type="text"
+              name="narration"
+              placeholder="Enter Narration"
+              className="input-field1"
+              value={formData.narration}
               onChange={handleChange}
       
             />
@@ -711,12 +512,242 @@ useEffect(() => {
               type="text"
               name="details"
               placeholder="Enter Details"
-              className="input-field"
+              className="input-field1"
               value={formData.details}
               onChange={handleChange}
       
             />
           </div>
+          </div>
+
+           {/* Ledger Group */}
+           <div className="bajubaju">
+           <div className="input-container">
+            <label className="input-label">Ledger Group</label>
+            <input
+              type="text"
+              name="ledgergroup"
+              placeholder="Enter Ledger Group"
+              className="input-field2"
+              value={formData.ledgergroup}
+              onChange={handleChange}
+              
+      
+            />
+          </div>
+
+
+          {/* Registration Type*/}
+          <div className="input-container">
+            <label className="input-label">Registration  </label>
+            <input
+              type="text"
+              name="registrationtype"
+              placeholder="Enter Registration Type"
+              className="input-field2"
+              value={formData.registrationtype}
+              onChange={handleChange}
+      
+            />
+          </div>
+
+          {/* GSTIN No*/}
+          <div className="input-container">
+            <label className="input-label">GSTIN No</label>
+            <input
+              type="text"
+              name="gstinno"
+              placeholder="Enter GSTIN No"
+              className="input-field2"
+              value={formData.gstinno}
+              onChange={handleChange}
+      
+            />
+          </div>
+          </div>
+
+          
+          {/* address1*/}
+          
+          <div className="input-container">
+  <label className="input-label">Address 1</label>
+  <input
+    type="text"
+    name="address1"
+    placeholder="Enter Address 1"
+    className="input-field"
+    value={formData.address1}
+    onChange={handleChange}
+    style={{ width: "250%", height: "20px", marginTop: "7px" }}
+    
+  />
+  
+</div>
+
+
+
+          {/* address2*/}
+          <div className="bajubaju">
+          <div className="input-container">
+            <label className="input-label">Address 2</label>
+            <input
+              type="text"
+              name="address2"
+              placeholder="Enter Address 2"
+              className="input-field1"
+              value={formData.address2}
+              onChange={handleChange}
+      
+            />
+          </div>
+
+
+          {/* address3*/}
+          <div className="input-container">
+            <label className="input-label">Address 3</label>
+            <input
+              type="text"
+              name="address3"
+              placeholder="Enter Address 3"
+              className="input-field1"
+              value={formData.address3}
+              onChange={handleChange}
+      
+            />
+          </div>
+          </div>
+
+          {/* Country*/}
+          <div className="bajubaju">
+          <div className="input-container">
+            <label className="input-label">Country</label>
+            <input
+              type="text"
+              name="country"
+              placeholder="Enter Country"
+              className="input-field"
+              value={formData.country}
+              onChange={handleChange}
+      
+            />
+          </div>
+
+          {/* State*/}
+          <div className="input-container">
+            <label className="input-label">State</label>
+            <input
+              type="text"
+              name="state"
+              placeholder="Enter State"
+              className="input-field"
+              value={formData.state}
+              onChange={handleChange}
+      
+            />
+          </div>
+
+
+          {/* Pincode*/}
+          <div className="input-container">
+            <label className="input-label">Pincode</label>
+            <input
+              type="number"
+              name="pincode"
+              placeholder="Enter Pincode"
+              className="input-field"
+              value={formData.pincode}
+              onChange={handleChange}
+      
+            />
+          </div>
+          </div>
+
+          {/* Additional Ledge*/}
+          <div className="bajubaju">
+          <div className="input-container">
+            <label className="input-label">Additional Ledge</label>
+            <input
+              type="text"
+              name="additionalledge"
+              placeholder="Enter Additional Ledge"
+              className="input-field"
+              value={formData.additionalledge}
+              onChange={handleChange}
+      
+            />
+          </div>
+
+
+           {/* Ledge Amount */}
+           <div className="input-container">
+              <label className="input-label">Ledge Amount</label>
+              <input
+                type="number"
+                name="ledgeamount"
+                placeholder="Enter Ledge Amount"
+                className="input-field"
+                value={formData.ledgeamount}
+                onChange={handleChange}
+                step="any" // Allows decimal values
+                
+              />
+            </div>
+            </div>
+
+            
+               {/* Cess Ledger*/}
+               <div className="bajubaju">
+          <div className="input-container">
+            <label className="input-label">CESS Ledger</label>
+            <input
+              type="text"
+              name="cessledger"
+              placeholder="Enter Cess Ledger"
+              className="input-field"
+              value={formData.cessledger}
+              onChange={handleChange}
+      
+            />
+          </div>
+
+
+          {/* Cess Amount */}
+          <div className="input-container">
+              <label className="input-label">CESS Amount</label>
+              <input
+                type="number"
+                name="cessamount"
+                placeholder="Enter Cess Amount"
+                className="input-field"
+                value={formData.cessamount}
+                onChange={handleChange}
+                step="any"
+              />
+            </div>
+            </div>
+
+            
+           {/* Tally Import Status*/}
+           <div className="input-container">
+            <label className="input-label">Tally Import Status</label>
+            <input
+              type="text"
+              name="tallyimportstatus"
+              placeholder="Enter Tally Import Status"
+              className="input-field"
+              value={formData.tallyimportstatus}
+              onChange={handleChange}
+              style={{ width: "200%", height: "20px", marginTop: "7px" }}
+      
+            />
+          </div>
+
+
+
+
+
+
+
           {/* <div className="input-container">
           <div className="input-container" style={{ position: "relative" }}>
 >>>>>>> b662c2c78c76adf2f9ea01ded599c74d71a1c8cc

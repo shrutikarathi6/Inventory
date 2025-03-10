@@ -197,36 +197,49 @@ const Search = () => {
                 <table border="1">
                     <thead>
                         <tr>
-                            <th>Ref No</th>
-                            <th>Party</th>
-                            <th>Date</th>
-                            <th>Amount</th>
                             <th>Actions</th>
+                            <th>Voucher No</th>
+                            <th>Voucher Type</th>
+                            <th>Date</th>
+                            <th>Reference No</th>
+                            <th>Party Name</th>
+                            <th>Purchase Ledger</th>
+                            <th>Sales Cost Center</th>
+                            <th>Amount</th>
+                            <th>Purchase Cost Center</th>
+                            <th>CGST Legder</th>
+                            <th>CGST Amount</th>
+                            <th>SGST Ledger</th>
+                            <th>SGST Amount</th>
+                            <th>IGST Ledger</th>
+                            <th>IGST Amount</th>
+                            <th>Total Amount</th>
+                            <th>Kilometer</th>
+                            <th>Category</th>
+                            <th>Subcategory</th>
+                            <th>Narration</th>
+                            <th>Details</th>
+                            <th>Ledger Group</th>
+                            <th>Registration Type</th>
+                            <th>GSTIN No</th>
+                            <th>Address 1</th>
+                            <th>Address 2</th>
+                            <th>Address 3</th>
+                            <th>Pincode</th>
+                            <th>State</th>
+                            <th>Country</th>
+                            <th>Additional Ledge</th>
+                            <th>Ledge Amount</th>
+                            <th>CESS Ledger</th>
+                            <th>CESS Amount</th>
+                            <th>Tally Import Status</th>
+                            
+                            
                         </tr>
                     </thead>
                     <tbody>
                         {results.map((student) => (
                             <tr key={student.uniqueid}>
-                                 <td>{student.referenceno}</td>
-                                 <td>{student.partyname}</td>
-                                <td>
-                                    {editingId === student.uniqueid ? (
-                                        <input 
-                                            type="date" 
-                                            value={editedData?.date || ""} 
-                                            onChange={(e) => handleEditChange(e, "date")} 
-                                        />
-                                    ) : student.date}
-                                </td>
-                                <td>
-                                    {editingId === student.uniqueid ? (
-                                        <input 
-                                            type="number" 
-                                            value={editedData?.amount || ""} 
-                                            onChange={(e) => handleEditChange(e, "amount")} 
-                                        />
-                                    ) : student.amount}
-                                </td>
                                 <td>
                                     {editingId === student.uniqueid ? (
                                         <button onClick={handleSave} className="save-btn"><FaSave /></button>
@@ -237,6 +250,311 @@ const Search = () => {
                                         </>
                                     )}
                                 </td>
+                                 
+
+                                 
+                                <td>
+                                    {editingId === student.uniqueid ? (
+                                        <input 
+                                            type="number" 
+                                            value={editedData?.voucherno || ""} 
+                                            onChange={(e) => handleEditChange(e, "voucherno")} 
+                                        />
+                                    ) : student.voucherno}
+                                </td>
+                                <td>
+                                    Purchase
+                                </td>
+
+                                <td>
+                                    {editingId === student.uniqueid ? (
+                                        <input 
+                                            type="date" 
+                                            value={editedData?.date || ""} 
+                                            onChange={(e) => handleEditChange(e, "date")} 
+                                        />
+                                    ) : student.date}
+                                </td>
+                                
+
+                                <td>{student.referenceno}</td>
+                                 <td>{student.partyname}</td>
+
+                                 <td>
+                                    {editingId === student.uniqueid ? (
+                                        <input 
+                                            type="text" 
+                                            value={editedData?.purchaseledger || ""} 
+                                            onChange={(e) => handleEditChange(e, "purchaseledger")} 
+                                        />
+                                    ) : student.purchaseledger}
+                                </td>
+
+                                <td>
+                                    {editingId === student.uniqueid ? (
+                                        <input 
+                                            type="text" 
+                                            value={editedData?.salescostcenter || ""} 
+                                            onChange={(e) => handleEditChange(e, "salescostcenter")} 
+                                        />
+                                    ) : student.salescostcenter}
+                                </td>
+
+                                 <td>
+                                    {editingId === student.uniqueid ? (
+                                        <input 
+                                            type="number" 
+                                            value={editedData?.amount || ""} 
+                                            onChange={(e) => handleEditChange(e, "amount")} 
+                                        />
+                                    ) : student.amount}
+                                </td>
+
+                                <td>
+                                    {editingId === student.uniqueid ? (
+                                        <input 
+                                            type="number" 
+                                            value={editedData?.purchaseamount || ""} 
+                                            onChange={(e) => handleEditChange(e, "purchaseamount")} 
+                                        />
+                                    ) : student.purchaseamount}
+                                </td>
+
+                                <td>
+                                    {editingId === student.uniqueid ? (
+                                        <input 
+                                            type="text" 
+                                            value={editedData?.cgstledger || ""} 
+                                            onChange={(e) => handleEditChange(e, "cgstledger")} 
+                                        />
+                                    ) : student.cgstledger}
+                                </td>
+
+                                <td>{student.cgstamount}</td>
+
+                                <td>
+                                    {editingId === student.uniqueid ? (
+                                        <input 
+                                            type="text" 
+                                            value={editedData?.sgstledger || ""} 
+                                            onChange={(e) => handleEditChange(e, "sgstledger")} 
+                                        />
+                                    ) : student.sgstledger}
+                                </td>
+
+                                <td>{student.sgstamount}</td>
+
+                                <td>
+                                    {editingId === student.uniqueid ? (
+                                        <input 
+                                            type="text" 
+                                            value={editedData?.igstledger || ""} 
+                                            onChange={(e) => handleEditChange(e, "igstledger")} 
+                                        />
+                                    ) : student.igstledger}
+                                </td>
+
+                                <td>{student.igstamount}</td>
+                                <td>{student.total}</td>
+
+                                <td>
+                                    {editingId === student.uniqueid ? (
+                                        <input 
+                                            type="number" 
+                                            value={editedData?.km || ""} 
+                                            onChange={(e) => handleEditChange(e, "km")} 
+                                        />
+                                    ) : student.km}
+                                </td>
+
+                                <td>
+                                    {editingId === student.uniqueid ? (
+                                        <input 
+                                            type="text" 
+                                            value={editedData?.category || ""} 
+                                            onChange={(e) => handleEditChange(e, "category")} 
+                                        />
+                                    ) : student.category}
+                                </td>
+
+                                <td>
+                                    {editingId === student.uniqueid ? (
+                                        <input 
+                                            type="text" 
+                                            value={editedData?.subcategory || ""} 
+                                            onChange={(e) => handleEditChange(e, "subcategory")} 
+                                        />
+                                    ) : student.subcategory}
+                                </td>
+
+                                <td>
+                                    {editingId === student.uniqueid ? (
+                                        <input 
+                                            type="text" 
+                                            value={editedData?.narration || ""} 
+                                            onChange={(e) => handleEditChange(e, "narration")} 
+                                        />
+                                    ) : student.narration}
+                                </td>
+
+                                <td>
+                                    {editingId === student.uniqueid ? (
+                                        <input 
+                                            type="text" 
+                                            value={editedData?.details || ""} 
+                                            onChange={(e) => handleEditChange(e, "details")} 
+                                        />
+                                    ) : student.details}
+                                </td>
+
+                                <td>
+                                    {editingId === student.uniqueid ? (
+                                        <input 
+                                            type="text" 
+                                            value={editedData?.ledgergroup || ""} 
+                                            onChange={(e) => handleEditChange(e, "ledgergroup")} 
+                                        />
+                                    ) : student.ledgergroup}
+                                </td>
+
+                                <td>
+                                    {editingId === student.uniqueid ? (
+                                        <input 
+                                            type="text" 
+                                            value={editedData?.registrationtype || ""} 
+                                            onChange={(e) => handleEditChange(e, "registrationtype")} 
+                                        />
+                                    ) : student.registrationtype}
+                                </td>
+
+                                <td>
+                                    {editingId === student.uniqueid ? (
+                                        <input 
+                                            type="text" 
+                                            value={editedData?.gstinno || ""} 
+                                            onChange={(e) => handleEditChange(e, "gstinno")} 
+                                        />
+                                    ) : student.gstinno}
+                                </td>
+
+                                <td>
+                                    {editingId === student.uniqueid ? (
+                                        <input 
+                                            type="text" 
+                                            value={editedData?.address1 || ""} 
+                                            onChange={(e) => handleEditChange(e, "address1")} 
+                                        />
+                                    ) : student.address1}
+                                </td>
+
+                                <td>
+                                    {editingId === student.uniqueid ? (
+                                        <input 
+                                            type="text" 
+                                            value={editedData?.address2 || ""} 
+                                            onChange={(e) => handleEditChange(e, "address2")} 
+                                        />
+                                    ) : student.address2}
+                                </td>
+
+                                <td>
+                                    {editingId === student.uniqueid ? (
+                                        <input 
+                                            type="text" 
+                                            value={editedData?.address3 || ""} 
+                                            onChange={(e) => handleEditChange(e, "address3")} 
+                                        />
+                                    ) : student.address3}
+                                </td>
+
+                                <td>
+                                    {editingId === student.uniqueid ? (
+                                        <input 
+                                            type="number" 
+                                            value={editedData?.pincode|| ""} 
+                                            onChange={(e) => handleEditChange(e, "pincode")} 
+                                        />
+                                    ) : student.pincode}
+                                </td>
+
+
+                                <td>
+                                    {editingId === student.uniqueid ? (
+                                        <input 
+                                            type="text" 
+                                            value={editedData?.state || ""} 
+                                            onChange={(e) => handleEditChange(e, "state")} 
+                                        />
+                                    ) : student.state}
+                                </td>
+
+                                <td>
+                                    {editingId === student.uniqueid ? (
+                                        <input 
+                                            type="text" 
+                                            value={editedData?.country || ""} 
+                                            onChange={(e) => handleEditChange(e, "country")} 
+                                        />
+                                    ) : student.country}
+                                </td>
+
+                                <td>
+                                    {editingId === student.uniqueid ? (
+                                        <input 
+                                            type="text" 
+                                            value={editedData?.additionalledge|| ""} 
+                                            onChange={(e) => handleEditChange(e, "additionalledge")} 
+                                        />
+                                    ) : student.additionalledge}
+                                </td>
+
+                                <td>
+                                    {editingId === student.uniqueid ? (
+                                        <input 
+                                            type="number" 
+                                            value={editedData?.ledgeamount || ""} 
+                                            onChange={(e) => handleEditChange(e, "ledgeamount")} 
+                                        />
+                                    ) : student.ledgeamount}
+                                </td>
+
+                                <td>
+                                    {editingId === student.uniqueid ? (
+                                        <input 
+                                            type="text" 
+                                            value={editedData?.cessledger || ""} 
+                                            onChange={(e) => handleEditChange(e, "cessledger")} 
+                                        />
+                                    ) : student.cessledger}
+                                </td>
+
+                                <td>
+                                    {editingId === student.uniqueid ? (
+                                        <input 
+                                            type="number" 
+                                            value={editedData?.cessamount|| ""} 
+                                            onChange={(e) => handleEditChange(e, "cessamount")} 
+                                        />
+                                    ) : student.cessamount}
+                                </td>
+
+                                <td>
+                                    {editingId === student.uniqueid ? (
+                                        <input 
+                                            type="text" 
+                                            value={editedData?.tallyimportstatus || ""} 
+                                            onChange={(e) => handleEditChange(e, "tallyimportstatus")} 
+                                        />
+                                    ) : student.tallyimportstatus}
+                                </td>
+
+                                
+
+
+
+
+                                
+                                
                             </tr>
                         ))}
                     </tbody>
