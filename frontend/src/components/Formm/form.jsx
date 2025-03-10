@@ -136,14 +136,14 @@ useEffect(() => {
   };
 
   return (
-    <div className="background">
-      <div className="foreground">
+    <div className="backgroundhome">
+      <div className="foregroundhome">
         <div className='scroll-container'>
         <h2>Add Details</h2>
        
         <form onSubmit={handleSubmit} className="form-container">
 
-
+        <div className="bajubaju">
           {/* voucher No */}
         <div className="input-container">
             <label className="input-label">Voucher No</label>
@@ -168,6 +168,7 @@ useEffect(() => {
               readOnly
             />
           </div>
+         
 
            {/* Date */}
         <div className="input-container">
@@ -183,7 +184,7 @@ useEffect(() => {
       
             />
           </div>
-
+          </div>
 
            {/* Reference No */}
           <div className="input-container">

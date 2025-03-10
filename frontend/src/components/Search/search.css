@@ -1,5 +1,5 @@
 /* Background Styling - Page Scroll Issue Fixed */
-.background {
+.backgroundsearch {
     background-color: skyblue;
     height: 100vh;
     display: flex;
@@ -9,7 +9,7 @@
 }
   
 /* Foreground (Container) - Fixed Height */
-.foreground {
+.foregroundsearch {
     width: 75%;
     height: 90%;
     margin-top: 3%;

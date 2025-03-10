@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import "./search.css";
-import "./popcard.css";
+
 import { useNavigate } from "react-router-dom";
 import { FaPlus, FaTimes, FaEdit, FaTrash, FaEye, FaSave } from "react-icons/fa";
 
@@ -114,8 +114,8 @@ const Search = () => {
     };
 
     return (
-        <div className="background">
-    <div className="foreground">
+        <div className="backgroundsearch">
+    <div className="foregroundsearch">
         <h2>Search Entry</h2>
 
         <button className="add-filter-btn" onClick={handleAddFilter}>

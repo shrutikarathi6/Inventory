@@ -1,4 +1,4 @@
-.background {
+.backgroundhome {
     background-color: skyblue;
     height: 100vh;
     display: flex;
@@ -6,7 +6,7 @@
     align-items: center;
 }
   
-.foreground {
+.foregroundhome {
     width: 70%;
     height: 90%;
     margin-top: 5%;
@@ -66,7 +66,7 @@
     border: 1px solid #ccc;
     border-radius: 5px;
     outline: none;
-    width: 100%;
+    width: 50%;
     background-color: white;
 }
 

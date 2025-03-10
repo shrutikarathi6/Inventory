@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import Home from "./pages/home.jsx";
 import SearchPage from "./pages/searchpage.jsx";
 import ExcelSheet from "./pages/excelsheet.jsx";
-import Updateform from "./pages/updateform.jsx";
 import Register from "./pages/register.jsx";
 import Login from "./pages/login.jsx";
 import Navbar from "./components/Navbar/navbar.jsx";
@@ -20,7 +19,7 @@ function App() {
         <Route path="/" element={<PrivateRoute element={<Home />} />} />
         <Route path="/search" element={<PrivateRoute element={<SearchPage />} />} />
         <Route path="/excel" element={<PrivateRoute element={<ExcelSheet />} />} />
-        <Route path="/update-form" element={<PrivateRoute element={<Updateform />} />} />
+        
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
       </Routes>

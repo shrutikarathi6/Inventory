@@ -95,8 +95,8 @@ const ExcelSheet = () => {
     };
 
     return (
-        <div className="background">
-            <div className="foreground">
+        <div className="backgroundexcel">
+            <div className="foregroundexcel">
                 <h2>Download Filtered Data</h2>
 
                 <button className="add-filter-btn" onClick={handleAddFilter}>
