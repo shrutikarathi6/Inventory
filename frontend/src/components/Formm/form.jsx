@@ -43,25 +43,16 @@ const ExampleForm = () => {
   //   fetchNames();
   // }, [formData.name]);
 
+useEffect(() => {
 
-  useEffect(() => {
-
-    const newcgstamount = (parseFloat(formData.amount) * parseFloat(cgstpercent)) / 100 || 0;
+    const newcgstamount = (parseFloat(formData.amount) *parseFloat(cgstpercent)) / 100 || 0;
       if (!isNaN(newcgstamount)) {
-        setFormData((prev) => ({ ...prev, cgstamount: newcgstamount }));
+        setFormData((prev) => ({ ...prev, cgstamount: newcgstamount.toFixed(2) }));
       }
     
   }, [formData.amount, cgstpercent]);
 
 
-   useEffect(() => {
-
-    const newsgstamount = (parseFloat(formData.amount) * parseFloat(sgstpercent)) / 100 || 0;
-      if (!isNaN(newsgstamount)) {
-        setFormData((prev) => ({ ...prev, sgstamount: newsgstamount }));
-      }
-    
-  }, [formData.amount, sgstpercent]);
 
   useEffect(() => {
 
@@ -70,11 +61,20 @@ const ExampleForm = () => {
 }, [formData.amount]);
 
 
+// useEffect hook to sync CGST values with SGST values
+useEffect(() => {
+  setFormData((prev) => ({
+    ...prev,
+    sgstledger: prev.cgstledger,
+    sgstamount: prev.cgstamount,
+  }));
+}, [formData.cgstledger, formData.cgstamount]);
+
   useEffect(() => {
 
     const newigstamount = (parseFloat(formData.amount) * parseFloat(igstpercent)) / 100 || 0;
     if (!isNaN(newigstamount)) {
-      setFormData((prev) => ({ ...prev, igstamount: newigstamount }));
+      setFormData((prev) => ({ ...prev, igstamount: newigstamount.toFixed(2) }));
     }
   
 }, [formData.amount, igstpercent]);
@@ -82,12 +82,19 @@ const ExampleForm = () => {
 
 useEffect(() => {
 
-  const newamount =(parseFloat(formData.amount)+parseFloat(formData.sgstamount)+parseFloat(formData.cgstamount)+parseFloat(formData.igstamount));
-  if (!isNaN(newamount)) {
-    setFormData((prev) => ({ ...prev, total: newamount }));
-  }
+  const newigstamount = (parseFloat(formData.amount) * parseFloat(igstpercent)) / 100 || 0;
+  const newcgstamount = (parseFloat(formData.amount) *parseFloat(cgstpercent)) / 100 || 0;
 
-}, [formData.amount, formData.sgstamount,formData.cgstamount,formData.igstamount]);
+  const newamount =(parseFloat(formData.amount)+2*newcgstamount+newigstamount);
+  // if (!isNaN(newamount)) {
+    setFormData((prev) => ({ ...prev, total: newamount.toFixed(2) }));
+  // }
+
+}, [formData.amount,formData.cgstpercent,formData.igstpercent]);
+
+
+
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -355,7 +362,7 @@ useEffect(() => {
               name="sgstpercent"
               placeholder="Enter Sgst Percent"
               className="input-field"
-              value={sgstpercent}
+              value={cgstpercent}
               onChange={handleChange}
       
             />
