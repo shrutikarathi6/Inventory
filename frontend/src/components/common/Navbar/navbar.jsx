@@ -1,12 +1,13 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { LogIn, UserPlus } from "lucide-react"; // Icons import
+import { LogOut, LogIn, UserPlus } from "lucide-react";  // Icons import
 import "./navbar.css";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const token = localStorage.getItem("token");
+ 
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -17,9 +18,9 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="nav-left">
         {token ? (
-          <button className="nav-btn" onClick={handleLogout}>
-            Logout
-          </button>
+          <button className="nav-btn logout-btn" onClick={handleLogout}>
+          <LogOut size={18} /> Logout
+        </button>
         ) : (
           <>
             {location.pathname !== "/login" && (

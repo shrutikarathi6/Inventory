@@ -1,91 +1,11 @@
-import "./formcss.css";
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import Navbar from "../Navbar/navbar";
 
-
-const ExampleForm = () => {
-
-
-  const [formData, setFormData] = useState({
-
-    voucherno: "", date:"",drledgername:"",dramount:"",referenceno:"",referenceamount:"",drcostcenter:"",drcostcenteramount:"",crledgername:"",
-    cramount:"",crcostcenter:"",crcostcenteramount:"",narration:"", tallyimportstatus:"", km:"",
-  category:"", subcategory:"", details:""
-
-
-    });
-  
-  const [suggestions, setSuggestions] = useState([]);
-  const [showSuggestions, setShowSuggestions] = useState(false);
-
-
-  // useEffect(() => {
-  //   const fetchNames = async () => {
-  //     try {
-  //       if (formData.name.length > 0) {
-  //         const response = await axios.get(`http://localhost:5000/api/suggestions/names?q=${formData.name}`);
-  //         setSuggestions(response.data);
-  //         setShowSuggestions(true);
-  //       } else {
-  //         setSuggestions([]);
-  //         setShowSuggestions(false);
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching names:", error);
-  //     }
-  //   };
-  //   fetchNames();
-  // }, [formData.name]);
-
-
-
-
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    
-    setFormData({ ...formData, [name]: value });
-
-    
-  };
-
-  // const handleSuggestionClick = (selectedName) => {
-  //   setFormData({ ...formData, name: selectedName });
-  //   setSuggestions([]);
-  //   setShowSuggestions(false);
-  // };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-  //   try {
-  //     const response = await axios.post("http://localhost:5000/api/students/submit", formData);
-  //     alert(response.data.message);
-  //     setFormData({
-  //       voucherno: "", date:"", referenceno:"", partyname:"", ledgergroup:"", 
-  //       registrationtype:"", gstinno:"", country:"", state:"", pincode:"",
-  //       address1:"", address2:"", address3:"", purchaseledger:"",
-  //       amount: "", salescostcenter:"", purchaseamount:"", additionalledge:"",
-  //       ledgeamount:"", cgstledger:"", cgstamount:"", sgstledger:"", sgstamount:"", 
-  //       igstledger:"", igstamount:"", cessledger:"", cessamount:"", total:"", 
-  //       narration:"", tallyimportstatus:"", km:"", category:"", subcategory:"",
-  //       details:""
-  //     });
-      
-      
-  //   } catch (error) {
-  //     console.error("Error submitting form:", error);
-  //     alert("Failed to submit data!");
-  //   }
-  };
-
-  return (
+return (
     <>
     <Navbar/>
     <div className="backgroundhome">
       <div className="foregroundhome">
         <div className='scroll-container'>
-        <h2 style={{ marginLeft: "40%", marginRight: "30%" }}>Add Details For NonGST</h2>
+        <h2 style={{ marginLeft: "20%", marginRight: "20%" }}>Add Details For NonGST</h2>
 
        
         <form onSubmit={handleSubmit} className="form-container">
@@ -141,36 +61,16 @@ const ExampleForm = () => {
             <label className="input-label">Dr Ledger Name:</label>
             <input
               type="text"
-              name="drledgername"
+              name="ledgername"
               placeholder="Enter Dr Ledger Name"
               className="input-field"
-              value={formData.drledgername}
+              value={formData.ledgername}
               onChange={handleChange}
               required
             />
             </div>
 
-             {/* Reference No */}
-          <div className="input-container">
-            <label className="input-label">Reference No</label>
-            <input
-              type="text"
-              name="referenceno"
-              placeholder="Enter Reference No"
-              className="input-field"
-              value={formData.referenceno}
-              onChange={handleChange}
-              required
-      
-            />
-          </div>
-
-            
-            </div>
-
-
-            <div className="bajubaju">
-              {/* Dr Amount */}
+            {/* Dr Amount */}
             <div className="input-container">
               <label className="input-label">Dr Amount</label>
               <input
@@ -184,6 +84,24 @@ const ExampleForm = () => {
                 required
               />
             </div>
+            </div>
+
+
+            <div className="bajubaju">
+               {/* Reference No */}
+          <div className="input-container">
+            <label className="input-label">Reference No</label>
+            <input
+              type="text"
+              name="referenceno"
+              placeholder="Enter Reference No"
+              className="input-field"
+              value={formData.referenceno}
+              onChange={handleChange}
+              required
+      
+            />
+          </div>
 
           <div className="input-container">
               <label className="input-label">Reference Amount</label>
@@ -201,7 +119,6 @@ const ExampleForm = () => {
             </div>
            
             {/* Cr Ledger Name*/}
-            <div className="bajubaju">
           <div className="input-container">
             <label className="input-label">Cr Ledger Name</label>
             <input
@@ -228,10 +145,8 @@ const ExampleForm = () => {
       
             />
           </div>
-          </div>
 
           {/* Cr Cost center*/}
-          <div className="bajubaju">
           <div className="input-container">
             <label className="input-label">Cr Cost Center</label>
             <input
@@ -258,12 +173,10 @@ const ExampleForm = () => {
       
             />
           </div>
-          </div>
             
         
            
            {/* Km */}
-           <div className="bajubaju">
            <div className="input-container">
               <label className="input-label">Kilometer</label>
               <input
@@ -280,26 +193,19 @@ const ExampleForm = () => {
 
 
             {/* category*/}
-            
-            <div className="input-container">
-  <label className="input-label">Category</label>
-  <select
-    name="category"
-    className="input-field"
-    value={formData.category}
-    onChange={handleChange}
-  >
-    <option value="">Select Category</option>
-    {[
-      "ACCESSORIES", "BATTERY", "BEARING", "BRAKE", "CLUTCH", "CROWN", "ELECTRIC", "ENGINE",
-      "FUEL PUMP", "GEAR BOX", "GREASING", "HYDRAULIC", "INSURANCE", "PAINT", "PAPERS",
-      "RADIATOR", "SUSPENSION", "TYRE", "UREA", "WELDING"
-    ].map((item, index) => (
-      <option key={index} value={item}>{item}</option>
-    ))}
-  </select>
-</div>
-
+            <div className="bajubaju">
+           <div className="input-container">
+            <label className="input-label">Category</label>
+            <input
+              type="text"
+              name="category"
+              placeholder="Enter Category"
+              className="input-field1"
+              value={formData.category}
+              onChange={handleChange}
+      
+            />
+          </div>
 
 
           {/* Subcategory*/}
@@ -349,7 +255,6 @@ const ExampleForm = () => {
           </div>
 
           {/* Dr Cost center*/}
-          <div className="bajubaju">
           <div className="input-container">
             <label className="input-label">Dr Cost Center</label>
             <input
@@ -375,7 +280,6 @@ const ExampleForm = () => {
       
             />
           </div>
-          </div>
 
           
 
@@ -398,48 +302,3 @@ const ExampleForm = () => {
           </div>
 
 
-
-
-
-
-
-
-          {/* <div className="input-container">
-          <div className="input-container" style={{ position: "relative" }}>
->>>>>>> b662c2c78c76adf2f9ea01ded599c74d71a1c8cc
-            <label className="input-label">Name:</label>
-            <input
-              type="text"
-              name="name"
-              placeholder="Enter Name"
-              className="input-field"
-              value={formData.name}
-              onChange={handleChange}
-              required
-              onFocus={() => setShowSuggestions(true)}
-              onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
-            />
-            {showSuggestions && suggestions.length > 0 && (
-              <ul className="suggestions-dropdown">
-                {suggestions.map((s, index) => (
-                  <li key={index} onClick={() => handleSuggestionClick(s)}>
-                    {s}
-                  </li>
-                ))}
-              </ul>
-            )
-          </div> */}
-
-          
-          
-
-          <button type="submit" className="submit-button">Submit</button>
-        </form>
-      </div>
-    </div>
-    </div>
-    </>
-  );
-};
-
-export default ExampleForm;

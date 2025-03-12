@@ -45,7 +45,7 @@ const Search = () => {
             setSearchkiya(true); // Set search state
 
             const groupedFilters = filters.reduce((acc, filter) => {
-                if (["amount", "km", "total"].includes(filter.type)) {
+                if (["dramount", "km"].includes(filter.type)) {
                     // Handle numerical ranges
                     if (filter.valueFrom) acc[`${filter.type}From`] = filter.valueFrom;
                     if (filter.valueTo) acc[`${filter.type}To`] = filter.valueTo;
@@ -63,25 +63,25 @@ const Search = () => {
             }, {});
 
             const queryParams = new URLSearchParams(groupedFilters).toString();
-            const response = await axios.get(`http://localhost:5000/api/students/search?${queryParams}`);
-            setResults(response.data.results);
+            // const response = await axios.get(`http://localhost:5000/api/students/search?${queryParams}`);
+            // setResults(response.data.results);
         } catch (error) {
             console.error("Error searching data:", error);
         }
     };
 
-    // Delete student
-    const handleDelete = async (uniqueid) => {
-        if (!window.confirm("Are you sure you want to delete this entry?")) return;
-        try {
-            await axios.delete(`http://localhost:5000/api/students/delete/${uniqueid}`);
-            alert("Entry deleted successfully!");
-            setResults(results.filter(student => student.uniqueid !== uniqueid));
-        } catch (error) {
-            console.error("Error deleting Entry:", error);
-            alert("Failed to delete Entry.");
-        }
-    };
+    // // Delete student
+    // const handleDelete = async (uniqueid) => {
+    //     if (!window.confirm("Are you sure you want to delete this entry?")) return;
+    //     try {
+    //         await axios.delete(`http://localhost:5000/api/students/delete/${uniqueid}`);
+    //         alert("Entry deleted successfully!");
+    //         setResults(results.filter(student => student.uniqueid !== uniqueid));
+    //     } catch (error) {
+    //         console.error("Error deleting Entry:", error);
+    //         alert("Failed to delete Entry.");
+    //     }
+    // };
 
     // Edit student
     const handleEdit = (student) => {
@@ -94,20 +94,20 @@ const Search = () => {
         setEditedData(prev => ({ ...prev, [field]: e.target.value }));
     };
 
-    // Save updated data
-    const handleSave = async () => {
-        if (!editedData) return; // Prevent errors
-        try {
-            await axios.put(`http://localhost:5000/api/students/update/${editedData.uniqueid}`, editedData);
-            setResults(prevResults => prevResults.map(student => 
-                student.uniqueid === editedData.uniqueid ? { ...editedData } : student
-            ));
-            setEditingId(null);
-        } catch (error) {
-            console.error("Error updating entry:", error);
-            alert("Failed to update entry.");
-        }
-    };
+    // // Save updated data
+    // const handleSave = async () => {
+    //     if (!editedData) return; // Prevent errors
+    //     try {
+    //         await axios.put(`http://localhost:5000/api/students/update/${editedData.uniqueid}`, editedData);
+    //         setResults(prevResults => prevResults.map(student => 
+    //             student.uniqueid === editedData.uniqueid ? { ...editedData } : student
+    //         ));
+    //         setEditingId(null);
+    //     } catch (error) {
+    //         console.error("Error updating entry:", error);
+    //         alert("Failed to update entry.");
+    //     }
+    // };
 
     const handleView = (student) => {
         setSelectedStudent(student);
@@ -136,12 +136,12 @@ const Search = () => {
                     <option value="uniqueid">Unique Id</option>
                     <option value="date">Date</option>
                     <option value="referenceno">Reference No</option>
-                    <option value="partyname">PartyName </option>
+                    <option value="drledgername">Dr Ledger Name</option>
                     <option value="category">Category</option>
                     <option value="subcategory">SubCategory</option>
-                    <option value="amount">Amount</option>
+                    <option value="dramount">Dr Amount</option>
                     <option value="km">Kilometers</option>
-                    <option value="total">Total</option>
+                    
                 </select>
 
                 {/* Date Range Input */}
@@ -162,7 +162,7 @@ const Search = () => {
                     </div>
                 ) : 
                 /* Range Input for Numeric Fields */
-                ["amount", "km", "total"].includes(filter.type) ? (
+                ["dramount", "km"].includes(filter.type) ? (
                     <div className="range-inputs">
                         <input 
                             type="text" 
@@ -204,37 +204,23 @@ const Search = () => {
                             <th>Voucher No</th>
                             <th>Voucher Type</th>
                             <th>Date</th>
+                            <th>Dr Ledger Name</th>
                             <th>Reference No</th>
-                            <th>Party Name</th>
-                            <th>Purchase Ledger</th>
-                            <th>Sales Cost Center</th>
-                            <th>Amount</th>
-                            <th>Purchase Cost Center</th>
-                            <th>CGST Legder</th>
-                            <th>CGST Amount</th>
-                            <th>SGST Ledger</th>
-                            <th>SGST Amount</th>
-                            <th>IGST Ledger</th>
-                            <th>IGST Amount</th>
-                            <th>Total Amount</th>
+                            <th>Dr Amount</th>
+                        
+                            <th>Reference Amount</th>
+                            <th>Cr Ledger Name</th>
+                            <th>Cr Amount</th>
+                            <th>Cr Cost Center</th>
+                            <th>Cr Cost Center Amount</th>
+                            
                             <th>Kilometer</th>
                             <th>Category</th>
                             <th>Subcategory</th>
                             <th>Narration</th>
                             <th>Details</th>
-                            <th>Ledger Group</th>
-                            <th>Registration Type</th>
-                            <th>GSTIN No</th>
-                            <th>Address 1</th>
-                            <th>Address 2</th>
-                            <th>Address 3</th>
-                            <th>Pincode</th>
-                            <th>State</th>
-                            <th>Country</th>
-                            <th>Additional Ledge</th>
-                            <th>Ledge Amount</th>
-                            <th>CESS Ledger</th>
-                            <th>CESS Amount</th>
+                            <th>Dr Cost Center</th>
+                            <th>Dr Cost Center Amount</th>
                             <th>Tally Import Status</th>
                             
                             
@@ -267,7 +253,7 @@ const Search = () => {
                                     ) : student.voucherno}
                                 </td>
                                 <td>
-                                    Purchase
+                                    Journal
                                 </td>
 
                                 <td>
@@ -281,86 +267,77 @@ const Search = () => {
                                 </td>
                                 
 
+                                <td>{student.drledgername}</td>
                                 <td>{student.referenceno}</td>
-                                 <td>{student.partyname}</td>
-
-                                 <td>
-                                    {editingId === student.uniqueid ? (
-                                        <input 
-                                            type="text" 
-                                            value={editedData?.purchaseledger || ""} 
-                                            onChange={(e) => handleEditChange(e, "purchaseledger")} 
-                                        />
-                                    ) : student.purchaseledger}
-                                </td>
-
-                                <td>
-                                    {editingId === student.uniqueid ? (
-                                        <input 
-                                            type="text" 
-                                            value={editedData?.salescostcenter || ""} 
-                                            onChange={(e) => handleEditChange(e, "salescostcenter")} 
-                                        />
-                                    ) : student.salescostcenter}
-                                </td>
+                                 
 
                                  <td>
                                     {editingId === student.uniqueid ? (
                                         <input 
                                             type="number" 
-                                            value={editedData?.amount || ""} 
-                                            onChange={(e) => handleEditChange(e, "amount")} 
+                                            value={editedData?.dramount || ""} 
+                                            onChange={(e) => handleEditChange(e, "dramount")} 
                                         />
-                                    ) : student.amount}
+                                    ) : student.dramount}
                                 </td>
 
                                 <td>
                                     {editingId === student.uniqueid ? (
                                         <input 
                                             type="number" 
-                                            value={editedData?.purchaseamount || ""} 
-                                            onChange={(e) => handleEditChange(e, "purchaseamount")} 
+                                            value={editedData?.referenceamount || ""} 
+                                            onChange={(e) => handleEditChange(e, "referenceamount")} 
                                         />
-                                    ) : student.purchaseamount}
+                                    ) : student.referenceamount}
+                                </td>
+
+                                 <td>
+                                    {editingId === student.uniqueid ? (
+                                        <input 
+                                            type="text" 
+                                            value={editedData?.crledgername || ""} 
+                                            onChange={(e) => handleEditChange(e, "crledgername")} 
+                                        />
+                                    ) : student.crledgername}
+                                </td>
+
+                                <td>
+                                    {editingId === student.uniqueid ? (
+                                        <input 
+                                            type="number" 
+                                            value={editedData?.cramount || ""} 
+                                            onChange={(e) => handleEditChange(e, "cramount")} 
+                                        />
+                                    ) : student.cramount}
                                 </td>
 
                                 <td>
                                     {editingId === student.uniqueid ? (
                                         <input 
                                             type="text" 
-                                            value={editedData?.cgstledger || ""} 
-                                            onChange={(e) => handleEditChange(e, "cgstledger")} 
+                                            value={editedData?.crcostcenter|| ""} 
+                                            onChange={(e) => handleEditChange(e, "crcostcenter")} 
                                         />
-                                    ) : student.cgstledger}
+                                    ) : student.crcostcenter}
                                 </td>
 
-                                <td>{student.cgstamount}</td>
+                                
 
                                 <td>
                                     {editingId === student.uniqueid ? (
                                         <input 
-                                            type="text" 
-                                            value={editedData?.sgstledger || ""} 
-                                            onChange={(e) => handleEditChange(e, "sgstledger")} 
+                                            type="number" 
+                                            value={editedData?.crcostcenteramount || ""} 
+                                            onChange={(e) => handleEditChange(e, "crcostcenteramount")} 
                                         />
-                                    ) : student.sgstledger}
+                                    ) : student.crcostcenteramount}
                                 </td>
 
-                                <td>{student.sgstamount}</td>
+                                
 
-                                <td>
-                                    {editingId === student.uniqueid ? (
-                                        <input 
-                                            type="text" 
-                                            value={editedData?.igstledger || ""} 
-                                            onChange={(e) => handleEditChange(e, "igstledger")} 
-                                        />
-                                    ) : student.igstledger}
-                                </td>
+                                
 
-                                <td>{student.igstamount}</td>
-                                <td>{student.total}</td>
-
+                                
                                 <td>
                                     {editingId === student.uniqueid ? (
                                         <input 
@@ -415,133 +392,23 @@ const Search = () => {
                                     {editingId === student.uniqueid ? (
                                         <input 
                                             type="text" 
-                                            value={editedData?.ledgergroup || ""} 
-                                            onChange={(e) => handleEditChange(e, "ledgergroup")} 
+                                            value={editedData?.drcostcenter || ""} 
+                                            onChange={(e) => handleEditChange(e, "drcostcenter")} 
                                         />
-                                    ) : student.ledgergroup}
-                                </td>
-
-                                <td>
-                                    {editingId === student.uniqueid ? (
-                                        <input 
-                                            type="text" 
-                                            value={editedData?.registrationtype || ""} 
-                                            onChange={(e) => handleEditChange(e, "registrationtype")} 
-                                        />
-                                    ) : student.registrationtype}
-                                </td>
-
-                                <td>
-                                    {editingId === student.uniqueid ? (
-                                        <input 
-                                            type="text" 
-                                            value={editedData?.gstinno || ""} 
-                                            onChange={(e) => handleEditChange(e, "gstinno")} 
-                                        />
-                                    ) : student.gstinno}
-                                </td>
-
-                                <td>
-                                    {editingId === student.uniqueid ? (
-                                        <input 
-                                            type="text" 
-                                            value={editedData?.address1 || ""} 
-                                            onChange={(e) => handleEditChange(e, "address1")} 
-                                        />
-                                    ) : student.address1}
-                                </td>
-
-                                <td>
-                                    {editingId === student.uniqueid ? (
-                                        <input 
-                                            type="text" 
-                                            value={editedData?.address2 || ""} 
-                                            onChange={(e) => handleEditChange(e, "address2")} 
-                                        />
-                                    ) : student.address2}
-                                </td>
-
-                                <td>
-                                    {editingId === student.uniqueid ? (
-                                        <input 
-                                            type="text" 
-                                            value={editedData?.address3 || ""} 
-                                            onChange={(e) => handleEditChange(e, "address3")} 
-                                        />
-                                    ) : student.address3}
+                                    ) : student.drcostcenter}
                                 </td>
 
                                 <td>
                                     {editingId === student.uniqueid ? (
                                         <input 
                                             type="number" 
-                                            value={editedData?.pincode|| ""} 
-                                            onChange={(e) => handleEditChange(e, "pincode")} 
+                                            value={editedData?.drcostcenteramount || ""} 
+                                            onChange={(e) => handleEditChange(e, "drcostcenteramount")} 
                                         />
-                                    ) : student.pincode}
+                                    ) : student.drcostcenteramount}
                                 </td>
 
-
-                                <td>
-                                    {editingId === student.uniqueid ? (
-                                        <input 
-                                            type="text" 
-                                            value={editedData?.state || ""} 
-                                            onChange={(e) => handleEditChange(e, "state")} 
-                                        />
-                                    ) : student.state}
-                                </td>
-
-                                <td>
-                                    {editingId === student.uniqueid ? (
-                                        <input 
-                                            type="text" 
-                                            value={editedData?.country || ""} 
-                                            onChange={(e) => handleEditChange(e, "country")} 
-                                        />
-                                    ) : student.country}
-                                </td>
-
-                                <td>
-                                    {editingId === student.uniqueid ? (
-                                        <input 
-                                            type="text" 
-                                            value={editedData?.additionalledge|| ""} 
-                                            onChange={(e) => handleEditChange(e, "additionalledge")} 
-                                        />
-                                    ) : student.additionalledge}
-                                </td>
-
-                                <td>
-                                    {editingId === student.uniqueid ? (
-                                        <input 
-                                            type="number" 
-                                            value={editedData?.ledgeamount || ""} 
-                                            onChange={(e) => handleEditChange(e, "ledgeamount")} 
-                                        />
-                                    ) : student.ledgeamount}
-                                </td>
-
-                                <td>
-                                    {editingId === student.uniqueid ? (
-                                        <input 
-                                            type="text" 
-                                            value={editedData?.cessledger || ""} 
-                                            onChange={(e) => handleEditChange(e, "cessledger")} 
-                                        />
-                                    ) : student.cessledger}
-                                </td>
-
-                                <td>
-                                    {editingId === student.uniqueid ? (
-                                        <input 
-                                            type="number" 
-                                            value={editedData?.cessamount|| ""} 
-                                            onChange={(e) => handleEditChange(e, "cessamount")} 
-                                        />
-                                    ) : student.cessamount}
-                                </td>
-
+                                
                                 <td>
                                     {editingId === student.uniqueid ? (
                                         <input 

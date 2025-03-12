@@ -44,7 +44,7 @@ const ExcelSheet = () => {
         const groupedFilters = filters.reduce((acc, filter) => {
             if (!filter.type) return acc; // Ignore empty filters
 
-            if (["amount", "km", "total"].includes(filter.type)) {
+            if (["dramount", "km"].includes(filter.type)) {
                 if (filter.valueFrom) acc[`${filter.type}From`] = filter.valueFrom;
                 if (filter.valueTo) acc[`${filter.type}To`] = filter.valueTo;
             } else if (filter.type === "date") {
@@ -116,12 +116,12 @@ const ExcelSheet = () => {
                             <option value="uniqueid">Unique Id</option>
                             <option value="date">Date</option>
                             <option value="referenceno">Reference No</option>
-                            <option value="partyname">Party Name</option>
+                            <option value="drledgername">Dr Ledger Name</option>
                             <option value="category">Category</option>
                             <option value="subcategory">SubCategory</option>
-                            <option value="amount">Amount</option>
+                            <option value="dramount">Dr Amount</option>
                             <option value="km">Kilometers</option>
-                            <option value="total">Total</option>
+                            
                         </select>
 
                         {/* Date Range Input */}
@@ -141,7 +141,7 @@ const ExcelSheet = () => {
                                     onChange={(e) => handleFilterChange(index, "valueTo", e.target.value)}
                                 />
                             </div>
-                        ) : ["amount", "km", "total"].includes(filter.type) ? (
+                        ) : ["dramount", "km"].includes(filter.type) ? (
                             <div className="range-inputs">
                                 <input
                                     type="text"
