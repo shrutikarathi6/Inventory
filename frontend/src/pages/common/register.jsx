@@ -1,12 +1,12 @@
 import React from "react";
-import Register from "../components/Userloginregister/register.jsx"
-
+import Register from "../../components/common/Userloginregister/register.jsx"
+import Navbar from "../../components/common/Navbar/navbar.jsx"
 
 const Registerpage = () => {
     return (
         <div>
 
-            {/* <Navbar/> */}
+            <Navbar/>
             <Register/>
            
             {/* <Link to="/search">Go to Search Page</Link> */}

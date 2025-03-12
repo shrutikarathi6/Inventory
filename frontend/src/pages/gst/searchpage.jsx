@@ -1,5 +1,5 @@
 import React from "react";
-import Search from "../components/Search/search.jsx";
+import Search from "../../components/gst/Search/search.jsx";
 
 
 

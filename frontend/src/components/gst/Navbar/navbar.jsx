@@ -18,14 +18,17 @@ const Navbar = () => {
       <div className="nav-left">
         {token ? (
           <>
-            <button className={`nav-btn ${location.pathname === "/" ? "active" : ""}`} onClick={() => navigate("/")}>
+            <button className={`nav-btn ${location.pathname === "/gst/home" ? "active" : ""}`} onClick={() => navigate("/gst/home")}>
               <Home size={18} /> Home
             </button>
-            <button className={`nav-btn ${location.pathname === "/search" ? "active" : ""}`} onClick={() => navigate("/search")}>
+            <button className={`nav-btn ${location.pathname === "/gst/search" ? "active" : ""}`} onClick={() => navigate("/gst/search")}>
               <Search size={18} /> Search
             </button>
-            <button className={`nav-btn ${location.pathname === "/excel" ? "active" : ""}`} onClick={() => navigate("/excel")}>
+            <button className={`nav-btn ${location.pathname === "/gst/excel" ? "active" : ""}`} onClick={() => navigate("/gst/excel")}>
               <FileText size={18} /> Download
+            </button>
+            <button className={`nav-btn ${location.pathname === "/" ? "active" : ""}`} onClick={() => navigate("/")}>
+              <Home size={18} /> GST/NONGST
             </button>
             <button className="nav-btn logout-btn" onClick={handleLogout}>
               <LogOut size={18} /> Logout

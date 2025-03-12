@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import "./excelsheet.css";
 import axios from "axios";
 import { FaPlus, FaTimes } from "react-icons/fa";
+import Navbar from "../Navbar/navbar";
 
 const ExcelSheet = () => {
     const [filters, setFilters] = useState([]);
@@ -95,9 +96,12 @@ const ExcelSheet = () => {
     };
 
     return (
+        <>
+         <Navbar/>
         <div className="backgroundexcel">
+           
             <div className="foregroundexcel">
-                <h2>Download Filtered Data</h2>
+                <h2>Download Filtered Data for GST</h2>
 
                 <button className="add-filter-btn" onClick={handleAddFilter}>
                     <FaPlus /> Add Filter
@@ -176,6 +180,7 @@ const ExcelSheet = () => {
                 </div>
             </div>
         </div>
+        </>
     );
 };
 

@@ -1,5 +1,6 @@
 import React from "react";
-import Example from "../components/Formm/form.jsx"
+import ExcelSheet from "../../components/gst/ExcelSheet/excelsheet.jsx";
+
 
 
 const Home = () => {
@@ -7,8 +8,7 @@ const Home = () => {
         <div>
 
             {/* <Navbar/> */}
-            <Example/>
-           
+            <ExcelSheet />
             {/* <Link to="/search">Go to Search Page</Link> */}
 
         </div>

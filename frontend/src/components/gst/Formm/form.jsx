@@ -1,6 +1,7 @@
 import "./formcss.css";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Navbar from "../Navbar/navbar";
 
 
 const ExampleForm = () => {
@@ -65,10 +66,10 @@ useEffect(() => {
 useEffect(() => {
   setFormData((prev) => ({
     ...prev,
-    sgstledger: prev.cgstledger,
+    
     sgstamount: prev.cgstamount,
   }));
-}, [formData.cgstledger, formData.cgstamount]);
+}, [ formData.cgstamount]);
 
   useEffect(() => {
 
@@ -142,7 +143,10 @@ useEffect(() => {
     }
   };
 
+
   return (
+    <>
+    <Navbar/>
     <div className="backgroundhome">
       <div className="foregroundhome">
         <div className='scroll-container'>
@@ -294,18 +298,24 @@ useEffect(() => {
         
             {/* Cgst Ledger*/}
             <div className="bajubaju">
-          <div className="input-container">
-            <label className="input-label">Cgst Ledger</label>
-            <input
-              type="text"
-              name="cgstledger"
-              placeholder="Enter Cgst Ledger"
-              className="input-field"
-              value={formData.cgstledger}
-              onChange={handleChange}
-      
-            />
-          </div>
+            <div className="input-container">
+  <label className="input-label">CGST Ledger</label>
+  <select
+    name="cgstledger"
+    className="input-field"
+    value={formData.cgstledger}
+    onChange={handleChange}
+  >
+    <option value="">Select CGST</option>
+    {[
+      "CGST ON EXPENSES 1.5%", "CGST ON EXPENSES 2.5%", "CGST ON EXPENSES 6%",
+      "CGST ON EXPENSES 9%", "CGST ON EXPENSES 14%"
+    ].map((item, index) => (
+      <option key={index} value={item}>{item}</option>
+    ))}
+  </select>
+</div>
+
 
 
           {/* Cgst percentage*/}
@@ -340,18 +350,24 @@ useEffect(() => {
 
               {/* sgst Ledger*/}
               <div className="bajubaju">
-          <div className="input-container">
-            <label className="input-label">Sgst Ledger</label>
-            <input
-              type="text"
-              name="sgstledger"
-              placeholder="Enter Sgst Ledger"
-              className="input-field"
-              value={formData.sgstledger}
-              onChange={handleChange}
-      
-            />
-          </div>
+              <div className="input-container">
+  <label className="input-label">SGST Ledger</label>
+  <select
+    name="sgstledger"
+    className="input-field"
+    value={formData.sgstledger}
+    onChange={handleChange}
+  >
+    <option value="">Select SGST</option>
+    {[
+      "SGST ON EXPENSES 1.5%", "SGST ON EXPENSES 2.5%", "SGST ON EXPENSES 6%",
+      "SGST ON EXPENSES 9%", "SGST ON EXPENSES 14%"
+    ].map((item, index) => (
+      <option key={index} value={item}>{item}</option>
+    ))}
+  </select>
+</div>
+
 
 
           {/* Sgst percentage*/}
@@ -387,18 +403,24 @@ useEffect(() => {
 
               {/* Igst Ledger*/}
               <div className="bajubaju">
-          <div className="input-container">
-            <label className="input-label">Igst Ledger</label>
-            <input
-              type="text"
-              name="igstledger"
-              placeholder="Enter Igst Ledger"
-              className="input-field"
-              value={formData.igstledger}
-              onChange={handleChange}
-      
-            />
-          </div>
+              <div className="input-container">
+  <label className="input-label">IGST Ledger</label>
+  <select
+    name="igstledger"
+    className="input-field"
+    value={formData.igstledger}
+    onChange={handleChange}
+  >
+    <option value="">Select IGST</option>
+    {[
+      "IGST ON EXPENSES 3%", "IGST ON EXPENSES 5%", "IGST ON EXPENSES 12%",
+      "IGST ON EXPENSES 18%", "IGST ON EXPENSES 28%"
+    ].map((item, index) => (
+      <option key={index} value={item}>{item}</option>
+    ))}
+  </select>
+</div>
+
 
 
           {/* Igst percentage*/}
@@ -467,18 +489,25 @@ useEffect(() => {
 
             {/* category*/}
             <div className="bajubaju">
-           <div className="input-container">
-            <label className="input-label">Category</label>
-            <input
-              type="text"
-              name="category"
-              placeholder="Enter Category"
-              className="input-field1"
-              value={formData.category}
-              onChange={handleChange}
-      
-            />
-          </div>
+            <div className="input-container">
+  <label className="input-label">Category</label>
+  <select
+    name="category"
+    className="input-field"
+    value={formData.category}
+    onChange={handleChange}
+  >
+    <option value="">Select Category</option>
+    {[
+      "ACCESSORIES", "BATTERY", "BEARING", "BRAKE", "CLUTCH", "CROWN", "ELECTRIC", "ENGINE",
+      "FUEL PUMP", "GEAR BOX", "GREASING", "HYDRAULIC", "INSURANCE", "PAINT", "PAPERS",
+      "RADIATOR", "SUSPENSION", "TYRE", "UREA", "WELDING"
+    ].map((item, index) => (
+      <option key={index} value={item}>{item}</option>
+    ))}
+  </select>
+</div>
+
 
 
           {/* Subcategory*/}
@@ -789,6 +818,7 @@ useEffect(() => {
       </div>
     </div>
     </div>
+    </>
   );
 };
 

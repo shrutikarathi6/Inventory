@@ -1,11 +1,15 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import Home from "./pages/home.jsx";
-import SearchPage from "./pages/searchpage.jsx";
-import ExcelSheet from "./pages/excelsheet.jsx";
-import Register from "./pages/register.jsx";
-import Login from "./pages/login.jsx";
-import Navbar from "./components/Navbar/navbar.jsx";
+import GstHome from "./pages/gst/home.jsx";
+import NongstHome from "./pages/nongst/home.jsx"
+import GstSearchPage from "./pages/gst/searchpage.jsx";
+import NongstSearchPage from "./pages/nongst/searchpage.jsx";
+import GstExcelSheet from "./pages/gst/excelsheet.jsx";
+import NongstExcelSheet from "./pages/nongst/excelsheet.jsx";
+import Register from "./pages/common/register.jsx";
+import Login from "./pages/common/login.jsx";
+
+import CheckgstNongst from "./pages/common/checkgstornongst.jsx"
 
 const PrivateRoute = ({ element }) => {
   return localStorage.getItem("token") ? element : <Navigate to="/login" />;
@@ -14,12 +18,25 @@ const PrivateRoute = ({ element }) => {
 function App() {
   return (
     <Router>
-      <Navbar />
+      
       <Routes>
-        <Route path="/" element={<PrivateRoute element={<Home />} />} />
-        <Route path="/search" element={<PrivateRoute element={<SearchPage />} />} />
-        <Route path="/excel" element={<PrivateRoute element={<ExcelSheet />} />} />
         
+
+        {/* gst */}
+        <Route path="/gst/search" element={<PrivateRoute element={<GstSearchPage />} />} />
+        <Route path="/gst/excel" element={<PrivateRoute element={<GstExcelSheet />} />} />
+        <Route path="/gst/home" element={<PrivateRoute element={<GstHome />} />} />
+        
+
+        {/* nongst */}
+        <Route path="/nongst/search" element={<PrivateRoute element={<NongstSearchPage />} />} />
+        <Route path="/nongst/excel" element={<PrivateRoute element={<NongstExcelSheet />} />} />
+        <Route path="/nongst/home" element={<PrivateRoute element={<NongstHome />} />} />
+
+
+
+        {/* common */}
+        <Route path="/" element={<PrivateRoute element={<CheckgstNongst />} />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
       </Routes>

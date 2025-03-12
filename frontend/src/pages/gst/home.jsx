@@ -1,13 +1,13 @@
 import React from "react";
-import Login from "../components/Userloginregister/login.jsx"
+import Example from "../../components/gst/Formm/form.jsx"
 
 
-const Loginpage = () => {
+const Home = () => {
     return (
         <div>
 
             {/* <Navbar/> */}
-            <Login/>
+            <Example/>
            
             {/* <Link to="/search">Go to Search Page</Link> */}
 
@@ -15,4 +15,4 @@ const Loginpage = () => {
     );
 };
 
-export default Loginpage;
+export default Home;

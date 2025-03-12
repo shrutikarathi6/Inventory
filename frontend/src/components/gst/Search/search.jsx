@@ -4,6 +4,7 @@ import "./search.css";
 
 import { useNavigate } from "react-router-dom";
 import { FaPlus, FaTimes, FaEdit, FaTrash, FaEye, FaSave } from "react-icons/fa";
+import Navbar from "../Navbar/navbar";
 
 const Search = () => {
     const navigate = useNavigate();
@@ -114,9 +115,11 @@ const Search = () => {
     };
 
     return (
+        <>
+        <Navbar/>
         <div className="backgroundsearch">
     <div className="foregroundsearch">
-        <h2>Search Entry</h2>
+        <h2>Search Entry For GST</h2>
 
         <button className="add-filter-btn" onClick={handleAddFilter}>
             <FaPlus /> Add Filter
@@ -565,6 +568,7 @@ const Search = () => {
         </div>
     </div>
 </div>
+</>
 
     );
 };

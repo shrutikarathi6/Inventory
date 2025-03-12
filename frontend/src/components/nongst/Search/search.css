@@ -1,0 +1,170 @@
+/* Background Styling - Page Scroll Issue Fixed */
+.backgroundsearch {
+    background-color: skyblue;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Page scroll prevent */
+}
+  
+/* Foreground (Container) - Fixed Height */
+.foregroundsearch {
+    width: 75%;
+    height: 80%;
+    margin-top: 10%;
+    margin-bottom: 5%;
+    background-color: #e5e5e5;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    overflow: hidden; /* Prevent container from overflowing */
+}
+
+/* Move Heading Up */
+.foreground h2 {
+    margin-bottom: 10px;
+}
+
+/* Filter Section */
+.add-filter-btn {
+    background: #4a9fd6;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.3s;
+    margin-bottom: 10px;
+}
+
+.add-filter-btn:hover {
+    background: #3579a8;
+}
+
+.filter-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.filter-row select,
+.filter-row input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    background-color: white;
+}
+
+.filter-row select:focus,
+.filter-row input:focus {
+    border: 1px solid black;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+}
+
+.remove-filter-btn {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.remove-filter-btn:hover {
+    background: #b22234;
+}
+
+/* Search Button */
+.search-btn {
+    background: #4a9fd6;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.3s;
+    margin-top: 5px;
+}
+
+.search-btn:hover {
+    background: #3579a8;
+}
+
+/* Table Container - Fixed Height & Scrollable */
+.table-container {
+    height: 450px; /* Increased to show 8-10 entries */
+
+    border: 1px solid #ccc;
+    margin-top: 15px;
+    width: 100%;
+    background-color: white;
+}
+
+.table-container1 {
+    height: 450px; /* Increased to show 8-10 entries */
+    overflow-y: auto; /* Only table will scroll */
+    overflow-x: auto;
+    border: 1px solid #ccc;
+    margin-top: 15px;
+    width: 100%;
+    background-color: white;
+}
+
+/* Table Styles */
+.table-scroll {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-scroll th, .table-scroll td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: left;
+}
+
+/* Sticky Header for Table */
+.table-scroll thead {
+    position: sticky;
+    top: 0;
+    background-color: #4a9fd6;
+    color: white;
+    z-index: 2;
+}
+
+/* Action Buttons */
+.edit-btn, .delete-btn {
+    border: none;
+    padding: 6px 10px;
+    cursor: pointer;
+    margin: 0 5px;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.edit-btn {
+    background: #ffc107;
+    color: white;
+}
+
+.edit-btn:hover {
+    background: #d39e00;
+}
+
+.delete-btn {
+    background: #dc3545;
+    color: white;
+}
+
+.delete-btn:hover {
+    background: #b22234;
+}

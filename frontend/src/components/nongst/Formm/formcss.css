@@ -1,0 +1,150 @@
+.backgroundhome {
+    background-color: skyblue;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+  
+.foregroundhome {
+    width: 70%;
+    height: 90%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    background-color: #e5e5e5;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Align content at the top */
+    align-items: center;
+    overflow: hidden; /* Prevents overflow from breaking layout */
+}
+
+.scroll-container {
+    width: 100%;
+    max-height: 100%; /* Limit height to ensure scrolling */
+    overflow-y: auto; /* Enables vertical scrolling */
+    padding-right: 10px; /* Space for scrollbar */
+}
+
+/* Optional: Custom scrollbar for better UI */
+.scroll-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 4px;
+}
+
+.scroll-container::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}
+
+
+.input-container {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    margin-bottom: 1.5%;
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 1.5%;
+
+
+    
+    position: relative; /* Ensures dropdown aligns properly */
+}
+
+
+.bajubaju {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+} 
+
+.input-field {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    width: 70%;
+    background-color: white;
+}
+
+.input-field1 {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    width: 90%;
+    background-color: white;
+}
+
+.input-field2 {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    width: 50%;
+    background-color: white;
+}
+
+.input-field:focus {
+    border: 1px solid black; 
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2); 
+}
+
+.input-label {
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding-top: 2%;
+    width: 40%;
+}
+
+
+
+.submit-button {
+    padding: 10px 20px;
+    background-color: #4a9fd6;
+    color: white;
+    margin-left: 40%;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+  
+.submit-button:hover {
+    background-color: #3579a8;
+}
+
+/* 🔥 Autofill Dropdown Styling */
+.suggestions-dropdown {
+    position: absolute;
+    top: 70%;
+    left: 0;
+    width: 70%;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    list-style: none;
+    margin-left: 15%;
+    z-index: 1000;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.suggestions-dropdown li {
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.suggestions-dropdown li:hover {
+    background: #f0f0f0;
+}
