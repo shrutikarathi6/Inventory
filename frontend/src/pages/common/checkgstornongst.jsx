@@ -11,7 +11,7 @@ const CheckGstOrNonGst = () => {
 
     return (
         <div style={{
-            backgroundColor: "skyblue",
+            backgroundColor: "#adb5bd",
             height: "100vh",
             display: "flex",
             flexDirection: "column",

@@ -1,6 +1,6 @@
 /* Background Styling - Page Scroll Issue Fixed */
 .backgroundsearch {
-    background-color: skyblue;
+    background-color: #adb5bd;
     height: 100vh;
     display: flex;
     justify-content: center;
@@ -139,6 +139,13 @@
     background-color: #4a9fd6;
     color: white;
     z-index: 2;
+}
+
+thead {
+    position: sticky;
+    top: 0;
+    background: white; /* Ensures header is visible */
+    z-index: 1000;
 }
 
 /* Action Buttons */

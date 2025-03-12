@@ -241,7 +241,7 @@ const Search = () => {
                         </tr>
                     </thead>
                     <tbody>
-                    <div className="table-container1">
+                    
                         {results.map((student) => (
                             <tr key={student.uniqueid}>
                                 <td>
@@ -561,7 +561,7 @@ const Search = () => {
                                 
                             </tr>
                         ))}
-                        </div>
+                        
                     </tbody>
                 </table>
             ) : (searchkiya && <p>No results found</p>)}
