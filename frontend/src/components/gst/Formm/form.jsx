@@ -7,7 +7,6 @@ import Navbar from "../Navbar/navbar";
 const ExampleForm = () => {
 
   const [cgstpercent, setCgstPercent] = useState("");
-  const [sgstpercent, setSgstPercent] = useState("");
   const [igstpercent, setIgstPercent] = useState("");
 
   const [formData, setFormData] = useState({
@@ -22,27 +21,67 @@ const ExampleForm = () => {
 
   });
 
-  const [suggestions, setSuggestions] = useState([]);
-  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [namesuggestions, namesetSuggestions] = useState([]);
+  const [nameshowSuggestions, namesetShowSuggestions] = useState(false);
+  const [purchasesuggestions, purchasesetSuggestions] = useState([]);
+  const [purchaseshowSuggestions, purchasesetShowSuggestions] = useState(false);
+  const [subsuggestions, subsetSuggestions] = useState([]);
+  const [subshowSuggestions, subsetShowSuggestions] = useState(false);
 
 
-  // useEffect(() => {
-  //   const fetchNames = async () => {
-  //     try {
-  //       if (formData.name.length > 0) {
-  //         const response = await axios.get(`http://localhost:5000/api/suggestions/names?q=${formData.name}`);
-  //         setSuggestions(response.data);
-  //         setShowSuggestions(true);
-  //       } else {
-  //         setSuggestions([]);
-  //         setShowSuggestions(false);
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching names:", error);
-  //     }
-  //   };
-  //   fetchNames();
-  // }, [formData.name]);
+  useEffect(() => {
+    const fetchNames = async () => {
+      try {
+        if (formData.partyname.length > 0) {
+          const response = await axios.get(`http://localhost:5000/gst/suggestions/partyname?q=${formData.partyname}`);
+          namesetSuggestions(response.data);
+          namesetShowSuggestions(true);
+        } else {
+          namesetSuggestions([]);
+          namesetShowSuggestions(false);
+        }
+      } catch (error) {
+        console.error("Error fetching names:", error);
+      }
+    };
+    fetchNames();
+  }, [formData.partyname]);
+
+  useEffect(() => {
+    const fetchNames = async () => {
+      try {
+        if (formData.purchaseledger.length > 0) {
+          const response = await axios.get(`http://localhost:5000/gst/suggestions/purchaseledger?q=${formData.purchaseledger}`);
+          purchasesetSuggestions(response.data);
+          purchasesetShowSuggestions(true);
+        } else {
+          purchasesetSuggestions([]);
+          purchasesetShowSuggestions(false);
+        }
+      } catch (error) {
+        console.error("Error fetching names:", error);
+      }
+    };
+    fetchNames();
+  }, [formData.purchaseledger]);
+
+  useEffect(() => {
+    const fetchNames = async () => {
+      try {
+        if (formData.subcategory.length > 0) {
+          const response = await axios.get(`http://localhost:5000/gst/suggestions/subcategory?q=${formData.subcategory}`);
+          subsetSuggestions(response.data);
+          subsetShowSuggestions(true);
+        } else {
+          subsetSuggestions([]);
+          subsetShowSuggestions(false);
+        }
+      } catch (error) {
+        console.error("Error fetching names:", error);
+      }
+    };
+    fetchNames();
+  }, [formData.subcategory]);
 
   useEffect(() => {
     
@@ -125,16 +164,29 @@ const ExampleForm = () => {
     }
   };
 
-  const handleSuggestionClick = (selectedName) => {
-    setFormData({ ...formData, name: selectedName });
-    setSuggestions([]);
-    setShowSuggestions(false);
+  const handleSuggestionClickName = (selectedName) => {
+    setFormData({ ...formData, partyname: selectedName });
+    namesetSuggestions([]);
+    namesetShowSuggestions(false);
+  };
+
+  const handleSuggestionClickPurchase = (selectedName) => {
+    setFormData({ ...formData, purchaseledger: selectedName });
+    purchasesetSuggestions([]);
+    purchasesetShowSuggestions(false);
+  };
+
+  
+  const handleSuggestionClickSub = (selectedName) => {
+    setFormData({ ...formData, subcategory: selectedName });
+    subsetSuggestions([]);
+    subsetShowSuggestions(false);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5000/api/students/submit", formData);
+      const response = await axios.post("http://localhost:5000/gst/students/submit", formData);
       alert(response.data.message);
       setFormData({
         voucherno: "", date: "", referenceno: "", partyname: "", ledgergroup: "",
@@ -226,6 +278,32 @@ const ExampleForm = () => {
                   />
                 </div>
 
+                             {/* <div className="input-container">
+          <div className="input-container" style={{ position: "relative" }}>
+>>>>>>> b662c2c78c76adf2f9ea01ded599c74d71a1c8cc
+            <label className="input-label">Name:</label>
+            <input
+              type="text"
+              name="name"
+              placeholder="Enter Name"
+              className="input-field"
+              value={formData.name}
+              onChange={handleChange}
+              required
+              onFocus={() => setShowSuggestions(true)}
+              onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+            />
+            {showSuggestions && suggestions.length > 0 && (
+              <ul className="suggestions-dropdown">
+                {suggestions.map((s, index) => (
+                  <li key={index} onClick={() => handleSuggestionClick(s)}>
+                    {s}
+                  </li>
+                ))}
+              </ul>
+            )
+          </div> */}
+
                 {/* Party Name */}
                 <div className="input-container">
                   <label className="input-label">Party Name:</label>
@@ -237,7 +315,18 @@ const ExampleForm = () => {
                     value={formData.partyname}
                     onChange={handleChange}
                     required
+                    onFocus={() => namesetShowSuggestions(true)}
+                    onBlur={() => setTimeout(() => namesetShowSuggestions(false), 200)}
                   />
+                  {nameshowSuggestions && namesuggestions.length > 0 && (
+              <ul className="suggestions-dropdown">
+                {namesuggestions.map((s, index) => (
+                  <li key={index} onClick={() => handleSuggestionClickName(s)}>
+                    {s}
+                  </li>
+                ))}
+              </ul>
+            )}
                 </div>
               </div>
 
@@ -254,8 +343,19 @@ const ExampleForm = () => {
                     value={formData.purchaseledger}
                     onChange={handleChange}
                     required
+                    onFocus={() => purchasesetShowSuggestions(true)}
+                    onBlur={() => setTimeout(() => purchasesetShowSuggestions(false), 200)}
 
                   />
+                  {purchaseshowSuggestions && purchasesuggestions.length > 0 && (
+              <ul className="suggestions-dropdown">
+                {purchasesuggestions.map((s, index) => (
+                  <li key={index} onClick={() => handleSuggestionClickPurchase(s)}>
+                    {s}
+                  </li>
+                ))}
+              </ul>
+            )}
                 </div>
 
                 {/* Sales cost center */}
@@ -511,6 +611,8 @@ const ExampleForm = () => {
 
 
 
+
+
                 {/* Subcategory*/}
                 <div className="input-container">
                   <label className="input-label">Subcategory</label>
@@ -521,8 +623,19 @@ const ExampleForm = () => {
                     className="input-field1"
                     value={formData.subcategory}
                     onChange={handleChange}
+                    onFocus={() => subsetShowSuggestions(true)}
+              onBlur={() => setTimeout(() => subsetShowSuggestions(false), 200)}
 
                   />
+                  {subshowSuggestions && subsuggestions.length > 0 && (
+              <ul className="suggestions-dropdown">
+                {subsuggestions.map((s, index) => (
+                  <li key={index} onClick={() => handleSuggestionClickSub(s)}>
+                    {s}
+                  </li>
+                ))}
+              </ul>
+            )}
                 </div>
               </div>
 

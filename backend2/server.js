@@ -1,11 +1,14 @@
 const express = require("express");
 const cors = require("cors");
 const connectDB = require("./db");
-const studentRoutes = require("./routes/studentRoutes");
-const authRoutes=require("./routes/authRoutes");
-const excelRoute=require("./routes/excelroute");
+const GststudentRoutes = require("./routes/gst/studentRoutes");
+const NonGststudentRoutes = require("./routes/nongst/studentRoute");
+const authRoutes=require("./routes/common/authRoutes");
+const GstexcelRoute=require("./routes/gst/excelroute");
+const NonGstexcelRoute=require("./routes/nongst/excelroute");
+const GstSuggestions=require("./routes/gst/suggestionRoutes");
+const NongstSuggestions=require("./routes/nongst/suggestionRoute")
 const errorHandler = require("./middleware/errorHandler");
-const suggestionRoutes = require("./routes/suggestionRoutes");
 require("dotenv").config();
 
 
@@ -14,10 +17,14 @@ const app = express();
 // Middleware
 app.use(cors());
 app.use(express.json()); // Replaces bodyParser.json()
-app.use("/api/students", studentRoutes);
-app.use("/api/auth", authRoutes);
-app.use("/api/excel", excelRoute);
-// app.use("/api/suggestions", suggestionRoutes);
+app.use("/gst/students", GststudentRoutes);
+app.use("/nongst/students", NonGststudentRoutes);
+app.use("/auth", authRoutes);
+app.use("/gst/excel", GstexcelRoute);
+app.use("/nongst/excel", NonGstexcelRoute);
+app.use("/gst/suggestions",GstSuggestions);
+app.use("/nongst/suggestions",NongstSuggestions);
+
 
 
 // Error Handling Middleware (Should be after all routes)

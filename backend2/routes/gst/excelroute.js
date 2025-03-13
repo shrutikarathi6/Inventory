@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const ExcelJS = require("exceljs");
-const Form = require("../models/Form");
+const Form = require("../../models/gst/GstForm");
 
 router.get("/export", async (req, res) => {
     try {
@@ -42,9 +42,11 @@ router.get("/export", async (req, res) => {
 
         const workbook = new ExcelJS.Workbook();
         const worksheet = workbook.addWorksheet("Students");
+        const ans="Purchase"
 
         worksheet.columns = [
             { header: "Voucher No", key: "voucherno", width: 15 },
+            { header: "Voucher Type", key:ans, width: 15 },
             { header: "Date", key: "date", width: 15 },
             { header: "Reference No", key: "referenceno", width: 15 },
             { header: "Party Name", key: "partyname", width: 20 },

@@ -39,4 +39,4 @@ const formSchema = new mongoose.Schema({
   modifiedby: { type: String },
 });
 
-module.exports = mongoose.model("Form", formSchema);
+module.exports = mongoose.model("GSTForm", formSchema);

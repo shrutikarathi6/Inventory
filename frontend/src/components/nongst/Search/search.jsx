@@ -63,25 +63,25 @@ const Search = () => {
             }, {});
 
             const queryParams = new URLSearchParams(groupedFilters).toString();
-            // const response = await axios.get(`http://localhost:5000/api/students/search?${queryParams}`);
-            // setResults(response.data.results);
+            const response = await axios.get(`http://localhost:5000/nongst/students/search?${queryParams}`);
+            setResults(response.data.results);
         } catch (error) {
             console.error("Error searching data:", error);
         }
     };
 
-    // // Delete student
-    // const handleDelete = async (uniqueid) => {
-    //     if (!window.confirm("Are you sure you want to delete this entry?")) return;
-    //     try {
-    //         await axios.delete(`http://localhost:5000/api/students/delete/${uniqueid}`);
-    //         alert("Entry deleted successfully!");
-    //         setResults(results.filter(student => student.uniqueid !== uniqueid));
-    //     } catch (error) {
-    //         console.error("Error deleting Entry:", error);
-    //         alert("Failed to delete Entry.");
-    //     }
-    // };
+    // Delete student
+    const handleDelete = async (uniqueid) => {
+        if (!window.confirm("Are you sure you want to delete this entry?")) return;
+        try {
+            await axios.delete(`http://localhost:5000/nongst/students/delete/${uniqueid}`);
+            alert("Entry deleted successfully!");
+            setResults(results.filter(student => student.uniqueid !== uniqueid));
+        } catch (error) {
+            console.error("Error deleting Entry:", error);
+            alert("Failed to delete Entry.");
+        }
+    };
 
     // Edit student
     const handleEdit = (student) => {
@@ -94,20 +94,20 @@ const Search = () => {
         setEditedData(prev => ({ ...prev, [field]: e.target.value }));
     };
 
-    // // Save updated data
-    // const handleSave = async () => {
-    //     if (!editedData) return; // Prevent errors
-    //     try {
-    //         await axios.put(`http://localhost:5000/api/students/update/${editedData.uniqueid}`, editedData);
-    //         setResults(prevResults => prevResults.map(student => 
-    //             student.uniqueid === editedData.uniqueid ? { ...editedData } : student
-    //         ));
-    //         setEditingId(null);
-    //     } catch (error) {
-    //         console.error("Error updating entry:", error);
-    //         alert("Failed to update entry.");
-    //     }
-    // };
+    // Save updated data
+    const handleSave = async () => {
+        if (!editedData) return; // Prevent errors
+        try {
+            await axios.put(`http://localhost:5000/nongst/students/update/${editedData.uniqueid}`, editedData);
+            setResults(prevResults => prevResults.map(student => 
+                student.uniqueid === editedData.uniqueid ? { ...editedData } : student
+            ));
+            setEditingId(null);
+        } catch (error) {
+            console.error("Error updating entry:", error);
+            alert("Failed to update entry.");
+        }
+    };
 
     const handleView = (student) => {
         setSelectedStudent(student);

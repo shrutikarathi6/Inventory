@@ -1,26 +1,24 @@
 const express = require("express");
-const Form = require("../models/Form");
+const Form = require("../../models/nongst/NongstForm");
 const router = express.Router();
 
 // ✅ Submit Data
 router.post("/submit", async (req, res) => {
     try {
-        const { 
-            voucherno, date, referenceno, partyname, ledgergroup, registrationtype, 
-            gstinno, country, state, pincode, address1, address2, address3, 
-            purchaseledger, amount, salescostcenter, purchaseamount, additionalledge, 
-            ledgeamount, cgstledger, cgstamount, sgstledger, sgstamount, igstledger, 
-            igstamount, cessledger, cessamount, total, narration, tallyimportstatus, 
-            km, category, subcategory, details, modifiedby
+        const {
+            voucherno, date, drledgername, dramount, referenceno, referenceamount, drcostcenter, drcostcenteramount, crledgername
+            , cramount, crcostcenter, crcostcenteramount,
+            narration, tallyimportstatus,
+            km, category, subcategory, details
         } = req.body;
 
         // Ensure required fields are present
-        if (!referenceno || !partyname || !date || !amount) {
+        if (!referenceno || !drlegdername || !date) {
             return res.status(400).json({ error: "Missing required fields: referenceno, partyname, date, or amount" });
         }
 
         // Generate uniqueid as partyname + referenceno
-        const uniqueid = `${partyname.replace(/\s+/g, "_")}${referenceno}`;
+        const uniqueid = `${drlegdername.replace(/\s+/g, "_")}${referenceno}`;
 
 
         // Check if a record with the same uniqueid already exists
@@ -30,12 +28,11 @@ router.post("/submit", async (req, res) => {
         }
 
         // Create and save a new form entry
-        const newFormEntry = new Form({ 
-            uniqueid, voucherno, date, referenceno, partyname, ledgergroup, registrationtype, 
-            gstinno, country, state, pincode, address1, address2, address3, purchaseledger, 
-            amount, salescostcenter, purchaseamount, additionalledge, ledgeamount, cgstledger, 
-            cgstamount, sgstledger, sgstamount, igstledger, igstamount, cessledger, cessamount, 
-            total, narration, tallyimportstatus, km, category, subcategory, details, modifiedby
+        const newFormEntry = new Form({
+            voucherno, date, drledgername, dramount, referenceno, referenceamount, drcostcenter, drcostcenteramount, crledgername
+            , cramount, crcostcenter, crcostcenteramount,
+            narration, tallyimportstatus,
+            km, category, subcategory, details
         });
 
         await newFormEntry.save();
@@ -52,7 +49,7 @@ router.get("/search", async (req, res) => {
         let query = { $and: [] };
 
         // Filters for text-based fields (Handles multiple values using $in)
-        ["uniqueid", "referenceno", "partyname", "purchaseledger", "category", "subcategory"].forEach(field => {
+        ["uniqueid", "referenceno", "drlegdername", "category", "subcategory"].forEach(field => {
             if (req.query[field]) {
                 const valuesArray = req.query[field].split(",");
                 query.$and.push({ [field]: { $in: valuesArray.map(value => new RegExp(value, "i")) } });
@@ -60,10 +57,10 @@ router.get("/search", async (req, res) => {
         });
 
         // Filters for numerical range-based fields
-        ["amount", "km", "total"].forEach(field => {
+        ["amount", "km"].forEach(field => {
             let filter = {};
-            if (req.query[`${field}From`]) filter.$gte = Number(req.query[`${field}From`]); 
-            if (req.query[`${field}To`]) filter.$lte = Number(req.query[`${field}To`]);   
+            if (req.query[`${field}From`]) filter.$gte = Number(req.query[`${field}From`]);
+            if (req.query[`${field}To`]) filter.$lte = Number(req.query[`${field}To`]);
             if (Object.keys(filter).length > 0) query.$and.push({ [field]: filter });
         });
 
@@ -117,7 +114,7 @@ router.put("/update/:uniqueid", async (req, res) => {
         const updatedEntry = await Form.findOneAndUpdate(
             { uniqueid },
             updatedData,
-            { new: true } 
+            { new: true }
         );
 
         if (!updatedEntry) {
