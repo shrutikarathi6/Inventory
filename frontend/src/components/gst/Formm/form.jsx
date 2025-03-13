@@ -155,9 +155,7 @@ const ExampleForm = () => {
     if (name === "cgstpercent") {
       setCgstPercent(Number(value));  // Convert input to number before setting
     }
-    if (name === "sgstpercent") {
-      setSgstPercent(Number(value));
-    }
+  
     if (name === "igstpercent") {
       setIgstPercent(Number(value));
 
