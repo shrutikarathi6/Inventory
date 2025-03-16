@@ -230,7 +230,7 @@ const NongstAdminsearch = () => {
                         </tr>
                     </thead>
                     <tbody>
-                    <div className="table-container1">
+                    
                         {results.map((student) => (
                             <tr key={student.uniqueid}>
                                 <td>
@@ -431,7 +431,7 @@ const NongstAdminsearch = () => {
                                 
                             </tr>
                         ))}
-                        </div>
+                        
                     </tbody>
                 </table>
             ) : (searchkiya && <p>No results found</p>)}

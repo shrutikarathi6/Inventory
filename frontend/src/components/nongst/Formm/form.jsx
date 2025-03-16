@@ -2,6 +2,8 @@ import "./formcss.css";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Navbar from "../Navbar/navbar";
+import CategorySubcategoryDropdown from "../dropdown";
+
 
 
 const ExampleForm = () => {
@@ -10,8 +12,8 @@ const ExampleForm = () => {
   const [formData, setFormData] = useState({
 
     voucherno: "", date: "", drledgername: "", dramount: "", referenceno: "", referenceamount: "", drcostcenter: "", drcostcenteramount: "", crledgername: "",
-    cramount: "", crcostcenter: "", crcostcenteramount: "", narration: "", tallyimportstatus: "", km: "",
-    category: "", subcategory: "", details: ""
+    cramount: "", crcostcenter: "", crcostcenteramount: "", narration: "", tallyimportstatus: "",companyname:"",workdate:"",vehicleno:"", km: "",
+    category: "", subcategory: "",partno:"", details: ""
 
 
   });
@@ -24,6 +26,7 @@ const ExampleForm = () => {
   const [costshowSuggestions, costsetShowSuggestions] = useState(false);
   const [subsuggestions, subsetSuggestions] = useState([]);
   const [subshowSuggestions, subsetShowSuggestions] = useState(false);
+  const [categorymData, setcategoryData] = useState({ category: "", subcategory: "" });
 
 
   useEffect(() => {
@@ -138,14 +141,10 @@ const ExampleForm = () => {
       const response = await axios.post("http://localhost:5000/nongst/students/submit", formData);
       alert(response.data.message);
       setFormData({
-        voucherno: "", date: "", referenceno: "", partyname: "", ledgergroup: "",
-        registrationtype: "", gstinno: "", country: "", state: "", pincode: "",
-        address1: "", address2: "", address3: "", purchaseledger: "",
-        amount: "", salescostcenter: "", purchaseamount: "", additionalledge: "",
-        ledgeamount: "", cgstledger: "", cgstamount: "", sgstledger: "", sgstamount: "",
-        igstledger: "", igstamount: "", cessledger: "", cessamount: "", total: "",
-        narration: "", tallyimportstatus: "", km: "", category: "", subcategory: "",
-        details: ""
+        
+    voucherno: "", date: "", drledgername: "", dramount: "", referenceno: "", referenceamount: "", drcostcenter: "", drcostcenteramount: "", crledgername: "",
+    cramount: "", crcostcenter: "", crcostcenteramount: "", narration: "", tallyimportstatus: "",companyname:"",workdate:"",vehicleno:"", km: "",
+    category: "", subcategory: "",partno:"", details: ""
       });
 
 
@@ -436,6 +435,8 @@ const ExampleForm = () => {
                   </select>
                 </div>
 
+                <CategorySubcategoryDropdown categorymData={categorymData} setcategoryData={setcategoryData} />
+
 
 
                 {/* Subcategory*/}
@@ -448,19 +449,10 @@ const ExampleForm = () => {
                     className="input-field1"
                     value={formData.subcategory}
                     onChange={handleChange}
-                    onFocus={() => subsetShowSuggestions(true)}
-                    onBlur={() => setTimeout(() => subsetShowSuggestions(false), 200)}
+                    
 
                   />
-                  {subshowSuggestions && subsuggestions.length > 0 && (
-                    <ul className="suggestions-dropdown">
-                      {subsuggestions.map((s, index) => (
-                        <li key={index} onClick={() => handleSuggestionClickSub(s)}>
-                          {s}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
+                  
                 </div>
               </div>
 
@@ -494,6 +486,73 @@ const ExampleForm = () => {
                   />
                 </div>
               </div>
+
+              {/*Work  Date */}
+              <div className="bajubaju">
+               <div className="input-container">
+                  <label className="input-label">Work Date</label>
+                  <input
+                    type="date"
+                    name="workdate"
+                    placeholder="Enter Work date"
+                    className="input-field"
+                    value={formData.workdate}
+                    onChange={handleChange}
+                    required
+
+                  />
+                </div>
+
+                 {/* Company Name */}
+                 <div className="input-container">
+                  <label className="input-label">Company Name</label>
+                  <select
+                    name="companyname"
+                    className="input-field"
+                    value={formData.companyname}
+                    onChange={handleChange}
+                  >
+                    <option value="">Select Company Name</option>
+                    {[
+                      "YLPL","ARS"
+                    ].map((item, index) => (
+                      <option key={index} value={item}>{item}</option>
+                    ))}
+                  </select>
+                </div>
+                </div>
+
+                 {/* Vehicle No*/}
+                 <div className="bajubaju">
+                 <div className="input-container">
+                  <label className="input-label">Vehicle No</label>
+                  <input
+                    type="text"
+                    name="vehicleno"
+                    placeholder="Enter Vehicle No"
+                    className="input-field"
+                    value={formData.vehicleno}
+                    onChange={handleChange}
+                    required
+
+                  />
+                </div>
+
+                 {/*Part No */}
+                 <div className="input-container">
+                  <label className="input-label">Part No</label>
+                  <input
+                    type="text"
+                    name="partno"
+                    placeholder="Enter Part No"
+                    className="input-field"
+                    value={formData.partno}
+                    onChange={handleChange}
+                    required
+
+                  />
+                </div>
+                </div>
 
               {/* Dr Cost center*/}
               <div className="bajubaju">

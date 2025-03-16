@@ -16,9 +16,13 @@ const formSchema = new mongoose.Schema({
     crcostcenteramount: { type: Number },
     narration: { type: String },
     tallyimportstatus: { type: String },
+    companyname: {type: String},
+    workdate: {type: Date},
+    vehicleno: {type: String},
     km: { type: Number },
     category: { type: String },
     subcategory: { type: String },
+    partno: {tyoe: String},
     details: { type: String },
 
 

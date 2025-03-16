@@ -6,7 +6,8 @@ const adminhome = () => {
   return (
     <div>
       <Navbar/>
-      <h1>Admin Panel</h1>
+      <h1 style={{ marginTop: "20px" }}>Admin Panel</h1>
+
 
 
     </div>

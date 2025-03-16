@@ -10,8 +10,8 @@ router.post("/submit", async (req, res) => {
             gstinno, country, state, pincode, address1, address2, address3, 
             purchaseledger, amount, salescostcenter, purchaseamount, additionalledge, 
             ledgeamount, cgstledger, cgstamount, sgstledger, sgstamount, igstledger, 
-            igstamount, cessledger, cessamount, total, narration, tallyimportstatus, 
-            km, category, subcategory, details, modifiedby
+            igstamount, cessledger, cessamount, total, narration, tallyimportstatus,companyname,workdate,vehicleno, 
+            km, category, subcategory,partno, details
         } = req.body;
 
         // Ensure required fields are present
@@ -31,11 +31,12 @@ router.post("/submit", async (req, res) => {
 
         // Create and save a new form entry
         const newFormEntry = new Form({ 
-            uniqueid, voucherno, date, referenceno, partyname, ledgergroup, registrationtype, 
-            gstinno, country, state, pincode, address1, address2, address3, purchaseledger, 
-            amount, salescostcenter, purchaseamount, additionalledge, ledgeamount, cgstledger, 
-            cgstamount, sgstledger, sgstamount, igstledger, igstamount, cessledger, cessamount, 
-            total, narration, tallyimportstatus, km, category, subcategory, details, modifiedby
+            voucherno, date, referenceno, partyname, ledgergroup, registrationtype, 
+            gstinno, country, state, pincode, address1, address2, address3, 
+            purchaseledger, amount, salescostcenter, purchaseamount, additionalledge, 
+            ledgeamount, cgstledger, cgstamount, sgstledger, sgstamount, igstledger, 
+            igstamount, cessledger, cessamount, total, narration, tallyimportstatus,companyname,workdate,vehicleno, 
+            km, category, subcategory,partno, details
         });
 
         await newFormEntry.save();

@@ -8,8 +8,8 @@ router.post("/submit", async (req, res) => {
         const {
             voucherno, date, drledgername, dramount, referenceno, referenceamount, drcostcenter, drcostcenteramount, crledgername
             , cramount, crcostcenter, crcostcenteramount,
-            narration, tallyimportstatus,
-            km, category, subcategory, details
+            narration, tallyimportstatus,companyname,workdate,vehicleno,
+            km, category, subcategory,partno,  details
         } = req.body;
 
         // Ensure required fields are present
@@ -31,8 +31,8 @@ router.post("/submit", async (req, res) => {
         const newFormEntry = new Form({
             voucherno, date, drledgername, dramount, referenceno, referenceamount, drcostcenter, drcostcenteramount, crledgername
             , cramount, crcostcenter, crcostcenteramount,
-            narration, tallyimportstatus,
-            km, category, subcategory, details
+            narration, tallyimportstatus,companyname,workdate,vehicleno,
+            km, category, subcategory,partno,  details
         });
 
         await newFormEntry.save();

@@ -15,8 +15,8 @@ const ExampleForm = () => {
     country: "", state: "", pincode: "", address1: "", address2: "", address3: "", purchaseledger: "",
     amount: "", salescostcenter: "", purchaseamount: "", additionalledge: "", ledgeamount: "",
     cgstledger: "", cgstamount: "", sgstledger: "", sgstamount: "", igstledger: "", igstamount: "",
-    cessledger: "", cessamount: "", total: "", narration: "", tallyimportstatus: "", km: "",
-    category: "", subcategory: "", details: ""
+    cessledger: "", cessamount: "", total: "", narration: "", tallyimportstatus: "",companyname:"",workdate:"",vehicleno:"", km: "",
+    category: "", subcategory: "",partno:"", details: ""
 
 
   });
@@ -187,14 +187,13 @@ const ExampleForm = () => {
       const response = await axios.post("http://localhost:5000/gst/students/submit", formData);
       alert(response.data.message);
       setFormData({
-        voucherno: "", date: "", referenceno: "", partyname: "", ledgergroup: "",
-        registrationtype: "", gstinno: "", country: "", state: "", pincode: "",
-        address1: "", address2: "", address3: "", purchaseledger: "",
-        amount: "", salescostcenter: "", purchaseamount: "", additionalledge: "",
-        ledgeamount: "", cgstledger: "", cgstamount: "", sgstledger: "", sgstamount: "",
-        igstledger: "", igstamount: "", cessledger: "", cessamount: "", total: "",
-        narration: "", tallyimportstatus: "", km: "", category: "", subcategory: "",
-        details: ""
+        voucherno: "", date: "", referenceno: "", partyname: "", ledgergroup: "", registrationtype: "", gstinno: "",
+    country: "", state: "", pincode: "", address1: "", address2: "", address3: "", purchaseledger: "",
+    amount: "", salescostcenter: "", purchaseamount: "", additionalledge: "", ledgeamount: "",
+    cgstledger: "", cgstamount: "", sgstledger: "", sgstamount: "", igstledger: "", igstamount: "",
+    cessledger: "", cessamount: "", total: "", narration: "", tallyimportstatus: "",companyname:"",workdate:"",vehicleno:"", km: "",
+    category: "", subcategory: "",partno:"", details: ""
+
       });
 
 
@@ -667,6 +666,74 @@ const ExampleForm = () => {
                   />
                 </div>
               </div>
+
+               {/*Work  Date */}
+               <div className="bajubaju">
+               <div className="input-container">
+                  <label className="input-label">Work Date</label>
+                  <input
+                    type="date"
+                    name="workdate"
+                    placeholder="Enter Work date"
+                    className="input-field"
+                    value={formData.workdate}
+                    onChange={handleChange}
+                    required
+
+                  />
+                </div>
+
+                 {/* Company Name */}
+                
+                <div className="input-container">
+                  <label className="input-label">Company Name</label>
+                  <select
+                    name="companyname"
+                    className="input-field"
+                    value={formData.companyname}
+                    onChange={handleChange}
+                  >
+                    <option value="">Select Company Name</option>
+                    {[
+                      "YLPL","ARS"
+                    ].map((item, index) => (
+                      <option key={index} value={item}>{item}</option>
+                    ))}
+                  </select>
+                </div>
+                </div>
+
+                 {/* Vehicle No*/}
+                 <div className="bajubaju">
+                 <div className="input-container">
+                  <label className="input-label">Vehicle No</label>
+                  <input
+                    type="text"
+                    name="vehicleno"
+                    placeholder="Enter Vehicle No"
+                    className="input-field"
+                    value={formData.vehicleno}
+                    onChange={handleChange}
+                    required
+
+                  />
+                </div>
+
+                 {/*Part No */}
+                 <div className="input-container">
+                  <label className="input-label">Part No</label>
+                  <input
+                    type="text"
+                    name="partno"
+                    placeholder="Enter Part No"
+                    className="input-field"
+                    value={formData.partno}
+                    onChange={handleChange}
+                    required
+
+                  />
+                </div>
+                </div>
 
               {/* Ledger Group */}
               <div className="bajubaju">
