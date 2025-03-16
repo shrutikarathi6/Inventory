@@ -12,11 +12,35 @@ const ExampleForm = () => {
   const [formData, setFormData] = useState({
 
     voucherno: "", date: "", drledgername: "", dramount: "", referenceno: "", referenceamount: "", drcostcenter: "", drcostcenteramount: "", crledgername: "",
-    cramount: "", crcostcenter: "", crcostcenteramount: "", narration: "", tallyimportstatus: "",companyname:"",workdate:"",vehicleno:"", km: "",
-    category: "", subcategory: "",partno:"", details: ""
+    cramount: "", crcostcenter: "", crcostcenteramount: "", narration: "", tallyimportstatus: "", companyname: "", workdate: "", vehicleno: "", km: "",
+    category: "", subcategory: "", partno: "", details: ""
 
 
   });
+
+
+  const categoryOptions = {
+    ACCESSORIES: ["Cover", "Horn", "Lights", "Wipers"],
+    BATTERY: ["Battery A", "Battery B", "Battery C", "Battery D"],
+    BEARING: ["Front Bearing", "Rear Bearing", "Wheel Bearing", "Engine Bearing"],
+    BRAKE: ["Brake Pads", "Brake Fluid", "Brake Disc", "Brake Drum"],
+    CLUTCH: ["Clutch Plate", "Clutch Cable", "Clutch Spring", "Clutch Cover"],
+    CROWN: ["Crown Gear", "Crown Shaft", "Crown Nut", "Crown Cover"],
+    ELECTRIC: ["Wiring", "Switches", "Lights", "Sensors"],
+    ENGINE: ["Engine Oil", "Engine Filter", "Engine Valve", "Engine Pump"],
+    "FUEL PUMP": ["Fuel Injector", "Fuel Pipe", "Fuel Valve", "Fuel Filter"],
+    "GEAR BOX": ["Gear Lever", "Gear Shaft", "Gear Oil", "Gear Knob"],
+    GREASING: ["Grease Gun", "Grease Pump", "Grease Hose", "Grease Nozzle"],
+    HYDRAULIC: ["Hydraulic Oil", "Hydraulic Pump", "Hydraulic Cylinder", "Hydraulic Valve"],
+    INSURANCE: ["Third Party", "Comprehensive", "Own Damage", "Theft"],
+    PAINT: ["Primer", "Top Coat", "Base Coat", "Clear Coat"],
+    PAPERS: ["RC Book", "Permit", "Insurance", "Pollution Certificate"],
+    RADIATOR: ["Radiator Cap", "Radiator Fan", "Radiator Hose", "Radiator Coolant"],
+    SUSPENSION: ["Shock Absorber", "Suspension Bush", "Suspension Arm", "Coil Spring"],
+    TYRE: ["Front Tyre", "Rear Tyre", "Spare Tyre", "Tyre Tube"],
+    UREA: ["Urea Pump", "Urea Injector", "Urea Filter", "Urea Sensor"],
+    WELDING: ["Welding Rod", "Welding Torch", "Welding Helmet", "Welding Wire"],
+  };
 
   const [namesuggestions, namesetSuggestions] = useState([]);
   const [nameshowSuggestions, namesetShowSuggestions] = useState(false);
@@ -106,7 +130,16 @@ const ExampleForm = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    setFormData({ ...formData, [name]: value });
+    if (name === "category") {
+      setFormData({
+        ...formData,
+        category: value,
+        subcategory: "",
+      });
+    } else {
+
+      setFormData({ ...formData, [name]: value });
+    }
 
 
   };
@@ -141,10 +174,10 @@ const ExampleForm = () => {
       const response = await axios.post("http://localhost:5000/nongst/students/submit", formData);
       alert(response.data.message);
       setFormData({
-        
-    voucherno: "", date: "", drledgername: "", dramount: "", referenceno: "", referenceamount: "", drcostcenter: "", drcostcenteramount: "", crledgername: "",
-    cramount: "", crcostcenter: "", crcostcenteramount: "", narration: "", tallyimportstatus: "",companyname:"",workdate:"",vehicleno:"", km: "",
-    category: "", subcategory: "",partno:"", details: ""
+
+        voucherno: "", date: "", drledgername: "", dramount: "", referenceno: "", referenceamount: "", drcostcenter: "", drcostcenteramount: "", crledgername: "",
+        cramount: "", crcostcenter: "", crcostcenteramount: "", narration: "", tallyimportstatus: "", companyname: "", workdate: "", vehicleno: "", km: "",
+        category: "", subcategory: "", partno: "", details: ""
       });
 
 
@@ -425,34 +458,35 @@ const ExampleForm = () => {
                     onChange={handleChange}
                   >
                     <option value="">Select Category</option>
-                    {[
-                      "ACCESSORIES", "BATTERY", "BEARING", "BRAKE", "CLUTCH", "CROWN", "ELECTRIC", "ENGINE",
-                      "FUEL PUMP", "GEAR BOX", "GREASING", "HYDRAULIC", "INSURANCE", "PAINT", "PAPERS",
-                      "RADIATOR", "SUSPENSION", "TYRE", "UREA", "WELDING"
-                    ].map((item, index) => (
-                      <option key={index} value={item}>{item}</option>
+                    {Object.keys(categoryOptions).map((category, index) => (
+                      <option key={index} value={category}>
+                        {category}
+                      </option>
                     ))}
                   </select>
                 </div>
 
-                <CategorySubcategoryDropdown categorymData={categorymData} setcategoryData={setcategoryData} />
 
 
 
                 {/* Subcategory*/}
                 <div className="input-container">
                   <label className="input-label">Subcategory</label>
-                  <input
-                    type="text"
+                  <select
                     name="subcategory"
-                    placeholder="Enter Subcategory"
                     className="input-field1"
                     value={formData.subcategory}
                     onChange={handleChange}
-                    
-
-                  />
-                  
+                    disabled={!formData.category}
+                  >
+                    <option value="">Select Subcategory</option>
+                    {formData.category &&
+                      categoryOptions[formData.category].map((sub, index) => (
+                        <option key={index} value={sub}>
+                          {sub}
+                        </option>
+                      ))}
+                  </select>
                 </div>
               </div>
 
@@ -489,7 +523,7 @@ const ExampleForm = () => {
 
               {/*Work  Date */}
               <div className="bajubaju">
-               <div className="input-container">
+                <div className="input-container">
                   <label className="input-label">Work Date</label>
                   <input
                     type="date"
@@ -503,8 +537,8 @@ const ExampleForm = () => {
                   />
                 </div>
 
-                 {/* Company Name */}
-                 <div className="input-container">
+                {/* Company Name */}
+                <div className="input-container">
                   <label className="input-label">Company Name</label>
                   <select
                     name="companyname"
@@ -514,17 +548,17 @@ const ExampleForm = () => {
                   >
                     <option value="">Select Company Name</option>
                     {[
-                      "YLPL","ARS"
+                      "YLPL", "ARS"
                     ].map((item, index) => (
                       <option key={index} value={item}>{item}</option>
                     ))}
                   </select>
                 </div>
-                </div>
+              </div>
 
-                 {/* Vehicle No*/}
-                 <div className="bajubaju">
-                 <div className="input-container">
+              {/* Vehicle No*/}
+              <div className="bajubaju">
+                <div className="input-container">
                   <label className="input-label">Vehicle No</label>
                   <input
                     type="text"
@@ -538,8 +572,8 @@ const ExampleForm = () => {
                   />
                 </div>
 
-                 {/*Part No */}
-                 <div className="input-container">
+                {/*Part No */}
+                <div className="input-container">
                   <label className="input-label">Part No</label>
                   <input
                     type="text"
@@ -552,7 +586,7 @@ const ExampleForm = () => {
 
                   />
                 </div>
-                </div>
+              </div>
 
               {/* Dr Cost center*/}
               <div className="bajubaju">
