@@ -8,8 +8,13 @@ import GstExcelSheet from "./pages/gst/excelsheet.jsx";
 import NongstExcelSheet from "./pages/nongst/excelsheet.jsx";
 import Register from "./pages/common/register.jsx";
 import Login from "./pages/common/login.jsx";
-
+import AdminLogin from "./pages/Admin/adminlogin.jsx"
+import AdminHome from "./pages/Admin/adminhome.jsx";
+import AdminGSTSearch from "./pages/Admin/admingstsearch.jsx";
+import AdminNONGSTSearch from "./pages/Admin/adminnongstsearch.jsx"
 import CheckgstNongst from "./pages/common/checkgstornongst.jsx"
+
+import PrivateAdminRoute from "./components/common/privateadminRoute.jsx";
 
 const PrivateRoute = ({ element }) => {
   return localStorage.getItem("token") ? element : <Navigate to="/login" />;
@@ -37,8 +42,15 @@ function App() {
 
         {/* common */}
         <Route path="/" element={<PrivateRoute element={<CheckgstNongst />} />} />
+        <Route path="/adminlogin"  element={<AdminLogin />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+
+
+        {/* adminroutes */}
+        <Route path="/admin" element={<PrivateAdminRoute> element={<AdminHome />}</PrivateAdminRoute>} />
+        <Route path="/admin/search/gst" element={<PrivateAdminRoute> element={<AdminGSTSearch />}</PrivateAdminRoute>} />
+        <Route path="/admin/search/nongst" element={<PrivateAdminRoute> element={<AdminNONGSTSearch />}</PrivateAdminRoute>} />
       </Routes>
     </Router>
   );

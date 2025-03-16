@@ -30,6 +30,9 @@ const Navbar = () => {
             <button className={`nav-btn ${location.pathname === "/" ? "active" : ""}`} onClick={() => navigate("/")}>
               <Home size={18} /> GST/NONGST
             </button>
+            <button className={`nav-btn ${location.pathname === "/adminlogin" ? "active" : ""}`} onClick={() => navigate("/adminlogin")}>
+              <Search size={18} /> AdminLogin
+            </button>
             <button className="nav-btn logout-btn" onClick={handleLogout}>
               <LogOut size={18} /> Logout
             </button>
