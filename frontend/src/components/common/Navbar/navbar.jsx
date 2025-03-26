@@ -37,7 +37,7 @@ const Navbar = () => {
           </>
         )}
       </div>
-      <div className="nav-right">MY COMPANY</div>
+      <div className="nav-right">YLPL/AVS</div>
     </nav>
   );
 };
