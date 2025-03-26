@@ -63,7 +63,7 @@ const Search = () => {
             }, {});
 
             const queryParams = new URLSearchParams(groupedFilters).toString();
-            const response = await axios.get(`http://localhost:5000/nongst/students/search?${queryParams}`);
+            const response = await axios.get(`http://103.146.240.119:5000/nongst/students/search?${queryParams}`);
             setResults(response.data.results);
         } catch (error) {
             console.error("Error searching data:", error);

@@ -72,7 +72,7 @@ const ExcelSheet = () => {
 
     const handleDownload = async (isAll = false) => {
         try {
-            let url = "http://localhost:5000/nongst/excel/export";
+            let url = "http://103.146.240.119:5000/nongst/excel/export";
             if (!isAll) {
                 const queryParams = generateQueryParams();
                 if (queryParams) url += "?" + queryParams;

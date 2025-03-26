@@ -64,7 +64,7 @@ const GstAdminsearch = () => {
             }, {});
 
             const queryParams = new URLSearchParams(groupedFilters).toString();
-            const response = await axios.get(`http://localhost:5000/gst/students/search?${queryParams}`);
+            const response = await axios.get(`http://103.146.240.119:5000/gst/students/search?${queryParams}`);
             setResults(response.data.results);
         } catch (error) {
             console.error("Error searching data:", error);
@@ -75,7 +75,7 @@ const GstAdminsearch = () => {
     const handleDelete = async (uniqueid) => {
         if (!window.confirm("Are you sure you want to delete this entry?")) return;
         try {
-            await axios.delete(`http://localhost:5000/gst/students/delete/${uniqueid}`);
+            await axios.delete(`http://103.146.240.119:5000/gst/students/delete/${uniqueid}`);
             alert("Entry deleted successfully!");
             setResults(results.filter(student => student.uniqueid !== uniqueid));
         } catch (error) {
@@ -99,7 +99,7 @@ const GstAdminsearch = () => {
     const handleSave = async () => {
         if (!editedData) return; // Prevent errors
         try {
-            await axios.put(`http://localhost:5000/gst/students/update/${editedData.uniqueid}`, editedData);
+            await axios.put(`http://103.146.240.119:5000/gst/students/update/${editedData.uniqueid}`, editedData);
             setResults(prevResults => prevResults.map(student =>
                 student.uniqueid === editedData.uniqueid ? { ...editedData } : student
             ));

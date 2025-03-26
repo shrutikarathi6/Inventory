@@ -57,7 +57,7 @@ const categoryOptions = {
     const fetchNames = async () => {
       try {
         if (formData.partyname.length > 0) {
-          const response = await axios.get(`http://localhost:5000/gst/suggestions/partyname?q=${formData.partyname}`);
+          const response = await axios.get(`http://103.146.240.119:5000/gst/suggestions/partyname?q=${formData.partyname}`);
           namesetSuggestions(response.data);
           namesetShowSuggestions(true);
         } else {
@@ -75,7 +75,7 @@ const categoryOptions = {
     const fetchNames = async () => {
       try {
         if (formData.purchaseledger.length > 0) {
-          const response = await axios.get(`http://localhost:5000/gst/suggestions/purchaseledger?q=${formData.purchaseledger}`);
+          const response = await axios.get(`http://103.146.240.119:5000/gst/suggestions/purchaseledger?q=${formData.purchaseledger}`);
           purchasesetSuggestions(response.data);
           purchasesetShowSuggestions(true);
         } else {
@@ -93,7 +93,7 @@ const categoryOptions = {
     const fetchNames = async () => {
       try {
         if (formData.subcategory.length > 0) {
-          const response = await axios.get(`http://localhost:5000/gst/suggestions/subcategory?q=${formData.subcategory}`);
+          const response = await axios.get(`http://103.146.240.119:5000/gst/suggestions/subcategory?q=${formData.subcategory}`);
           subsetSuggestions(response.data);
           subsetShowSuggestions(true);
         } else {
@@ -219,7 +219,7 @@ const categoryOptions = {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5000/gst/students/submit", formData);
+      const response = await axios.post("http://103.146.240.119:5000/gst/students/submit", formData);
       alert(response.data.message);
       setFormData({
         voucherno: "", date: "", referenceno: "", partyname: "", ledgergroup: "", registrationtype: "", gstinno: "",

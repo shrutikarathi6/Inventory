@@ -57,7 +57,7 @@ const ExampleForm = () => {
     const fetchNames = async () => {
       try {
         if (formData.drledgername.length > 0) {
-          const response = await axios.get(`http://localhost:5000/nongst/suggestions/drledgername?q=${formData.drledgername}`);
+          const response = await axios.get(`http://103.146.240.119:5000/nongst/suggestions/drledgername?q=${formData.drledgername}`);
           namesetSuggestions(response.data);
           namesetShowSuggestions(true);
         } else {
@@ -75,7 +75,7 @@ const ExampleForm = () => {
     const fetchNames = async () => {
       try {
         if (formData.crledgername.length > 0) {
-          const response = await axios.get(`http://localhost:5000/nongst/suggestions/crledgername?q=${formData.crledgername}`);
+          const response = await axios.get(`http://103.146.240.119:5000/nongst/suggestions/crledgername?q=${formData.crledgername}`);
           crsetSuggestions(response.data);
           crsetShowSuggestions(true);
         } else {
@@ -93,7 +93,7 @@ const ExampleForm = () => {
     const fetchNames = async () => {
       try {
         if (formData.crcostcenter.length > 0) {
-          const response = await axios.get(`http://localhost:5000/nongst/suggestions/crcostcenter?q=${formData.crcostcenter}`);
+          const response = await axios.get(`http://103.146.240.119:5000/nongst/suggestions/crcostcenter?q=${formData.crcostcenter}`);
           costsetSuggestions(response.data);
           costsetShowSuggestions(true);
         } else {
@@ -111,7 +111,7 @@ const ExampleForm = () => {
     const fetchNames = async () => {
       try {
         if (formData.subcategory.length > 0) {
-          const response = await axios.get(`http://localhost:5000/gst/suggestions/subcategory?q=${formData.subcategory}`);
+          const response = await axios.get(`http://103.146.240.119:5000/gst/suggestions/subcategory?q=${formData.subcategory}`);
           subsetSuggestions(response.data);
           subsetShowSuggestions(true);
         } else {
@@ -171,7 +171,7 @@ const ExampleForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5000/nongst/students/submit", formData);
+      const response = await axios.post("http://103.146.240.119:5000/nongst/students/submit", formData);
       alert(response.data.message);
       setFormData({
 
