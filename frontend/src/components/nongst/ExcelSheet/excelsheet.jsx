@@ -72,7 +72,7 @@ const ExcelSheet = () => {
 
     const handleDownload = async (isAll = false) => {
         try {
-            let url = "http://103.146.240.119:5000/nongst/excel/export";
+            let url = "http://localhost:5000/nongst/excel/export";
             if (!isAll) {
                 const queryParams = generateQueryParams();
                 if (queryParams) url += "?" + queryParams;
@@ -118,6 +118,9 @@ const ExcelSheet = () => {
                             <option value="referenceno">Reference No</option>
                             <option value="drledgername">Dr Ledger Name</option>
                             <option value="category">Category</option>
+                            <option value="companyname">Company name</option>
+                            <option value="vehicleno">Vehicle No</option>
+                            <option value="partno">Part No</option>
                             <option value="subcategory">SubCategory</option>
                             <option value="dramount">Dr Amount</option>
                             <option value="km">Kilometers</option>

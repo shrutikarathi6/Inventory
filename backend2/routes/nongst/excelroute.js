@@ -8,7 +8,7 @@ router.get("/export", async (req, res) => {
         let query = { $and: [] };
 
         // Filters for text-based fields (Handles multiple values using $in)
-        ["uniqueid", "referenceno", "drledgername", "category", "subcategory"].forEach(field => {
+        ["uniqueid", "referenceno", "drledgername", "category", "subcategory","companyname","vehicleno","partno"].forEach(field => {
             if (req.query[field]) {
                 const valuesArray = req.query[field].split(",");
                 query.$and.push({ [field]: { $in: valuesArray.map(value => new RegExp(value, "i")) } });
@@ -42,28 +42,29 @@ router.get("/export", async (req, res) => {
 
         const workbook = new ExcelJS.Workbook();
         const worksheet = workbook.addWorksheet("Students");
-        const ans = "Journal"
+    
 
         worksheet.columns = [
+            { header: "Unique Id", key: "uniqueid", width: 15 },
             { header: "Voucher No", key: "voucherno", width: 15 },
-            { header: "Voucher Type", key: ans, width: 15 },
-            { header: "Date", key: "date", width: 15 },
+            { header: "Voucher Type", key: "vouchertype", width: 15 },
+            { header: "Voucher Date", key: "date", width: 15 },
             { header: "Dr Ledger Name", key: "drledgername", width: 20 },
             { header: "Dr Amount", key: "dramount", width: 15 },
             { header: "Reference No", key: "referenceno", width: 15 },
-            { header: "Reference Amount", key: "referenceamount", width: 15 },
-            { header: "Dr Cost Center", key: "drcostcenter", width: 20 },
-            { header: "Dr Cost Center Amount", key: "drcostcenteramount", width: 20 },
+            { header: "Reference Amount", width: 15 },
+            { header: "Dr Cost Center",  width: 20 },
+            { header: "Dr Cost Center Amount",  width: 20 },
             { header: "Cr Ledger Name", key: "crledgername", width: 15 },
             { header: "Cr Amount", key: "cramount", width: 20 },
-            { header: "Cr Cost Center", key: "crcostcenter", width: 20 },
-            { header: "Cr Cost Center Amount", key: "crcostcenteramount", width: 20 },
+            { header: "Cr Cost Center",  width: 20 },
+            { header: "Cr Cost Center Amount",  width: 20 },
             { header: "Narration", key: "narration", width: 30 },
             { header: "Tally Import Status", key: "tallyimportstatus", width: 20 },
-            { header: "Company Name", key: "companyname", width: 15 },
-            { header: "Work Date", key: "workdate", width: 15 },
-            { header: "Vehicle No", key: "vehicleno", width: 15 },
-            { header: "Part No", key: "partno", width: 15 },
+
+            // { header: "Work Date", key: "workdate", width: 15 },
+            // { header: "Vehicle No", key: "vehicleno", width: 15 },
+            // { header: "Part No", key: "partno", width: 15 },
             { header: "KM", key: "km", width: 10 },
             { header: "Category", key: "category", width: 20 },
             { header: "Subcategory", key: "subcategory", width: 20 },
@@ -71,7 +72,18 @@ router.get("/export", async (req, res) => {
         ];
 
 
-        students.forEach(student => worksheet.addRow(student));
+          // ✅ Make headers bold
+          worksheet.getRow(1).eachCell((cell) => {
+            cell.font = { bold: true };
+        });
+
+        // ✅ Insert rows into the worksheet
+        students.forEach(student => {
+            worksheet.addRow({
+                ...student.toObject(), // Convert MongoDB document to plain object
+                vouchertype: "Purchase" // ✅ Set "Voucher Type" as "Purchase"
+            });
+        });
 
         res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         res.setHeader("Content-Disposition", "attachment; filename=students.xlsx");

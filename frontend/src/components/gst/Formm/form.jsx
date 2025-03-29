@@ -2,43 +2,18 @@ import "./formcss.css";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Navbar from "../Navbar/navbar";
-
+import categoryOptions from "../../../../categorysub";
 
 const ExampleForm = () => {
 
-  
-const categoryOptions = {
-  ACCESSORIES: ["Cover", "Horn", "Lights", "Wipers"],
-  BATTERY: ["Battery A", "Battery B", "Battery C", "Battery D"],
-  BEARING: ["Front Bearing", "Rear Bearing", "Wheel Bearing", "Engine Bearing"],
-  BRAKE: ["Brake Pads", "Brake Fluid", "Brake Disc", "Brake Drum"],
-  CLUTCH: ["Clutch Plate", "Clutch Cable", "Clutch Spring", "Clutch Cover"],
-  CROWN: ["Crown Gear", "Crown Shaft", "Crown Nut", "Crown Cover"],
-  ELECTRIC: ["Wiring", "Switches", "Lights", "Sensors"],
-  ENGINE: ["Engine Oil", "Engine Filter", "Engine Valve", "Engine Pump"],
-  "FUEL PUMP": ["Fuel Injector", "Fuel Pipe", "Fuel Valve", "Fuel Filter"],
-  "GEAR BOX": ["Gear Lever", "Gear Shaft", "Gear Oil", "Gear Knob"],
-  GREASING: ["Grease Gun", "Grease Pump", "Grease Hose", "Grease Nozzle"],
-  HYDRAULIC: ["Hydraulic Oil", "Hydraulic Pump", "Hydraulic Cylinder", "Hydraulic Valve"],
-  INSURANCE: ["Third Party", "Comprehensive", "Own Damage", "Theft"],
-  PAINT: ["Primer", "Top Coat", "Base Coat", "Clear Coat"],
-  PAPERS: ["RC Book", "Permit", "Insurance", "Pollution Certificate"],
-  RADIATOR: ["Radiator Cap", "Radiator Fan", "Radiator Hose", "Radiator Coolant"],
-  SUSPENSION: ["Shock Absorber", "Suspension Bush", "Suspension Arm", "Coil Spring"],
-  TYRE: ["Front Tyre", "Rear Tyre", "Spare Tyre", "Tyre Tube"],
-  UREA: ["Urea Pump", "Urea Injector", "Urea Filter", "Urea Sensor"],
-  WELDING: ["Welding Rod", "Welding Torch", "Welding Helmet", "Welding Wire"],
-};
 
   const [cgstpercent, setCgstPercent] = useState("");
   const [igstpercent, setIgstPercent] = useState("");
 
   const [formData, setFormData] = useState({
 
-    voucherno: "", date: "", referenceno: "", partyname: "", ledgergroup: "", registrationtype: "", gstinno: "",
-    country: "", state: "", pincode: "", address1: "", address2: "", address3: "", purchaseledger: "",
-    amount: "", salescostcenter: "", purchaseamount: "", additionalledge: "", ledgeamount: "",
-    cgstledger: "", cgstamount: "", sgstledger: "", sgstamount: "", igstledger: "", igstamount: "",
+    voucherno: "", date: "", referenceno: "",suppinvdate:"", partyname: "",  additionalledge: "", amount: "",
+    cgstledger: "",cgstpercent:"", cgstamount: "", sgstledger: "",sgstpercent:"", sgstamount: "", igstledger: "",igstpercent:"", igstamount: "",
     cessledger: "", cessamount: "", total: "", narration: "", tallyimportstatus: "",companyname:"",workdate:"",vehicleno:"", km: "",
     category: "", subcategory: "",partno:"", details: ""
 
@@ -57,7 +32,7 @@ const categoryOptions = {
     const fetchNames = async () => {
       try {
         if (formData.partyname.length > 0) {
-          const response = await axios.get(`http://103.146.240.119:5000/gst/suggestions/partyname?q=${formData.partyname}`);
+          const response = await axios.get(`http://localhost:5000/gst/suggestions/partyname?q=${formData.partyname}`);
           namesetSuggestions(response.data);
           namesetShowSuggestions(true);
         } else {
@@ -71,29 +46,29 @@ const categoryOptions = {
     fetchNames();
   }, [formData.partyname]);
 
-  useEffect(() => {
-    const fetchNames = async () => {
-      try {
-        if (formData.purchaseledger.length > 0) {
-          const response = await axios.get(`http://103.146.240.119:5000/gst/suggestions/purchaseledger?q=${formData.purchaseledger}`);
-          purchasesetSuggestions(response.data);
-          purchasesetShowSuggestions(true);
-        } else {
-          purchasesetSuggestions([]);
-          purchasesetShowSuggestions(false);
-        }
-      } catch (error) {
-        console.error("Error fetching names:", error);
-      }
-    };
-    fetchNames();
-  }, [formData.purchaseledger]);
+  // useEffect(() => {
+  //   const fetchNames = async () => {
+  //     try {
+  //       if (formData.purchaseledger.length > 0) {
+  //         const response = await axios.get(`http://localhost:5000/gst/suggestions/purchaseledger?q=${formData.purchaseledger}`);
+  //         purchasesetSuggestions(response.data);
+  //         purchasesetShowSuggestions(true);
+  //       } else {
+  //         purchasesetSuggestions([]);
+  //         purchasesetShowSuggestions(false);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching names:", error);
+  //     }
+  //   };
+  //   fetchNames();
+  // }, [formData.purchaseledger]);
 
   useEffect(() => {
     const fetchNames = async () => {
       try {
         if (formData.subcategory.length > 0) {
-          const response = await axios.get(`http://103.146.240.119:5000/gst/suggestions/subcategory?q=${formData.subcategory}`);
+          const response = await axios.get(`http://localhost:5000/gst/suggestions/subcategory?q=${formData.subcategory}`);
           subsetSuggestions(response.data);
           subsetShowSuggestions(true);
         } else {
@@ -109,56 +84,68 @@ const categoryOptions = {
 
   useEffect(() => {
     
-      const newcgstamount = (parseFloat(formData.amount) * parseFloat(cgstpercent)) / 100 || 0;
+      const newcgstamount = (parseFloat(formData.amount) * parseFloat(formData.cgstpercent)) / 100 || 0;
 
       setFormData((prev) => ({
         ...prev,
         cgstamount: newcgstamount.toFixed(2),
         sgstamount: newcgstamount.toFixed(2),
-        sgstpercent: cgstpercent,
-        cgstledger: cgstpercent ? `CGST ON EXPENSES ${cgstpercent}%` : '',
-        sgstledger: cgstpercent ? `SGST ON EXPENSES ${cgstpercent}%` : ''
+        sgstpercent: cgstpercent
+        
+        
       }));
     
-  }, [formData.amount, cgstpercent]);
+  }, [formData.amount, formData.cgstpercent]);
 
 
 
 
-  useEffect(() => {
+   // useEffect hook to sync CGST values with SGST values
+   useEffect(() => {
+    setFormData((prev) => ({
+      ...prev,
 
-    formData.purchaseamount = formData.amount;
+      referenceno: prev.voucherno,
+    }));
+  }, [formData.voucherno]);
 
-  }, [formData.amount]);
 
-
-  // useEffect hook to sync CGST values with SGST values
   useEffect(() => {
     setFormData((prev) => ({
       ...prev,
 
-      sgstamount: prev.cgstamount,
+      suppinvdate: prev.date,
     }));
-  }, [formData.cgstamount]);
+  }, [formData.date]);
+
+
+
+  // useEffect hook to sync CGST values with SGST values
+  // useEffect(() => {
+  //   setFormData((prev) => ({
+  //     ...prev,
+
+  //     sgstamount: prev.cgstamount,
+  //   }));
+  // }, [formData.cgstamount]);
 
   useEffect(() => {
     
-      const newigstamount = (parseFloat(formData.amount) * parseFloat(igstpercent)) / 100 || 0;
+      const newigstamount = (parseFloat(formData.amount) * parseFloat(formData.igstpercent)) / 100 || 0;
 
       setFormData((prev) => ({
         ...prev,
         igstamount: newigstamount.toFixed(2),
-        igstledger: igstpercent?`IGST ON EXPENSES ${igstpercent}%` :'' 
 
       }));
     
-  }, [formData.amount, igstpercent]);
+  }, [formData.amount, formData.igstpercent]);
 
 
   useEffect(() => {
 
-    const newigstamount = (parseFloat(formData.amount) * parseFloat(igstpercent)) / 100 || 0;
-    const newcgstamount = (parseFloat(formData.amount) * parseFloat(cgstpercent)) / 100 || 0;
+    const newigstamount = (parseFloat(formData.amount) * parseFloat(formData.igstpercent)) / 100 || 0;
+    const newcgstamount = (parseFloat(formData.amount) * parseFloat(formData.cgstpercent)) / 100 || 0;
 
     const newamount = (parseFloat(formData.amount) + 2 * newcgstamount + newigstamount);
     // if (!isNaN(newamount)) {
@@ -173,29 +160,40 @@ const categoryOptions = {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
+  
+    let updatedData = { ...formData, [name]: value };
+  
+    // Reset subcategory when category changes
     if (name === "category") {
-      setFormData({
-        ...formData,
-        category: value,
-        subcategory: "",
-      });
-    }
-    else{
-
-    setFormData({ ...formData, [name]: value });
-
-    if (name === "cgstpercent") {
-      setCgstPercent(Number(value));  // Convert input to number before setting
+      updatedData.subcategory = "";
     }
   
-    if (name === "igstpercent") {
-      setIgstPercent(Number(value));
-
+    // Auto-fill SGST Ledger when CGST Ledger is typed
+    if (name === "cgstledger") {
+      updatedData.sgstledger = value.replace(/cgst/i, "SGST");
     }
-  }
+  
+    // If CGST percent is entered, set SGST percent same & disable IGST
+    if (name === "cgstpercent" || name==="cgstledger" || name==="sgstledger") {
+      
+      updatedData.igstledger = "";
+      updatedData.igstpercent = "";
+      updatedData.igstamount = "";
+    }
+  
     
+    if (name === "igstpercent" || name === "igstledger") {
+      updatedData.cgstledger = "";
+      updatedData.sgstledger = "";
+      updatedData.cgstpercent = "";
+      updatedData.sgstpercent = "";
+      updatedData.cgstamount = "";
+      updatedData.sgstamount = "";
+    }
+  
+    setFormData(updatedData);
   };
+  
 
   const handleSuggestionClickName = (selectedName) => {
     setFormData({ ...formData, partyname: selectedName });
@@ -219,13 +217,11 @@ const categoryOptions = {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://103.146.240.119:5000/gst/students/submit", formData);
+      const response = await axios.post("http://localhost:5000/gst/students/submit", formData);
       alert(response.data.message);
       setFormData({
-        voucherno: "", date: "", referenceno: "", partyname: "", ledgergroup: "", registrationtype: "", gstinno: "",
-    country: "", state: "", pincode: "", address1: "", address2: "", address3: "", purchaseledger: "",
-    amount: "", salescostcenter: "", purchaseamount: "", additionalledge: "", ledgeamount: "",
-    cgstledger: "", cgstamount: "", sgstledger: "", sgstamount: "", igstledger: "", igstamount: "",
+        voucherno: "", date: "", referenceno: "",suppinvdate:"", partyname: "",  additionalledge: "", amount: "",
+    cgstledger: "",cgstpercent:"", cgstamount: "", sgstledger: "",sgstpercent:"", sgstamount: "", igstledger: "",igstpercent:"", igstamount: "",
     cessledger: "", cessamount: "", total: "", narration: "", tallyimportstatus: "",companyname:"",workdate:"",vehicleno:"", km: "",
     category: "", subcategory: "",partno:"", details: ""
 
@@ -255,7 +251,7 @@ const categoryOptions = {
                 <div className="input-container">
                   <label className="input-label">Voucher No</label>
                   <input
-                    type="number"
+                    type="text"
                     name="voucherno"
                     placeholder="Enter Voucher No"
                     className="input-field"
@@ -265,7 +261,7 @@ const categoryOptions = {
                   />
                 </div>
 
-                {/* voucher type */}
+                {/* voucher type
                 <div className="input-container">
                   <label className="input-label">Vch Type:</label>
                   <input
@@ -274,7 +270,7 @@ const categoryOptions = {
                     value={"Purchase"}
                     readOnly
                   />
-                </div>
+                </div> */}
 
 
                 {/* Date */}
@@ -287,7 +283,6 @@ const categoryOptions = {
                     className="input-field"
                     value={formData.date}
                     onChange={handleChange}
-                    required
 
                   />
                 </div>
@@ -297,44 +292,32 @@ const categoryOptions = {
               <div className="bajubaju">
                 {/* Reference No */}
                 <div className="input-container">
-                  <label className="input-label">Reference No</label>
+                  <label className="input-label">Supp Inv No</label>
                   <input
                     type="text"
                     name="referenceno"
-                    placeholder="Enter Reference No"
                     className="input-field"
                     value={formData.referenceno}
-                    onChange={handleChange}
-                    required
+                    readOnly
 
                   />
                 </div>
 
-                             {/* <div className="input-container">
-          <div className="input-container" style={{ position: "relative" }}>
->>>>>>> b662c2c78c76adf2f9ea01ded599c74d71a1c8cc
-            <label className="input-label">Name:</label>
-            <input
-              type="text"
-              name="name"
-              placeholder="Enter Name"
-              className="input-field"
-              value={formData.name}
-              onChange={handleChange}
-              required
-              onFocus={() => setShowSuggestions(true)}
-              onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
-            />
-            {showSuggestions && suggestions.length > 0 && (
-              <ul className="suggestions-dropdown">
-                {suggestions.map((s, index) => (
-                  <li key={index} onClick={() => handleSuggestionClick(s)}>
-                    {s}
-                  </li>
-                ))}
-              </ul>
-            )
-          </div> */}
+                 {/* Date */}
+                 <div className="input-container">
+                  <label className="input-label">Supp Inv Date</label>
+                  <input
+                    type="date"
+                    name="suppinvdate"
+                    className="input-field"
+                    value={formData.suppinvdate}
+                    readOnly
+                    
+                  />
+                </div>
+                  </div>
+
+                  <div className="bajubaju">
 
                 {/* Party Name */}
                 <div className="input-container">
@@ -360,54 +343,34 @@ const categoryOptions = {
               </ul>
             )}
                 </div>
-              </div>
-
-
-              {/* purchaseledger*/}
-              <div className="bajubaju">
+                   {/* voucher type */}
                 <div className="input-container">
-                  <label className="input-label">Purchase Ledger</label>
+                  <label className="input-label">Vch Type:</label>
                   <input
                     type="text"
-                    name="purchaseledger"
-                    placeholder="Enter Purchase Ledger"
                     className="input-field"
-                    value={formData.purchaseledger}
-                    onChange={handleChange}
-                    required
-                    onFocus={() => purchasesetShowSuggestions(true)}
-                    onBlur={() => setTimeout(() => purchasesetShowSuggestions(false), 200)}
-
-                  />
-                  {purchaseshowSuggestions && purchasesuggestions.length > 0 && (
-              <ul className="suggestions-dropdown">
-                {purchasesuggestions.map((s, index) => (
-                  <li key={index} onClick={() => handleSuggestionClickPurchase(s)}>
-                    {s}
-                  </li>
-                ))}
-              </ul>
-            )}
-                </div>
-
-                {/* Sales cost center */}
-                <div className="input-container">
-                  <label className="input-label">Sales cost center</label>
-                  <input
-                    type="text"
-                    name="salescostcenter"
-                    placeholder="Enter Sales cost center"
-                    className="input-field"
-                    value={formData.salescostcenter}
-                    onChange={handleChange}
-
+                    value={"Purchase"}
+                    readOnly
                   />
                 </div>
               </div>
 
-
-
+                   {/* Additional Ledge*/}
               <div className="bajubaju">
+                <div className="input-container">
+                  <label className="input-label">Additional Ledge</label>
+                  <input
+                    type="text"
+                    name="additionalledge"
+                    placeholder="Enter Additional Ledge"
+                    className="input-field"
+                    value={formData.additionalledge}
+                    onChange={handleChange}
+
+                  />
+                </div>
+
+
                 {/* Amount */}
                 <div className="input-container">
                   <label className="input-label">Amount</label>
@@ -422,36 +385,26 @@ const categoryOptions = {
                     required
                   />
                 </div>
-
-
-                {/* Purchase cost center */}
-                <div className="input-container">
-                  <label className="input-label">Purchase cost center</label>
-                  <input
-                    type="number"
-                    name="purchaseamount"
-                    className="input-field"
-                    value={formData.purchaseamount}
-                    read only
-                    step="any"
-                  />
-                </div>
               </div>
+
+           
 
 
               {/* Cgst Ledger*/}
               <div className="bajubaju">
+                
+                {/* Igst percentage*/}
                 <div className="input-container">
-                  <label className="input-label">CGST Ledger</label>
-                  <select
+                  <label className="input-label">Cgst Ledger</label>
+                  <input
+                    type="text"
                     name="cgstledger"
+                    placeholder="Enter cgstledger"
                     className="input-field"
                     value={formData.cgstledger}
-                    readOnly
-                    disabled={igstpercent} // Correct way to make dropdown non-editable
-                  >
-                    <option value={formData.cgstledger}>{formData.cgstledger}</option>
-                  </select>
+                    onChange={handleChange}
+                    disabled={formData.igstpercent || formData.igstledger}
+                  />
                 </div>
 
 
@@ -464,10 +417,9 @@ const categoryOptions = {
                     name="cgstpercent"
                     placeholder="Enter Cgst Percent"
                     className="input-field"
-                    value={cgstpercent}
+                    value={formData.cgstpercent}
                     onChange={handleChange}
-                    disabled={igstpercent}
-
+                    disabled={formData.igstpercent || formData.igstledger}
                   />
                 </div>
 
@@ -480,7 +432,6 @@ const categoryOptions = {
                     name="cgstamount"
                     className="input-field"
                     value={formData.cgstamount}
-                    disabled={igstpercent}
                     read only
                     step="any"
                   />
@@ -490,17 +441,19 @@ const categoryOptions = {
 
               {/* sgst Ledger*/}
               <div className="bajubaju">
+               
+                {/* Igst percentage*/}
                 <div className="input-container">
-                  <label className="input-label">SGST Ledger</label>
-                  <select
+                  <label className="input-label">Sgst Ledger</label>
+                  <input
+                    type="text"
                     name="sgstledger"
+                    placeholder="Enter sgstledger"
                     className="input-field"
                     value={formData.sgstledger}
-                    readOnly
-                    disabled={igstpercent}
-                  >
-                    <option value={formData.sgstledger}>{formData.sgstledger}</option>
-                  </select>
+                    onChange={handleChange}
+                    disabled={formData.igstpercent || formData.igstledger}
+                  />
                 </div>
 
 
@@ -511,13 +464,10 @@ const categoryOptions = {
                   <input
                     type="number"
                     name="sgstpercent"
-                    placeholder="Enter Sgst Percent"
                     className="input-field"
-                    value={cgstpercent}
-                    onChange={handleChange}
-                    disabled={igstpercent}
-
-                  />
+                    value={formData.cgstpercent}
+                    disabled
+                    />
                 </div>
 
 
@@ -530,7 +480,6 @@ const categoryOptions = {
                     className="input-field"
                     value={formData.sgstamount}
                     read only
-                    disabled={igstpercent}
                     step="any"
                   />
                 </div>
@@ -540,16 +489,21 @@ const categoryOptions = {
 
               {/* Igst Ledger*/}
               <div className="bajubaju">
-              <div className="input-container">
-                  <label className="input-label">IGST Ledger</label>
-                  <select
+              
+
+                {/* Igst percentage*/}
+                <div className="input-container">
+                  <label className="input-label">Igst Ledger</label>
+                  <input
+                    type="text"
                     name="igstledger"
+                    placeholder="Enter igstledger"
                     className="input-field"
                     value={formData.igstledger}
-                    disabled={cgstpercent}
-                  >
-                    <option value={formData.igstledger}>{formData.igstledger}</option>
-                  </select>
+                    onChange={handleChange}
+                    disabled={formData.cgstpercent || formData.sgstpercent || formData.cgstledger || formData.sgstledger}
+  
+                  />
                 </div>
 
 
@@ -562,10 +516,9 @@ const categoryOptions = {
                     name="igstpercent"
                     placeholder="Enter Igst Percent"
                     className="input-field"
-                    value={igstpercent}
+                    value={formData.igstpercent}
                     onChange={handleChange}
-                    disabled={cgstpercent}
-
+                    disabled={formData.cgstpercent || formData.sgstpercent || formData.cgstledger || formData.sgstledger}
                   />
                 </div>
 
@@ -579,7 +532,6 @@ const categoryOptions = {
                     className="input-field"
                     value={formData.igstamount}
                     read only
-                    disabled={cgstpercent}
                     step="any"
 
                   />
@@ -611,7 +563,7 @@ const categoryOptions = {
                     type="number"
                     name="km"
                     placeholder="Enter km"
-                    className="input-field1"
+                    className="input-field"
                     value={formData.km}
                     onChange={handleChange}
                     step="any"
@@ -648,7 +600,7 @@ const categoryOptions = {
         <label className="input-label">Subcategory</label>
         <select
           name="subcategory"
-          className="input-field1"
+          className="input-field"
           value={formData.subcategory}
           onChange={handleChange}
           disabled={!formData.category}
@@ -672,7 +624,7 @@ const categoryOptions = {
                     type="text"
                     name="narration"
                     placeholder="Enter Narration"
-                    className="input-field1"
+                    className="input-field"
                     value={formData.narration}
                     onChange={handleChange}
 
@@ -687,7 +639,7 @@ const categoryOptions = {
                     type="text"
                     name="details"
                     placeholder="Enter Details"
-                    className="input-field1"
+                    className="input-field"
                     value={formData.details}
                     onChange={handleChange}
 
@@ -720,6 +672,7 @@ const categoryOptions = {
                     className="input-field"
                     value={formData.companyname}
                     onChange={handleChange}
+                    required
                   >
                     <option value="">Select Company Name</option>
                     {[
@@ -763,181 +716,7 @@ const categoryOptions = {
                 </div>
                 </div>
 
-              {/* Ledger Group */}
-              <div className="bajubaju">
-                <div className="input-container">
-                  <label className="input-label">Ledger Group</label>
-                  <input
-                    type="text"
-                    name="ledgergroup"
-                    placeholder="Enter Ledger Group"
-                    className="input-field2"
-                    value={formData.ledgergroup}
-                    onChange={handleChange}
-
-
-                  />
-                </div>
-
-
-                {/* Registration Type*/}
-                <div className="input-container">
-                  <label className="input-label">Registration  </label>
-                  <input
-                    type="text"
-                    name="registrationtype"
-                    placeholder="Enter Registration Type"
-                    className="input-field2"
-                    value={formData.registrationtype}
-                    onChange={handleChange}
-
-                  />
-                </div>
-
-                {/* GSTIN No*/}
-                <div className="input-container">
-                  <label className="input-label">GSTIN No</label>
-                  <input
-                    type="text"
-                    name="gstinno"
-                    placeholder="Enter GSTIN No"
-                    className="input-field2"
-                    value={formData.gstinno}
-                    onChange={handleChange}
-
-                  />
-                </div>
-              </div>
-
-
-              {/* address1*/}
-
-              <div className="input-container">
-                <label className="input-label">Address 1</label>
-                <input
-                  type="text"
-                  name="address1"
-                  placeholder="Enter Address 1"
-                  className="input-field"
-                  value={formData.address1}
-                  onChange={handleChange}
-                  style={{ width: "250%", height: "20px", marginTop: "7px" }}
-
-                />
-
-              </div>
-
-
-
-              {/* address2*/}
-              <div className="bajubaju">
-                <div className="input-container">
-                  <label className="input-label">Address 2</label>
-                  <input
-                    type="text"
-                    name="address2"
-                    placeholder="Enter Address 2"
-                    className="input-field1"
-                    value={formData.address2}
-                    onChange={handleChange}
-
-                  />
-                </div>
-
-
-                {/* address3*/}
-                <div className="input-container">
-                  <label className="input-label">Address 3</label>
-                  <input
-                    type="text"
-                    name="address3"
-                    placeholder="Enter Address 3"
-                    className="input-field1"
-                    value={formData.address3}
-                    onChange={handleChange}
-
-                  />
-                </div>
-              </div>
-
-              {/* Country*/}
-              <div className="bajubaju">
-                <div className="input-container">
-                  <label className="input-label">Country</label>
-                  <input
-                    type="text"
-                    name="country"
-                    placeholder="Enter Country"
-                    className="input-field"
-                    value={formData.country}
-                    onChange={handleChange}
-
-                  />
-                </div>
-
-                {/* State*/}
-                <div className="input-container">
-                  <label className="input-label">State</label>
-                  <input
-                    type="text"
-                    name="state"
-                    placeholder="Enter State"
-                    className="input-field"
-                    value={formData.state}
-                    onChange={handleChange}
-
-                  />
-                </div>
-
-
-                {/* Pincode*/}
-                <div className="input-container">
-                  <label className="input-label">Pincode</label>
-                  <input
-                    type="number"
-                    name="pincode"
-                    placeholder="Enter Pincode"
-                    className="input-field"
-                    value={formData.pincode}
-                    onChange={handleChange}
-
-                  />
-                </div>
-              </div>
-
-              {/* Additional Ledge*/}
-              <div className="bajubaju">
-                <div className="input-container">
-                  <label className="input-label">Additional Ledge</label>
-                  <input
-                    type="text"
-                    name="additionalledge"
-                    placeholder="Enter Additional Ledge"
-                    className="input-field"
-                    value={formData.additionalledge}
-                    onChange={handleChange}
-
-                  />
-                </div>
-
-
-                {/* Ledge Amount */}
-                <div className="input-container">
-                  <label className="input-label">Ledge Amount</label>
-                  <input
-                    type="number"
-                    name="ledgeamount"
-                    placeholder="Enter Ledge Amount"
-                    className="input-field"
-                    value={formData.ledgeamount}
-                    onChange={handleChange}
-                    step="any" // Allows decimal values
-
-                  />
-                </div>
-              </div>
-
-
+            
               {/* Cess Ledger*/}
               <div className="bajubaju">
                 <div className="input-container">

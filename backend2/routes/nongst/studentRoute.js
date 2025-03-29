@@ -6,31 +6,36 @@ const router = express.Router();
 router.post("/submit", async (req, res) => {
     try {
         const {
-            voucherno, date, drledgername, dramount, referenceno, referenceamount, drcostcenter, drcostcenteramount, crledgername
-            , cramount, crcostcenter, crcostcenteramount,
+            voucherno, date, drledgername, dramount, referenceno,  crledgername
+            , cramount, 
             narration, tallyimportstatus,companyname,workdate,vehicleno,
             km, category, subcategory,partno,  details
         } = req.body;
 
-        // Ensure required fields are present
-        if (!referenceno || !drlegdername || !date) {
-            return res.status(400).json({ error: "Missing required fields: referenceno, partyname, date, or amount" });
+        let prefix = companyname === "YLPL" ? "NY" : companyname === "ARS" ? "NA" : null;
+        if (!prefix) {
+            return res.status(400).json({ error: "Invalid company name!" });
         }
 
-        // Generate uniqueid as partyname + referenceno
-        const uniqueid = `${drlegdername.replace(/\s+/g, "_")}${referenceno}`;
+        // ✅ 2. Fetch the latest count for the given prefix (atomic operation)
+        const lastEntry = await Form.findOne({ uniqueid: new RegExp(`^${prefix}\\d+$`) })
+            .sort({ uniqueid: -1 }) // Sort in descending order to get the latest
+            .select("uniqueid");
 
-
-        // Check if a record with the same uniqueid already exists
-        const existingEntry = await Form.findOne({ uniqueid });
-        if (existingEntry) {
-            return res.status(400).json({ error: "Entry with this Unique ID already exists!" });
+        let newCount = 1; // Default count if no previous entry exists
+        if (lastEntry) {
+            const lastNumber = parseInt(lastEntry.uniqueid.replace(prefix, ""), 10);
+            newCount = lastNumber + 1;
         }
+
+        // ✅ 3. Generate Unique ID
+        const uniqueid = `${prefix}${newCount}`;
+
 
         // Create and save a new form entry
         const newFormEntry = new Form({
-            voucherno, date, drledgername, dramount, referenceno, referenceamount, drcostcenter, drcostcenteramount, crledgername
-            , cramount, crcostcenter, crcostcenteramount,
+           uniqueid, voucherno, date, drledgername, dramount, referenceno,  crledgername
+            , cramount, 
             narration, tallyimportstatus,companyname,workdate,vehicleno,
             km, category, subcategory,partno,  details
         });
@@ -49,7 +54,7 @@ router.get("/search", async (req, res) => {
         let query = { $and: [] };
 
         // Filters for text-based fields (Handles multiple values using $in)
-        ["uniqueid", "referenceno", "drlegdername", "category", "subcategory"].forEach(field => {
+        ["uniqueid", "referenceno", "drlegdername", "category", "subcategory","companyname","vehicleno","partno"].forEach(field => {
             if (req.query[field]) {
                 const valuesArray = req.query[field].split(",");
                 query.$and.push({ [field]: { $in: valuesArray.map(value => new RegExp(value, "i")) } });
@@ -57,7 +62,7 @@ router.get("/search", async (req, res) => {
         });
 
         // Filters for numerical range-based fields
-        ["amount", "km"].forEach(field => {
+        ["dramount", "km"].forEach(field => {
             let filter = {};
             if (req.query[`${field}From`]) filter.$gte = Number(req.query[`${field}From`]);
             if (req.query[`${field}To`]) filter.$lte = Number(req.query[`${field}To`]);

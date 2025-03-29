@@ -30,9 +30,7 @@ const Navbar = () => {
             <button className={`nav-btn ${location.pathname === "/" ? "active" : ""}`} onClick={() => navigate("/")}>
               <Home size={18} /> GST/NONGST
             </button>
-            <button className={`nav-btn ${location.pathname === "/adminlogin" ? "active" : ""}`} onClick={() => navigate("/adminlogin")}>
-              <Search size={18} /> AdminLogin
-            </button>
+           
             <button className="nav-btn logout-btn" onClick={handleLogout}>
               <LogOut size={18} /> Logout
             </button>
@@ -52,7 +50,7 @@ const Navbar = () => {
           </>
         )}
       </div>
-      <div className="nav-right">YLPL/ARS</div>
+      <div className="nav-right">YLPL/AVS</div>
     </nav>
   );
 };

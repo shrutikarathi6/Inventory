@@ -8,7 +8,7 @@ router.get("/export", async (req, res) => {
         let query = { $and: [] };
 
         // Filters for text-based fields (Handles multiple values using $in)
-        ["uniqueid", "referenceno", "partyname", "purchaseledger", "category", "subcategory"].forEach(field => {
+        ["uniqueid", "referenceno", "partyname",  "category", "subcategory", "companyname", "vehicleno", "partno"].forEach(field => {
             if (req.query[field]) {
                 const valuesArray = req.query[field].split(",");
                 query.$and.push({ [field]: { $in: valuesArray.map(value => new RegExp(value, "i")) } });
@@ -42,29 +42,29 @@ router.get("/export", async (req, res) => {
 
         const workbook = new ExcelJS.Workbook();
         const worksheet = workbook.addWorksheet("Students");
-        const ans="Purchase"
 
+        // Define columns with bold headers
         worksheet.columns = [
+            { header: "Uniqueid", key: "uniqueid", width: 15},
             { header: "Voucher No", key: "voucherno", width: 15 },
-            { header: "Voucher Type", key:ans, width: 15 },
+            { header: "Voucher Type", key: "vouchertype", width: 15 },
             { header: "Date", key: "date", width: 15 },
-            { header: "Reference No", key: "referenceno", width: 15 },
+            { header: "Supp Inv No", key: "referenceno", width: 15 },
+            { header: "Supp Inv Date ", key: "suppinvdate", width: 15 },
             { header: "Party Name", key: "partyname", width: 20 },
-            { header: "Ledger Group", key: "ledgergroup", width: 15 },
-            { header: "Registration Type", key: "registrationtype", width: 18 },
-            { header: "GSTIN No", key: "gstinno", width: 20 },
-            { header: "Country", key: "country", width: 15 },
-            { header: "State", key: "state", width: 15 },
-            { header: "Pincode", key: "pincode", width: 10 },
-            { header: "Address 1", key: "address1", width: 25 },
-            { header: "Address 2", key: "address2", width: 25 },
-            { header: "Address 3", key: "address3", width: 25 },
-            { header: "Purchase Ledger", key: "purchaseledger", width: 20 },
+            { header: "Ledger Group",  width: 15 },
+            { header: "Registration Type", width: 18 },
+            { header: "GSTIN No", width: 20 },
+            { header: "Country",  width: 15 },
+            { header: "State",  width: 15 },
+            { header: "Pincode", width: 10 },
+            { header: "Address 1",  width: 25 },
+            { header: "Address 2",  width: 25 },
+            { header: "Address 3",  width: 25 },
+            { header: "Purchase Ledger",  width: 20 },
             { header: "Amount", key: "amount", width: 15 },
-            { header: "Sales Cost Center", key: "salescostcenter", width: 20 },
-            { header: "Purchase Amount", key: "purchaseamount", width: 15 },
-            { header: "Additional Ledger", key: "additionalledge", width: 20 },
-            { header: "Ledger Amount", key: "ledgeamount", width: 15 },
+            { header: "Additional Ledger",  width: 20 },
+            { header: "Ledger Amount",  width: 15 },
             { header: "CGST Ledger", key: "cgstledger", width: 15 },
             { header: "CGST Amount", key: "cgstamount", width: 15 },
             { header: "SGST Ledger", key: "sgstledger", width: 15 },
@@ -85,13 +85,25 @@ router.get("/export", async (req, res) => {
             { header: "Subcategory", key: "subcategory", width: 20 },
             { header: "Details", key: "details", width: 30 }
         ];
-        
 
-        students.forEach(student => worksheet.addRow(student));
+        // ✅ Make headers bold
+        worksheet.getRow(1).eachCell((cell) => {
+            cell.font = { bold: true };
+        });
 
+        // ✅ Insert rows into the worksheet
+        students.forEach(student => {
+            worksheet.addRow({
+                ...student.toObject(), // Convert MongoDB document to plain object
+                vouchertype: "Purchase" // ✅ Set "Voucher Type" as "Purchase"
+            });
+        });
+
+        // Set response headers for Excel file download
         res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         res.setHeader("Content-Disposition", "attachment; filename=students.xlsx");
 
+        // ✅ Write workbook to response stream
         await workbook.xlsx.write(res);
         res.end();
     } catch (error) {

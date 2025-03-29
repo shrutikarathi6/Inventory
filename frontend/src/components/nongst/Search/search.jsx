@@ -11,8 +11,6 @@ const Search = () => {
     const [filters, setFilters] = useState([]);
     const [results, setResults] = useState([]);
     const [searchkiya, setSearchkiya] = useState(false);
-    const [editingId, setEditingId] = useState(null);
-    const [editedData, setEditedData] = useState(null);
     const inputRefs = useRef([]);
 
     // Focus newly added filter input
@@ -63,7 +61,7 @@ const Search = () => {
             }, {});
 
             const queryParams = new URLSearchParams(groupedFilters).toString();
-            const response = await axios.get(`http://103.146.240.119:5000/nongst/students/search?${queryParams}`);
+            const response = await axios.get(`http://localhost:5000/nongst/students/search?${queryParams}`);
             setResults(response.data.results);
         } catch (error) {
             console.error("Error searching data:", error);
@@ -92,14 +90,17 @@ const Search = () => {
                                 onChange={(e) => handleFilterChange(index, "type", e.target.value)}
                             >
                                 <option value="">Select Filter</option>
-                                <option value="uniqueid">Unique Id</option>
-                                <option value="date">Date</option>
-                                <option value="referenceno">Reference No</option>
-                                <option value="drledgername">Dr Ledger Name</option>
-                                <option value="category">Category</option>
-                                <option value="subcategory">SubCategory</option>
-                                <option value="dramount">Dr Amount</option>
-                                <option value="km">Kilometers</option>
+                            <option value="uniqueid">Unique Id</option>
+                            <option value="date">Date</option>
+                            <option value="referenceno">Reference No</option>
+                            <option value="drledgername">Dr Ledger Name</option>
+                            <option value="category">Category</option>
+                            <option value="companyname">Company name</option>
+                            <option value="vehicleno">Vehicle No</option>
+                            <option value="partno">Part No</option>
+                            <option value="subcategory">SubCategory</option>
+                            <option value="dramount">Dr Amount</option>
+                            <option value="km">Kilometers</option>
 
                             </select>
 
@@ -159,28 +160,27 @@ const Search = () => {
                             <table border="1">
                                 <thead>
                                     <tr>
-
+                                        <th>Unique Id</th>
+                                        <th>Company Name</th>
                                         <th>Voucher No</th>
                                         <th>Voucher Type</th>
                                         <th>Date</th>
                                         <th>Dr Ledger Name</th>
-                                        <th>Reference No</th>
                                         <th>Dr Amount</th>
-
-                                        <th>Reference Amount</th>
+                                        <th>Reference No</th>
+                                      
                                         <th>Cr Ledger Name</th>
                                         <th>Cr Amount</th>
-                                        <th>Cr Cost Center</th>
-                                        <th>Cr Cost Center Amount</th>
-
+                                        <th>Narration</th>
+                                        <th>Tally Import Status</th>
+                                        <th>Work date</th>
+                                        <th>Vehicle No</th>
                                         <th>Kilometer</th>
                                         <th>Category</th>
                                         <th>Subcategory</th>
-                                        <th>Narration</th>
+                                       <th>Part No</th>
                                         <th>Details</th>
-                                        <th>Dr Cost Center</th>
-                                        <th>Dr Cost Center Amount</th>
-                                        <th>Tally Import Status</th>
+                                        
 
 
                                     </tr>
@@ -192,7 +192,8 @@ const Search = () => {
 
 
 
-
+                                                <td>{student.uniqueid}</td>
+                                                <td>{student.companyname}</td>
                                                 <td>
                                                     {student.voucherno}
                                                 </td>
@@ -206,16 +207,11 @@ const Search = () => {
 
 
                                                 <td>{student.drledgername}</td>
-                                                <td>{student.referenceno}</td>
-
-
                                                 <td>
                                                     {student.dramount}
                                                 </td>
+                                                <td>{student.referenceno}</td>
 
-                                                <td>
-                                                    {student.referenceamount}
-                                                </td>
 
                                                 <td>
                                                     {student.crledgername}
@@ -224,22 +220,18 @@ const Search = () => {
                                                 <td>
                                                     {student.cramount}
                                                 </td>
-
                                                 <td>
-                                                    {student.crcostcenter}
+                                                    {student.narration}
                                                 </td>
-
-
-
                                                 <td>
-                                                    {student.crcostcenteramount}
+                                                    {student.tallyimportstatus}
                                                 </td>
-
-
-
-
-
-
+                                                <td>
+                                                    {student.workdate}
+                                                </td>
+                                                <td>
+                                                    {student.vehicleno}
+                                                </td>
                                                 <td>
                                                     {student.km}
                                                 </td>
@@ -251,35 +243,14 @@ const Search = () => {
                                                 <td>
                                                     {student.subcategory}
                                                 </td>
-
                                                 <td>
-                                                    {student.narration}
+                                                    {student.partno}
                                                 </td>
+                                        
 
                                                 <td>
                                                     {student.details}
                                                 </td>
-
-                                                <td>
-                                                    {student.drcostcenter}
-                                                </td>
-
-                                                <td>
-                                                    {student.drcostcenteramount}
-                                                </td>
-
-
-                                                <td>
-                                                    {student.tallyimportstatus}
-                                                </td>
-
-
-
-
-
-
-
-
                                             </tr>
                                         ))}
                                     {/* </div> */}

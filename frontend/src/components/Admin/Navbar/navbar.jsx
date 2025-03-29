@@ -27,7 +27,7 @@ const Navbar = () => {
               className={`nav-btn ${location.pathname === "/admin" ? "active" : ""}`}
               onClick={() => navigate("/admin")}
             >
-              <Search size={18} /> AdminHome
+              <Search size={18} /> Maintenance
             </button>
             
             <button

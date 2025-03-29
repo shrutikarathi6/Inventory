@@ -13,7 +13,7 @@ import AdminHome from "./pages/Admin/adminhome.jsx";
 import AdminGSTSearch from "./pages/Admin/admingstsearch.jsx";
 import AdminNONGSTSearch from "./pages/Admin/adminnongstsearch.jsx"
 import CheckgstNongst from "./pages/common/checkgstornongst.jsx"
-
+import Maintenance from "./pages/common/maintenance.jsx"
 import PrivateAdminRoute from "./components/common/privateadminRoute.jsx";
 
 const PrivateRoute = ({ element }) => {
@@ -42,6 +42,7 @@ function App() {
 
         {/* common */}
         <Route path="/" element={<PrivateRoute element={<CheckgstNongst />} />} />
+        <Route path="/maintenance" element={<PrivateRoute element={<Maintenance />} />} />
         <Route path="/adminlogin"  element={<AdminLogin />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />

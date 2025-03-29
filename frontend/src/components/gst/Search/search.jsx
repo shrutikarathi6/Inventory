@@ -62,7 +62,7 @@ const Search = () => {
             }, {});
 
             const queryParams = new URLSearchParams(groupedFilters).toString();
-            const response = await axios.get(`http://103.146.240.119:5000/gst/students/search?${queryParams}`);
+            const response = await axios.get(`http://localhost:5000/gst/students/search?${queryParams}`);
             setResults(response.data.results);
         } catch (error) {
             console.error("Error searching data:", error);
@@ -91,10 +91,13 @@ const Search = () => {
                                 <option value="">Select Filter</option>
                                 <option value="uniqueid">Unique Id</option>
                                 <option value="date">Date</option>
-                                <option value="referenceno">Reference No</option>
-                                <option value="partyname">PartyName </option>
+                                <option value="referenceno">Supp Inv No</option>
+                                <option value="partyname">Party Name</option>
                                 <option value="category">Category</option>
                                 <option value="subcategory">SubCategory</option>
+                                <option value="companyname">Company Name</option>
+                                <option value="vehicleno">Vehicle No</option>
+                                <option value="partno">Part No</option>
                                 <option value="amount">Amount</option>
                                 <option value="km">Kilometers</option>
                                 <option value="total">Total</option>
@@ -156,39 +159,39 @@ const Search = () => {
                             <table border="1">
                                 <thead>
                                     <tr>
-
+                                        <th>Uniqueid</th>
+                                        <th>Company Name</th>
                                         <th>Voucher No</th>
                                         <th>Voucher Type</th>
                                         <th>Date</th>
-                                        <th>Reference No</th>
+                                        <th>Supp Inv No</th>
+                                        <th>Supp Inv Date</th>
                                         <th>Party Name</th>
-                                        <th>Purchase Ledger</th>
-                                        <th>Sales Cost Center</th>
+                                        <th>Additional Ledge</th>
                                         <th>Amount</th>
-                                        <th>Purchase Cost Center</th>
+    
                                         <th>CGST Legder</th>
+                                        <th>CGST Percent</th>
                                         <th>CGST Amount</th>
                                         <th>SGST Ledger</th>
+                                        <th>SGST Percent</th>
                                         <th>SGST Amount</th>
                                         <th>IGST Ledger</th>
+                                        <th>IGST Percent</th>
                                         <th>IGST Amount</th>
                                         <th>Total Amount</th>
+
                                         <th>Kilometer</th>
                                         <th>Category</th>
                                         <th>Subcategory</th>
                                         <th>Narration</th>
                                         <th>Details</th>
-                                        <th>Ledger Group</th>
-                                        <th>Registration Type</th>
-                                        <th>GSTIN No</th>
-                                        <th>Address 1</th>
-                                        <th>Address 2</th>
-                                        <th>Address 3</th>
-                                        <th>Pincode</th>
-                                        <th>State</th>
-                                        <th>Country</th>
-                                        <th>Additional Ledge</th>
-                                        <th>Ledge Amount</th>
+                                        <th>Work Date</th>
+
+                                        <th>Vehicle No</th>
+                                        <th>Part No</th>
+                                        
+                                   
                                         <th>CESS Ledger</th>
                                         <th>CESS Amount</th>
                                         <th>Tally Import Status</th>
@@ -200,6 +203,8 @@ const Search = () => {
 
                                     {results.map((student) => (
                                         <tr>
+                                            <td>{student.uniqueid}</td>
+                                            <td>{student.companyname}</td>
                                             <td>
                                                 {student.voucherno}
                                             </td>
@@ -213,39 +218,35 @@ const Search = () => {
 
 
                                             <td>{student.referenceno}</td>
+                                            <td>{student.suppinvdate}</td>
                                             <td>{student.partyname}</td>
 
-                                            <td>
-                                                {student.purchaseledger}
-                                            </td>
-
-                                            <td>
-                                                {student.salescostcenter}
-                                            </td>
+                                            <td>{student.additionalledge}</td>
 
                                             <td>
                                                 {student.amount}
                                             </td>
 
-                                            <td>
-                                                {student.purchaseamount}
-                                            </td>
+                                           
 
                                             <td>
                                                 {student.cgstledger}
                                             </td>
+                                            <td>{student.cgstpercent}</td>
 
                                             <td>{student.cgstamount}</td>
 
                                             <td>
                                                 {student.sgstledger}
                                             </td>
+                                            <td>{student.sgstpercent}</td>
 
                                             <td>{student.sgstamount}</td>
 
                                             <td>
                                                 {student.igstledger}
                                             </td>
+                                            <td>{student.igstpercent}</td>
 
                                             <td>{student.igstamount}</td>
                                             <td>{student.total}</td>
@@ -271,49 +272,17 @@ const Search = () => {
                                             </td>
 
                                             <td>
-                                                {student.ledgergroup}
+                                                {student.workdate}
                                             </td>
 
                                             <td>
-                                                {student.registrationtype}
+                                                {student.vehicleno}
                                             </td>
 
                                             <td>
-                                                {student.gstinno}
+                                                {student.partno}
                                             </td>
 
-                                            <td>
-                                                {student.address1}
-                                            </td>
-
-                                            <td>
-                                                {student.address2}
-                                            </td>
-
-                                            <td>
-                                                {student.address3}
-                                            </td>
-
-                                            <td>
-                                                {student.pincode}
-                                            </td>
-
-
-                                            <td>
-                                                {student.state}
-                                            </td>
-
-                                            <td>
-                                                {student.country}
-                                            </td>
-
-                                            <td>
-                                                {student.additionalledge}
-                                            </td>
-
-                                            <td>
-                                                {student.ledgeamount}
-                                            </td>
 
                                             <td>
                                                 {student.cessledger}
@@ -326,11 +295,6 @@ const Search = () => {
                                             <td>
                                                 {student.tallyimportstatus}
                                             </td>
-
-
-
-
-
 
 
 

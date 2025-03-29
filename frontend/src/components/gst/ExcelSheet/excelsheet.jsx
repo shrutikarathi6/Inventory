@@ -72,7 +72,7 @@ const ExcelSheet = () => {
 
     const handleDownload = async (isAll = false) => {
         try {
-            let url = "http://103.146.240.119:5000/gst/excel/export";
+            let url = "http://localhost:5000/gst/excel/export";
             if (!isAll) {
                 const queryParams = generateQueryParams();
                 if (queryParams) url += "?" + queryParams;
@@ -116,10 +116,13 @@ const ExcelSheet = () => {
                             <option value="">Select Filter</option>
                             <option value="uniqueid">Unique Id</option>
                             <option value="date">Date</option>
-                            <option value="referenceno">Reference No</option>
+                            <option value="referenceno">Supp Inv No</option>
                             <option value="partyname">Party Name</option>
                             <option value="category">Category</option>
                             <option value="subcategory">SubCategory</option>
+                            <option value="companyname">Company Name</option>
+                            <option value="vehicleno">Vehicle No</option>
+                            <option value="partno">Part No</option>
                             <option value="amount">Amount</option>
                             <option value="km">Kilometers</option>
                             <option value="total">Total</option>

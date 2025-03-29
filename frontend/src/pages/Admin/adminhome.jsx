@@ -1,15 +1,12 @@
 import React from 'react'
 import Navbar from "../../components/Admin/Navbar/navbar.jsx"
-import AdminGSTSearch from "./admingstsearch.jsx"
+import AdminMaintenance from "../../components/Admin/maintenance/adminmaintenance.jsx"
 
 const adminhome = () => {
   return (
     <div>
       <Navbar/>
-      <h1 style={{ marginTop: "20px" }}>Admin Panel</h1>
-
-
-
+      <AdminMaintenance/>
     </div>
   )
 }
