@@ -4,6 +4,7 @@ import axios from "axios";
 import Navbar from "../Navbar/navbar";
 import categoryOptions from "../../../../categorysub";
 
+
 const ExampleForm = () => {
 
 
@@ -329,7 +330,7 @@ const ExampleForm = () => {
                     className="input-field"
                     value={formData.partyname}
                     onChange={handleChange}
-                    required
+                  
                     onFocus={() => namesetShowSuggestions(true)}
                     onBlur={() => setTimeout(() => namesetShowSuggestions(false), 200)}
                   />
@@ -658,8 +659,7 @@ const ExampleForm = () => {
                     className="input-field"
                     value={formData.workdate}
                     onChange={handleChange}
-                    required
-
+                    
                   />
                 </div>
 
@@ -695,7 +695,7 @@ const ExampleForm = () => {
                     className="input-field"
                     value={formData.vehicleno}
                     onChange={handleChange}
-                    required
+                    
 
                   />
                 </div>
@@ -710,7 +710,7 @@ const ExampleForm = () => {
                     className="input-field"
                     value={formData.partno}
                     onChange={handleChange}
-                    required
+                    
 
                   />
                 </div>
@@ -770,31 +770,6 @@ const ExampleForm = () => {
 
 
 
-              {/* <div className="input-container">
-          <div className="input-container" style={{ position: "relative" }}>
->>>>>>> b662c2c78c76adf2f9ea01ded599c74d71a1c8cc
-            <label className="input-label">Name:</label>
-            <input
-              type="text"
-              name="name"
-              placeholder="Enter Name"
-              className="input-field"
-              value={formData.name}
-              onChange={handleChange}
-              required
-              onFocus={() => setShowSuggestions(true)}
-              onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
-            />
-            {showSuggestions && suggestions.length > 0 && (
-              <ul className="suggestions-dropdown">
-                {suggestions.map((s, index) => (
-                  <li key={index} onClick={() => handleSuggestionClick(s)}>
-                    {s}
-                  </li>
-                ))}
-              </ul>
-            )
-          </div> */}
 
 
 

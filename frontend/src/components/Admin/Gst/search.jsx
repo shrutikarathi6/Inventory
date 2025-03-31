@@ -51,10 +51,9 @@ const GstAdminsearch = () => {
                     if (filter.valueFrom) acc[`${filter.type}From`] = filter.valueFrom;
                     if (filter.valueTo) acc[`${filter.type}To`] = filter.valueTo;
                 } else if (filter.type === "date") {
-                    normaldatefrom = new Date(filter.valueFrom).toISOString();
-                    normaldateto = new Date(filter.valueTo).toISOString();
-                    if (filter.valueFrom) acc["dateFrom"] = normaldatefrom.split("T")[0];
-                    if (filter.valueTo) acc["dateTo"] = normaldateto.split("T")[0];
+                    if (filter.valueFrom) acc["dateFrom"] = new Date(filter.valueFrom).toISOString();
+                    if (filter.valueTo) acc["dateTo"] = new Date(filter.valueTo).toISOString();
+                    
                 } else {
                     // Handle text-based filters
                     if (!acc[filter.type]) acc[filter.type] = [];
@@ -315,8 +314,10 @@ const GstAdminsearch = () => {
                                                         value={editedData?.date || ""}
                                                         onChange={(e) => handleEditChange(e, "date")}
                                                     />
-                                                ) : student.date}
+                                                ) :student.date ? new Date(student.date).toISOString().split("T")[0] : ""}
+
                                             </td>
+                                            
 
                                             
 
@@ -340,7 +341,8 @@ const GstAdminsearch = () => {
                                                         readOnly
                                                     
                                                     />
-                                                ) : student.suppinvdate}
+                                                ) :student.suppinvdate ? new Date(student.suppinvdate).toISOString().split("T")[0] : ""}
+
                                             </td>
 
                                           
@@ -541,7 +543,7 @@ const GstAdminsearch = () => {
                                                         value={editedData?.workdate || ""}
                                                         onChange={(e) => handleEditChange(e, "workdate")}
                                                     />
-                                                ) : student.workdate}
+                                                ) : student.workdate ? new Date(student.workdate).toISOString().split("T")[0] : ""}
                                             </td>
 
                                             <td>

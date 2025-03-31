@@ -46,11 +46,10 @@ const usermaintenance = () => {
                 // Handle numerical ranges
                 if (filter.valueFrom) acc[`${filter.type}From`] = filter.valueFrom;
                 if (filter.valueTo) acc[`${filter.type}To`] = filter.valueTo;
-            } else if (filter.type === "workdate") {
-                let normaldatefrom = new Date(filter.valueFrom).toISOString();
-                let normaldateto = new Date(filter.valueTo).toISOString();
-                if (filter.valueFrom) acc["dateFrom"] = normaldatefrom.split("T")[0];
-                if (filter.valueTo) acc["dateTo"] = normaldateto.split("T")[0];
+            } else if (["workdate"].includes(filter.type)) { 
+                // Generalized date handling
+                if (filter.valueFrom) acc[`${filter.type}From`] = new Date(filter.valueFrom).toISOString();
+                if (filter.valueTo) acc[`${filter.type}To`] = new Date(filter.valueTo).toISOString();
             } else {
                 // Handle text-based filters
                 if (!acc[filter.type]) acc[filter.type] = [];
@@ -58,6 +57,7 @@ const usermaintenance = () => {
             }
             return acc;
         }, {});
+        
 
         // Convert filters to query string
         const queryParams = new URLSearchParams(groupedFilters).toString();
@@ -107,7 +107,7 @@ const usermaintenance = () => {
                                 </select>
     
                                 {/* Date Range Input */}
-                                {filter.type === "date" ? (
+                                {filter.type === "workdate" ? (
                                     <div className="range-inputs">
                                         <input
                                             type="date"
@@ -189,7 +189,7 @@ const usermaintenance = () => {
                                                 </td>
               
                                                 <td>
-                                                    {student.workdate}
+                                                    {student.workdate ? new Date(student.workdate).toISOString().split("T")[0] : ""}
                                                 </td>
     
                                                 <td>

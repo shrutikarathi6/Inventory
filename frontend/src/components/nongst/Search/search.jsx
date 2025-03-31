@@ -48,10 +48,10 @@ const Search = () => {
                     if (filter.valueFrom) acc[`${filter.type}From`] = filter.valueFrom;
                     if (filter.valueTo) acc[`${filter.type}To`] = filter.valueTo;
                 } else if (filter.type === "date") {
-                    normaldatefrom = new Date(filter.valueFrom).toISOString();
-                    normaldateto = new Date(filter.valueTo).toISOString();
-                    if (filter.valueFrom) acc["dateFrom"] = normaldatefrom.split("T")[0];
-                    if (filter.valueTo) acc["dateTo"] = normaldateto.split("T")[0];
+                    
+                    if (filter.valueFrom) acc["dateFrom"] = new Date(filter.valueFrom).toISOString();
+                    if (filter.valueTo) acc["dateTo"] = new Date(filter.valueTo).toISOString();
+                    
                 } else {
                     // Handle text-based filters
                     if (!acc[filter.type]) acc[filter.type] = [];
@@ -93,7 +93,6 @@ const Search = () => {
                             <option value="uniqueid">Unique Id</option>
                             <option value="date">Date</option>
                             <option value="referenceno">Reference No</option>
-                            <option value="drledgername">Dr Ledger Name</option>
                             <option value="category">Category</option>
                             <option value="companyname">Company name</option>
                             <option value="vehicleno">Vehicle No</option>
@@ -201,9 +200,12 @@ const Search = () => {
                                                     Journal
                                                 </td>
 
-                                                <td>
-                                                    {student.date}
-                                                </td>
+                                            
+                                                {/* <td>{new Date(student.date).toISOString().split("T")[0]}</td>
+                                                 */}
+                                                 <td>{student.date ? new Date(student.date).toISOString().split("T")[0] : ""}</td>
+
+                                                  
 
 
                                                 <td>{student.drledgername}</td>
@@ -226,9 +228,9 @@ const Search = () => {
                                                 <td>
                                                     {student.tallyimportstatus}
                                                 </td>
-                                                <td>
-                                                    {student.workdate}
-                                                </td>
+                                               
+                                                <td>{student.workdate ? new Date(student.workdate).toISOString().split("T")[0] : ""}</td>
+
                                                 <td>
                                                     {student.vehicleno}
                                                 </td>

@@ -42,6 +42,7 @@ const Search = () => {
     const handleSearch = async () => {
         try {
             setSearchkiya(true); // Set search state
+            
 
             const groupedFilters = filters.reduce((acc, filter) => {
                 if (["amount", "km", "total"].includes(filter.type)) {
@@ -49,10 +50,10 @@ const Search = () => {
                     if (filter.valueFrom) acc[`${filter.type}From`] = filter.valueFrom;
                     if (filter.valueTo) acc[`${filter.type}To`] = filter.valueTo;
                 } else if (filter.type === "date") {
-                    normaldatefrom = new Date(filter.valueFrom).toISOString();
-                    normaldateto = new Date(filter.valueTo).toISOString();
-                    if (filter.valueFrom) acc["dateFrom"] = normaldatefrom.split("T")[0];
-                    if (filter.valueTo) acc["dateTo"] = normaldateto.split("T")[0];
+                console.log
+                    if (filter.valueFrom) acc["dateFrom"] = new Date(filter.valueFrom).toISOString();
+                    if (filter.valueTo) acc["dateTo"] = new Date(filter.valueTo).toISOString();
+
                 } else {
                     // Handle text-based filters
                     if (!acc[filter.type]) acc[filter.type] = [];
@@ -104,7 +105,7 @@ const Search = () => {
                             </select>
 
                             {/* Date Range Input */}
-                            {filter.type === "date" ? (
+                            {filter.type === "date" || filter.type==="workdate" ? (
                                 <div className="range-inputs">
                                     <input
                                         type="date"
@@ -212,13 +213,11 @@ const Search = () => {
                                                 Purchase
                                             </td>
 
-                                            <td>
-                                                {student.date}
-                                            </td>
+                                            <td>{student.date ? new Date(student.date).toISOString().split("T")[0] : ""}</td>
 
 
                                             <td>{student.referenceno}</td>
-                                            <td>{student.suppinvdate}</td>
+                                            <td>{student.suppinvdate ? new Date(student.suppinvdate).toISOString().split("T")[0] : ""}</td>
                                             <td>{student.partyname}</td>
 
                                             <td>{student.additionalledge}</td>
@@ -271,9 +270,9 @@ const Search = () => {
                                                 {student.details}
                                             </td>
 
-                                            <td>
-                                                {student.workdate}
-                                            </td>
+                                            
+                                            <td>{student.workdate ? new Date(student.workdate).toISOString().split("T")[0] : ""}</td>
+                                        
 
                                             <td>
                                                 {student.vehicleno}

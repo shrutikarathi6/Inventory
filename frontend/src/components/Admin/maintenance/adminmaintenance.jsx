@@ -48,10 +48,9 @@ const GstAdminsearch = () => {
                     if (filter.valueFrom) acc[`${filter.type}From`] = filter.valueFrom;
                     if (filter.valueTo) acc[`${filter.type}To`] = filter.valueTo;
                 } else if (filter.type === "workdate") {
-                    let normaldatefrom = new Date(filter.valueFrom).toISOString();
-                    let normaldateto = new Date(filter.valueTo).toISOString();
-                    if (filter.valueFrom) acc["dateFrom"] = normaldatefrom.split("T")[0];
-                    if (filter.valueTo) acc["dateTo"] = normaldateto.split("T")[0];
+                    if (filter.valueFrom) acc["workdateFrom"] = new Date(filter.valueFrom).toISOString();
+                    if (filter.valueTo) acc["workdateTo"] = new Date(filter.valueTo).toISOString();
+                    
                 } else {
                     // Handle text-based filters
                     if (!acc[filter.type]) acc[filter.type] = [];
@@ -83,7 +82,11 @@ const GstAdminsearch = () => {
     const handleDelete = async (uniqueid) => {
         if (!window.confirm("Are you sure you want to delete this entry?")) return;
         try {
-            await axios.delete(`http://localhost:5000/gst/students/delete/${uniqueid}`);
+            const baseURL = uniqueid.startsWith('G') 
+                ? 'http://localhost:5000/gst/students/delete/' 
+                : 'http://localhost:5000/nongst/students/delete/';
+            
+            await axios.delete(`${baseURL}${uniqueid}`);
             alert("Entry deleted successfully!");
             setResults(results.filter(student => student.uniqueid !== uniqueid));
         } catch (error) {
@@ -158,7 +161,7 @@ const GstAdminsearch = () => {
                             </select>
 
                             {/* Date Range Input */}
-                            {filter.type === "date" ? (
+                            {filter.type === "workdate" ? (
                                 <div className="range-inputs">
                                     <input
                                         type="date"
@@ -266,7 +269,7 @@ const GstAdminsearch = () => {
                                                         value={editedData?.workdate || ""}
                                                         onChange={(e) => handleEditChange(e, "date")}
                                                     />
-                                                ) : student.workdate}
+                                                ) : student.workdate ? new Date(student.workdate).toISOString().split("T")[0] : ""}
                                             </td>
 
                                             <td>

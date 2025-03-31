@@ -70,10 +70,23 @@ router.get("/search", async (req, res) => {
         });
 
         // Ensure `date` field is properly filtered
-        let dateFilter = {};
-        if (req.query.dateFrom) dateFilter.$gte = new Date(req.query.dateFrom);
-        if (req.query.dateTo) dateFilter.$lte = new Date(req.query.dateTo);
-        if (Object.keys(dateFilter).length > 0) query.$and.push({ date: dateFilter });
+        ["date", "workdate"].forEach((field) => {
+            let filter = {};
+        
+            if (req.query[`${field}From`] && req.query[`${field}From`] !== "null") {
+                filter.$gte = new Date(req.query[`${field}From`]);
+            }
+            if (req.query[`${field}To`] && req.query[`${field}To`] !== "null") {
+                let dateTo = new Date(req.query[`${field}To`]);
+                dateTo.setHours(23, 59, 59, 999); // Include the full day
+                filter.$lte = dateTo;
+            }
+        
+            if (Object.keys(filter).length > 0) {
+                query.$and.push({ [field]: filter });
+            }
+        });
+        
 
         // If no filters were applied, reset to fetch all entries
         if (query.$and.length === 0) query = {};
