@@ -1,7 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import "./search.css";
-import categoryOptions from "../../../../categorysub";
+import categoryOptions from "../../../../data/categorysub";
+import useAutocomplete from "../../../hooks/useAutocomplete"; // Import the custom hook
+import PartyNames from "../../../../data/party_name.jsx";
+import drledgername from "../../../../data/drledgername.jsx";
+import VehicleNos from "../../../../data/vehicleno.jsx";
 
 import { useNavigate } from "react-router-dom";
 import { FaPlus, FaTimes, FaEdit, FaTrash, FaEye, FaSave } from "react-icons/fa";
@@ -17,11 +21,17 @@ const GstAdminsearch = () => {
     const inputRefs = useRef([]);
 
 
+
+
+
     useEffect(() => {
         if (inputRefs.current.length > 0) {
             inputRefs.current[filters.length - 1]?.focus();
         }
     }, [filters]);
+
+
+
 
     // Add new filter field
     const handleAddFilter = () => {
@@ -53,7 +63,7 @@ const GstAdminsearch = () => {
                 } else if (filter.type === "date") {
                     if (filter.valueFrom) acc["dateFrom"] = new Date(filter.valueFrom).toISOString();
                     if (filter.valueTo) acc["dateTo"] = new Date(filter.valueTo).toISOString();
-                    
+
                 } else {
                     // Handle text-based filters
                     if (!acc[filter.type]) acc[filter.type] = [];
@@ -91,45 +101,45 @@ const GstAdminsearch = () => {
 
     const handleEditChange = (e, field) => {
         const value = e.target.value;
-    
+
         setEditedData(prev => {
             const updatedData = { ...prev, [field]: value };
-    
+
             // Ensure numerical values are properly handled
             const amount = parseFloat(updatedData.amount) || 0;
             const cgstPercent = parseFloat(updatedData.cgstpercent) || 0;
             const igstPercent = parseFloat(updatedData.igstpercent) || 0;
 
             // If date is changed, update suppinvdate
-        if (field === "date") {
-            updatedData.suppinvdate = value; 
-        }
+            if (field === "date") {
+                updatedData.suppinvdate = value;
+            }
 
-        // If voucherno is changed, update referenceno
-        if (field === "voucherno") {
-            updatedData.referenceno = value; 
-        }
-    
+            // If voucherno is changed, update referenceno
+            if (field === "voucherno") {
+                updatedData.referenceno = value;
+            }
+
             if (field === "cgstpercent") {
                 updatedData.sgstpercent = cgstPercent; // SGST Percent mirrors CGST
                 updatedData.cgstamount = (amount * cgstPercent) / 100;
                 updatedData.sgstamount = updatedData.cgstamount; // SGST Amount mirrors CGST
             }
-    
+
             if (field === "igstpercent") {
                 updatedData.igstamount = (amount * igstPercent) / 100;
             }
-    
+
             if (field === "amount" || field === "cgstpercent" || field === "igstpercent") {
                 updatedData.total = amount + (2 * (updatedData.cgstamount || 0)) + (updatedData.igstamount || 0);
             }
 
-           
-    
+
+
             return updatedData;
         });
     };
-    
+
 
     // Save updated data
     const handleSave = async () => {
@@ -145,6 +155,26 @@ const GstAdminsearch = () => {
             alert("Failed to update entry.");
         }
     };
+
+    const {
+        filteredOptions: filteredPartyNames,
+        showDropdown: showPartyDropdown,
+        handleInputChange: handlePartyInput,
+        handleSelect: selectParty
+    } = useAutocomplete(PartyNames, editedData, setEditedData, "partyname");
+
+    const {
+        filteredOptions: filteredDrLedgerNames,
+        showDropdown: showDrLedgerDropdown,
+        handleInputChange: handleDrLedgerInput,
+        handleSelect: selectDrLedger
+    } = useAutocomplete(drledgername, editedData, setEditedData, "additionalledge");
+
+     const { filteredOptions: filteredVehicleNames,
+         showDropdown: showVehicleDropdown,
+          handleInputChange: handleVehicleInput,
+           handleSelect: selectVehicle } =
+          useAutocomplete(VehicleNos, editedData, setEditedData, "vehicleno");
 
     return (
         <div>
@@ -246,7 +276,7 @@ const GstAdminsearch = () => {
                                         <th>Party Name</th>
                                         <th>Additional Ledge</th>
                                         <th>Amount</th>
-    
+
                                         <th>CGST Legder</th>
                                         <th>CGST Percent</th>
                                         <th>CGST Amount</th>
@@ -267,8 +297,8 @@ const GstAdminsearch = () => {
 
                                         <th>Vehicle No</th>
                                         <th>Part No</th>
-                                        
-                                   
+
+
                                         <th>CESS Ledger</th>
                                         <th>CESS Amount</th>
                                         <th>Tally Import Status</th>
@@ -314,12 +344,12 @@ const GstAdminsearch = () => {
                                                         value={editedData?.date || ""}
                                                         onChange={(e) => handleEditChange(e, "date")}
                                                     />
-                                                ) :student.date ? new Date(student.date).toISOString().split("T")[0] : ""}
+                                                ) : student.date ? new Date(student.date).toISOString().split("T")[0] : ""}
 
                                             </td>
-                                            
 
-                                            
+
+
 
 
                                             <td>
@@ -331,7 +361,7 @@ const GstAdminsearch = () => {
                                                     />
                                                 ) : student.referenceno}
                                             </td>
-                                            
+
 
                                             <td>
                                                 {editingId === student.uniqueid ? (
@@ -339,34 +369,83 @@ const GstAdminsearch = () => {
                                                         type="date"
                                                         value={editedData?.suppinvdate || ""}
                                                         readOnly
-                                                    
+
                                                     />
-                                                ) :student.suppinvdate ? new Date(student.suppinvdate).toISOString().split("T")[0] : ""}
+                                                ) : student.suppinvdate ? new Date(student.suppinvdate).toISOString().split("T")[0] : ""}
 
                                             </td>
 
-                                          
-                                           
+
+
 
                                             <td>
                                                 {editingId === student.uniqueid ? (
-                                                    <input
-                                                        type="text"
-                                                        value={editedData?.partyname || ""}
-                                                        onChange={(e) => handleEditChange(e, "partyname")}
-                                                    />
-                                                ) : student.partyname}
+                                                    <div style={{ position: "relative" }}>
+                                                        <input
+                                                            type="text"
+                                                            value={editedData?.partyname || ""}
+                                                            onChange={(e) => {
+                                                                handleEditChange(e, "partyname");
+                                                                handlePartyInput(e);
+                                                            }}
+                                                            autoComplete="off"
+                                                        />
+                                                        {showPartyDropdown && (
+                                                            <div className="dropdown">
+                                                                {filteredPartyNames.map((party, index) => (
+                                                                    <div
+                                                                        key={index}
+                                                                        className="dropdown-item"
+                                                                        onClick={() => {
+                                                                            selectParty(party);
+                                                                            setEditedData((prev) => ({ ...prev, partyname: party }));
+                                                                        }}
+                                                                    >
+                                                                        {party}
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                ) : (
+                                                    student.partyname
+                                                )}
                                             </td>
 
                                             <td>
                                                 {editingId === student.uniqueid ? (
-                                                    <input
-                                                        type="text"
-                                                        value={editedData?.additionalledge || ""}
-                                                        onChange={(e) => handleEditChange(e, "additionalledge")}
-                                                    />
-                                                ) : student.additionalledge}
+                                                    <div style={{ position: "relative" }}>
+                                                        <input
+                                                            type="text"
+                                                            value={editedData?.additionalledge || ""}
+                                                            onChange={(e) => {
+                                                                handleEditChange(e, "additionalledge");
+                                                                handleDrLedgerInput(e);
+                                                            }}
+                                                            autoComplete="off"
+                                                        />
+                                                        {showDrLedgerDropdown && (
+                                                            <div className="dropdown">
+                                                                {filteredDrLedgerNames.map((item, index) => (
+                                                                    <div
+                                                                        key={index}
+                                                                        className="dropdown-item"
+                                                                        onClick={() => {
+                                                                            selectDrLedger(item);
+                                                                            setEditedData((prev) => ({ ...prev, additionalledge: item }));
+                                                                        }}
+                                                                    >
+                                                                        {item}
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                ) : (
+                                                    student.additionalledge
+                                                )}
                                             </td>
+
 
 
                                             <td>
@@ -379,7 +458,7 @@ const GstAdminsearch = () => {
                                                 ) : student.amount}
                                             </td>
 
-                                            
+
 
                                             <td>
                                                 {editingId === student.uniqueid ? (
@@ -438,8 +517,8 @@ const GstAdminsearch = () => {
                                                         type="number"
                                                         value={editedData?.sgstamount || ""}
                                                         readOnly
-                                                        
-                                    
+
+
                                                     />
                                                 ) : student.sgstamount}
                                             </td>
@@ -470,7 +549,7 @@ const GstAdminsearch = () => {
                                                         type="number"
                                                         value={editedData?.igstamount || ""}
                                                         readOnly
-                                    
+
                                                     />
                                                 ) : student.igstamount}
                                             </td>
@@ -480,7 +559,7 @@ const GstAdminsearch = () => {
                                                         type="number"
                                                         value={editedData?.total || ""}
                                                         readOnly
-                                    
+
                                                     />
                                                 ) : student.total}
                                             </td>
@@ -494,26 +573,26 @@ const GstAdminsearch = () => {
                                                     />
                                                 ) : student.km}
                                             </td>
-                                            
+
                                             <td>
-                                            {editingId === student.uniqueid ? (
-                                        <select onChange={(e) => handleEditChange(e, "category")} value={editedData?.category || ""}>
-                                            {Object.keys(categoryOptions).map(cat => (
-                                                <option key={cat} value={cat}>{cat}</option>
-                                            ))}
-                                        </select>
-                                          ) : student.category}
-                                    </td>
-                                    <td>
-                                    {editingId === student.uniqueid ? (
-                                        <select onChange={(e) => handleEditChange(e, "subcategory")} value={editedData?.subcategory || ""}>
-                                            {categoryOptions[editedData?.category] && categoryOptions[editedData?.category].map(sub => (
-                                                <option key={sub} value={sub}>{sub}</option>
-                                            ))}
-                                        </select>
-                                             ) : student.subcategory}
-                                    </td>
-                                           
+                                                {editingId === student.uniqueid ? (
+                                                    <select onChange={(e) => handleEditChange(e, "category")} value={editedData?.category || ""}>
+                                                        {Object.keys(categoryOptions).map(cat => (
+                                                            <option key={cat} value={cat}>{cat}</option>
+                                                        ))}
+                                                    </select>
+                                                ) : student.category}
+                                            </td>
+                                            <td>
+                                                {editingId === student.uniqueid ? (
+                                                    <select onChange={(e) => handleEditChange(e, "subcategory")} value={editedData?.subcategory || ""}>
+                                                        {categoryOptions[editedData?.category] && categoryOptions[editedData?.category].map(sub => (
+                                                            <option key={sub} value={sub}>{sub}</option>
+                                                        ))}
+                                                    </select>
+                                                ) : student.subcategory}
+                                            </td>
+
 
 
                                             <td>
@@ -546,14 +625,40 @@ const GstAdminsearch = () => {
                                                 ) : student.workdate ? new Date(student.workdate).toISOString().split("T")[0] : ""}
                                             </td>
 
+                                            
+
                                             <td>
                                                 {editingId === student.uniqueid ? (
-                                                    <input
-                                                        type="text"
-                                                        value={editedData?.vehicleno || ""}
-                                                        onChange={(e) => handleEditChange(e, "vehicleno")}
-                                                    />
-                                                ) : student.vehicleno}
+                                                    <div style={{ position: "relative" }}>
+                                                        <input
+                                                            type="text"
+                                                            value={editedData?.vehicleno || ""}
+                                                            onChange={(e) => {
+                                                                handleEditChange(e, "vehicleno");
+                                                                handleVehicleInput(e);
+                                                            }}
+                                                            autoComplete="off"
+                                                        />
+                                                        {showVehicleDropdown && (
+                                                            <div className="dropdown">
+                                                                {filteredVehicleNames.map((party, index) => (
+                                                                    <div
+                                                                        key={index}
+                                                                        className="dropdown-item"
+                                                                        onClick={() => {
+                                                                            selectVehicle(party);
+                                                                            setEditedData((prev) => ({ ...prev, vehicleno: party }));
+                                                                        }}
+                                                                    >
+                                                                        {party}
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                ) : (
+                                                    student.vehicleno
+                                                )}
                                             </td>
 
                                             <td>

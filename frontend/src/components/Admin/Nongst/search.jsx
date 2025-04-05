@@ -1,9 +1,12 @@
 
-
-import categoryOptions from "../../../../categorysub";
+import categoryOptions from "../../../../data/categorysub";
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import "./search.css";
+import useAutocomplete from "../../../hooks/useAutocomplete"; // Import the custom hook
+import PartyNames from "../../../../data/party_name.jsx";
+import drledgername from "../../../../data/drledgername.jsx";
+import VehicleNos from "../../../../data/vehicleno.jsx";
 
 import { useNavigate } from "react-router-dom";
 import { FaPlus, FaTimes, FaEdit, FaTrash, FaEye, FaSave } from "react-icons/fa";
@@ -115,6 +118,26 @@ const NongstAdminsearch = () => {
         setSelectedStudent(student);
         setDivopen(true);
     };
+
+    const {
+            filteredOptions: filteredPartyNames,
+            showDropdown: showPartyDropdown,
+            handleInputChange: handlePartyInput,
+            handleSelect: selectParty
+        } = useAutocomplete(PartyNames, editedData, setEditedData, "crledgername");
+    
+        const {
+            filteredOptions: filteredDrLedgerNames,
+            showDropdown: showDrLedgerDropdown,
+            handleInputChange: handleDrLedgerInput,
+            handleSelect: selectDrLedger
+        } = useAutocomplete(drledgername, editedData, setEditedData, "drledgername");
+
+        const { filteredOptions: filteredVehicleNames,
+                 showDropdown: showVehicleDropdown,
+                  handleInputChange: handleVehicleInput,
+                   handleSelect: selectVehicle } =
+                  useAutocomplete(VehicleNos, editedData, setEditedData, "vehicleno");
 
     return (
         <>
@@ -273,13 +296,38 @@ const NongstAdminsearch = () => {
 
                                             <td>
                                                 {editingId === student.uniqueid ? (
-                                                    <input
-                                                        type="text"
-                                                        value={editedData?.drledgername || ""}
-                                                        onChange={(e) => handleEditChange(e, "drledgername")}
-                                                    />
-                                                ) : student.drledgername}
+                                                    <div style={{ position: "relative" }}>
+                                                        <input
+                                                            type="text"
+                                                            value={editedData?.drledgername || ""}
+                                                            onChange={(e) => {
+                                                                handleEditChange(e, "drledgername");
+                                                                handleDrLedgerInput(e);
+                                                            }}
+                                                            autoComplete="off"
+                                                        />
+                                                        {showDrLedgerDropdown && (
+                                                            <div className="dropdown">
+                                                                {filteredDrLedgerNames.map((item, index) => (
+                                                                    <div
+                                                                        key={index}
+                                                                        className="dropdown-item"
+                                                                        onClick={() => {
+                                                                            selectDrLedger(item);
+                                                                            setEditedData((prev) => ({ ...prev, drledgername: item }));
+                                                                        }}
+                                                                    >
+                                                                        {item}
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                ) : (
+                                                    student.drledgername
+                                                )}
                                             </td>
+
                                             <td>
                                                 {editingId === student.uniqueid ? (
                                                     <input
@@ -303,12 +351,35 @@ const NongstAdminsearch = () => {
 
                                             <td>
                                                 {editingId === student.uniqueid ? (
+                                                     <div style={{ position: "relative" }}>
                                                     <input
                                                         type="text"
                                                         value={editedData?.crledgername || ""}
-                                                        onChange={(e) => handleEditChange(e, "crledgername")}
+                                    
+                                                        onChange={(e) => {
+                                                            handleEditChange(e, "crledgername");
+                                                            handlePartyInput(e);
+                                                        }}
+                                                        autoComplete="off"
                                                     />
-                                                ) : student.crledgername}
+                                                    {showPartyDropdown && (
+                                                            <div className="dropdown">
+                                                                {filteredPartyNames.map((party, index) => (
+                                                                    <div
+                                                                        key={index}
+                                                                        className="dropdown-item"
+                                                                        onClick={() => {
+                                                                            selectParty(party);
+                                                                            setEditedData((prev) => ({ ...prev, crledgername: party }));
+                                                                        }}
+                                                                    >
+                                                                        {party}
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                ) : (student.crledgername)}
                                             </td>
 
                                             <td>
@@ -355,12 +426,36 @@ const NongstAdminsearch = () => {
 
                                             <td>
                                                 {editingId === student.uniqueid ? (
-                                                    <input
-                                                        type="text"
-                                                        value={editedData?.vehicleno || ""}
-                                                        onChange={(e) => handleEditChange(e, "vehicleno")}
-                                                    />
-                                                ) : student.vehicleno}
+                                                    <div style={{ position: "relative" }}>
+                                                        <input
+                                                            type="text"
+                                                            value={editedData?.vehicleno || ""}
+                                                            onChange={(e) => {
+                                                                handleEditChange(e, "vehicleno");
+                                                                handleVehicleInput(e);
+                                                            }}
+                                                            autoComplete="off"
+                                                        />
+                                                        {showVehicleDropdown && (
+                                                            <div className="dropdown">
+                                                                {filteredVehicleNames.map((party, index) => (
+                                                                    <div
+                                                                        key={index}
+                                                                        className="dropdown-item"
+                                                                        onClick={() => {
+                                                                            selectVehicle(party);
+                                                                            setEditedData((prev) => ({ ...prev, vehicleno: party }));
+                                                                        }}
+                                                                    >
+                                                                        {party}
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                ) : (
+                                                    student.vehicleno
+                                                )}
                                             </td>
 
 

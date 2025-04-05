@@ -2,8 +2,13 @@ import "./formcss.css";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Navbar from "../Navbar/navbar";
-import categoryOptions from "../../../../categorysub";
+import categoryOptions from "../../../../data/categorysub.jsx";
 
+import useAutocomplete from "../../../hooks/useAutocomplete"; // Import the custom hook
+import PartyNames from "../../../../data/party_name.jsx";
+import drledgername from "../../../../data/drledgername.jsx";
+import VehicleNos from "../../../../data/vehicleno.jsx";
+// import VehicleNumbers from "../../../../vehicle_numbers";
 
 const ExampleForm = () => {
 
@@ -13,96 +18,44 @@ const ExampleForm = () => {
 
   const [formData, setFormData] = useState({
 
-    voucherno: "", date: "", referenceno: "",suppinvdate:"", partyname: "",  additionalledge: "", amount: "",
-    cgstledger: "",cgstpercent:"", cgstamount: "", sgstledger: "",sgstpercent:"", sgstamount: "", igstledger: "",igstpercent:"", igstamount: "",
-    cessledger: "", cessamount: "", total: "", narration: "", tallyimportstatus: "",companyname:"",workdate:"",vehicleno:"", km: "",
-    category: "", subcategory: "",partno:"", details: ""
+    voucherno: "", date: "", referenceno: "", suppinvdate: "", partyname: "", additionalledge: "", amount: "",
+    cgstledger: "", cgstpercent: "", cgstamount: "", sgstledger: "", sgstpercent: "", sgstamount: "", igstledger: "", igstpercent: "", igstamount: "",
+    cessledger: "", cessamount: "", total: "", narration: "", tallyimportstatus: "", companyname: "", workdate: "", vehicleno: "", km: "",
+    category: "", subcategory: "", partno: "", details: ""
 
 
   });
 
-  const [namesuggestions, namesetSuggestions] = useState([]);
-  const [nameshowSuggestions, namesetShowSuggestions] = useState(false);
-  const [purchasesuggestions, purchasesetSuggestions] = useState([]);
-  const [purchaseshowSuggestions, purchasesetShowSuggestions] = useState(false);
-  const [subsuggestions, subsetSuggestions] = useState([]);
-  const [subshowSuggestions, subsetShowSuggestions] = useState(false);
+  const { filteredOptions: filteredPartyNames, showDropdown: showPartyDropdown, handleInputChange: handlePartyInput, handleSelect: selectParty } =
+    useAutocomplete(PartyNames, formData, setFormData, "partyname");
+
+    const { filteredOptions: filteredDrLedgerNames, showDropdown: showDrLedgerDropdown, handleInputChange: handleDrLedgerInput, handleSelect: selectDrLedger } =
+    useAutocomplete(drledgername, formData, setFormData, "additionalledge");
+
+    const { filteredOptions: filteredVehicleNames, showDropdown: showVehicleDropdown, handleInputChange: handleVehicleInput, handleSelect: selectVehicle } =
+    useAutocomplete(VehicleNos, formData, setFormData, "vehicleno");
 
 
   useEffect(() => {
-    const fetchNames = async () => {
-      try {
-        if (formData.partyname.length > 0) {
-          const response = await axios.get(`http://localhost:5000/gst/suggestions/partyname?q=${formData.partyname}`);
-          namesetSuggestions(response.data);
-          namesetShowSuggestions(true);
-        } else {
-          namesetSuggestions([]);
-          namesetShowSuggestions(false);
-        }
-      } catch (error) {
-        console.error("Error fetching names:", error);
-      }
-    };
-    fetchNames();
-  }, [formData.partyname]);
 
-  // useEffect(() => {
-  //   const fetchNames = async () => {
-  //     try {
-  //       if (formData.purchaseledger.length > 0) {
-  //         const response = await axios.get(`http://localhost:5000/gst/suggestions/purchaseledger?q=${formData.purchaseledger}`);
-  //         purchasesetSuggestions(response.data);
-  //         purchasesetShowSuggestions(true);
-  //       } else {
-  //         purchasesetSuggestions([]);
-  //         purchasesetShowSuggestions(false);
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching names:", error);
-  //     }
-  //   };
-  //   fetchNames();
-  // }, [formData.purchaseledger]);
+    const newcgstamount = (parseFloat(formData.amount) * parseFloat(formData.cgstpercent)) / 100 || 0;
 
-  useEffect(() => {
-    const fetchNames = async () => {
-      try {
-        if (formData.subcategory.length > 0) {
-          const response = await axios.get(`http://localhost:5000/gst/suggestions/subcategory?q=${formData.subcategory}`);
-          subsetSuggestions(response.data);
-          subsetShowSuggestions(true);
-        } else {
-          subsetSuggestions([]);
-          subsetShowSuggestions(false);
-        }
-      } catch (error) {
-        console.error("Error fetching names:", error);
-      }
-    };
-    fetchNames();
-  }, [formData.subcategory]);
+    setFormData((prev) => ({
+      ...prev,
+      cgstamount: newcgstamount.toFixed(2),
+      sgstamount: newcgstamount.toFixed(2),
+      sgstpercent: cgstpercent
 
-  useEffect(() => {
-    
-      const newcgstamount = (parseFloat(formData.amount) * parseFloat(formData.cgstpercent)) / 100 || 0;
 
-      setFormData((prev) => ({
-        ...prev,
-        cgstamount: newcgstamount.toFixed(2),
-        sgstamount: newcgstamount.toFixed(2),
-        sgstpercent: cgstpercent
-        
-        
-      }));
-    
+    }));
+
   }, [formData.amount, formData.cgstpercent]);
 
 
 
 
-   // useEffect hook to sync CGST values with SGST values
-   useEffect(() => {
+  // useEffect hook to sync CGST values with SGST values
+  useEffect(() => {
     setFormData((prev) => ({
       ...prev,
 
@@ -120,26 +73,16 @@ const ExampleForm = () => {
   }, [formData.date]);
 
 
-
-  // useEffect hook to sync CGST values with SGST values
-  // useEffect(() => {
-  //   setFormData((prev) => ({
-  //     ...prev,
-
-  //     sgstamount: prev.cgstamount,
-  //   }));
-  // }, [formData.cgstamount]);
-
   useEffect(() => {
-    
-      const newigstamount = (parseFloat(formData.amount) * parseFloat(formData.igstpercent)) / 100 || 0;
 
-      setFormData((prev) => ({
-        ...prev,
-        igstamount: newigstamount.toFixed(2),
+    const newigstamount = (parseFloat(formData.amount) * parseFloat(formData.igstpercent)) / 100 || 0;
 
-      }));
-    
+    setFormData((prev) => ({
+      ...prev,
+      igstamount: newigstamount.toFixed(2),
+
+    }));
+
   }, [formData.amount, formData.igstpercent]);
 
 
@@ -161,28 +104,28 @@ const ExampleForm = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-  
+
     let updatedData = { ...formData, [name]: value };
-  
+
     // Reset subcategory when category changes
     if (name === "category") {
       updatedData.subcategory = "";
     }
-  
+
     // Auto-fill SGST Ledger when CGST Ledger is typed
     if (name === "cgstledger") {
       updatedData.sgstledger = value.replace(/cgst/i, "SGST");
     }
-  
+
     // If CGST percent is entered, set SGST percent same & disable IGST
-    if (name === "cgstpercent" || name==="cgstledger" || name==="sgstledger") {
-      
+    if (name === "cgstpercent" || name === "cgstledger" || name === "sgstledger") {
+
       updatedData.igstledger = "";
       updatedData.igstpercent = "";
       updatedData.igstamount = "";
     }
-  
-    
+
+
     if (name === "igstpercent" || name === "igstledger") {
       updatedData.cgstledger = "";
       updatedData.sgstledger = "";
@@ -191,29 +134,11 @@ const ExampleForm = () => {
       updatedData.cgstamount = "";
       updatedData.sgstamount = "";
     }
-  
+
     setFormData(updatedData);
   };
-  
 
-  const handleSuggestionClickName = (selectedName) => {
-    setFormData({ ...formData, partyname: selectedName });
-    namesetSuggestions([]);
-    namesetShowSuggestions(false);
-  };
 
-  const handleSuggestionClickPurchase = (selectedName) => {
-    setFormData({ ...formData, purchaseledger: selectedName });
-    purchasesetSuggestions([]);
-    purchasesetShowSuggestions(false);
-  };
-
-  
-  const handleSuggestionClickSub = (selectedName) => {
-    setFormData({ ...formData, subcategory: selectedName });
-    subsetSuggestions([]);
-    subsetShowSuggestions(false);
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -221,10 +146,10 @@ const ExampleForm = () => {
       const response = await axios.post("http://localhost:5000/gst/students/submit", formData);
       alert(response.data.message);
       setFormData({
-        voucherno: "", date: "", referenceno: "",suppinvdate:"", partyname: "",  additionalledge: "", amount: "",
-    cgstledger: "",cgstpercent:"", cgstamount: "", sgstledger: "",sgstpercent:"", sgstamount: "", igstledger: "",igstpercent:"", igstamount: "",
-    cessledger: "", cessamount: "", total: "", narration: "", tallyimportstatus: "",companyname:"",workdate:"",vehicleno:"", km: "",
-    category: "", subcategory: "",partno:"", details: ""
+        voucherno: "", date: "", referenceno: "", suppinvdate: "", partyname: "", additionalledge: "", amount: "",
+        cgstledger: "", cgstpercent: "", cgstamount: "", sgstledger: "", sgstpercent: "", sgstamount: "", igstledger: "", igstpercent: "", igstamount: "",
+        cessledger: "", cessamount: "", total: "", narration: "", tallyimportstatus: "", companyname: "", workdate: "", vehicleno: "", km: "",
+        category: "", subcategory: "", partno: "", details: ""
 
       });
 
@@ -304,8 +229,8 @@ const ExampleForm = () => {
                   />
                 </div>
 
-                 {/* Date */}
-                 <div className="input-container">
+                {/* Date */}
+                <div className="input-container">
                   <label className="input-label">Supp Inv Date</label>
                   <input
                     type="date"
@@ -313,38 +238,42 @@ const ExampleForm = () => {
                     className="input-field"
                     value={formData.suppinvdate}
                     readOnly
-                    
+
                   />
                 </div>
-                  </div>
+              </div>
 
-                  <div className="bajubaju">
+              <div className="bajubaju">
 
                 {/* Party Name */}
+
                 <div className="input-container">
                   <label className="input-label">Party Name:</label>
                   <input
                     type="text"
                     name="partyname"
-                    placeholder="Enter Party Name"
                     className="input-field"
+                    placeholder="Enter Party Name"
                     value={formData.partyname}
-                    onChange={handleChange}
-                  
-                    onFocus={() => namesetShowSuggestions(true)}
-                    onBlur={() => setTimeout(() => namesetShowSuggestions(false), 200)}
+                    onChange={handlePartyInput}
+                    autoComplete="off"
                   />
-                  {nameshowSuggestions && namesuggestions.length > 0 && (
-              <ul className="suggestions-dropdown">
-                {namesuggestions.map((s, index) => (
-                  <li key={index} onClick={() => handleSuggestionClickName(s)}>
-                    {s}
-                  </li>
-                ))}
-              </ul>
-            )}
+                  {showPartyDropdown && (
+                    <div className="dropdown">
+                      {filteredPartyNames.map((party, index) => (
+                        <div
+                          key={index}
+                          className="dropdown-item"
+                          onClick={() => selectParty(party)}
+                        >
+                          {party}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
-                   {/* voucher type */}
+
+                {/* voucher type */}
                 <div className="input-container">
                   <label className="input-label">Vch Type:</label>
                   <input
@@ -356,7 +285,7 @@ const ExampleForm = () => {
                 </div>
               </div>
 
-                   {/* Additional Ledge*/}
+              {/* Additional Ledge*/}
               <div className="bajubaju">
                 <div className="input-container">
                   <label className="input-label">Additional Ledge</label>
@@ -366,9 +295,23 @@ const ExampleForm = () => {
                     placeholder="Enter Additional Ledge"
                     className="input-field"
                     value={formData.additionalledge}
-                    onChange={handleChange}
-
+                   onChange={handleDrLedgerInput}
+                    autoComplete="off"
+                          
                   />
+                  {showDrLedgerDropdown && (
+                    <div className="dropdown">
+                      {filteredDrLedgerNames.map((party, index) => (
+                        <div
+                          key={index}
+                          className="dropdown-item"
+                          onClick={() => selectDrLedger(party)}
+                        >
+                          {party}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
 
@@ -388,12 +331,12 @@ const ExampleForm = () => {
                 </div>
               </div>
 
-           
+
 
 
               {/* Cgst Ledger*/}
               <div className="bajubaju">
-                
+
                 {/* Igst percentage*/}
                 <div className="input-container">
                   <label className="input-label">Cgst Ledger</label>
@@ -442,7 +385,7 @@ const ExampleForm = () => {
 
               {/* sgst Ledger*/}
               <div className="bajubaju">
-               
+
                 {/* Igst percentage*/}
                 <div className="input-container">
                   <label className="input-label">Sgst Ledger</label>
@@ -468,7 +411,7 @@ const ExampleForm = () => {
                     className="input-field"
                     value={formData.cgstpercent}
                     disabled
-                    />
+                  />
                 </div>
 
 
@@ -490,7 +433,7 @@ const ExampleForm = () => {
 
               {/* Igst Ledger*/}
               <div className="bajubaju">
-              
+
 
                 {/* Igst percentage*/}
                 <div className="input-container">
@@ -503,7 +446,7 @@ const ExampleForm = () => {
                     value={formData.igstledger}
                     onChange={handleChange}
                     disabled={formData.cgstpercent || formData.sgstpercent || formData.cgstledger || formData.sgstledger}
-  
+
                   />
                 </div>
 
@@ -575,22 +518,22 @@ const ExampleForm = () => {
 
               {/* category*/}
               <div className="bajubaju">
-              <div className="input-container">
-        <label className="input-label">Category</label>
-        <select
-          name="category"
-          className="input-field"
-          value={formData.category}
-          onChange={handleChange}
-        >
-          <option value="">Select Category</option>
-          {Object.keys(categoryOptions).map((category, index) => (
-            <option key={index} value={category}>
-              {category}
-            </option>
-          ))}
-        </select>
-      </div>
+                <div className="input-container">
+                  <label className="input-label">Category</label>
+                  <select
+                    name="category"
+                    className="input-field"
+                    value={formData.category}
+                    onChange={handleChange}
+                  >
+                    <option value="">Select Category</option>
+                    {Object.keys(categoryOptions).map((category, index) => (
+                      <option key={index} value={category}>
+                        {category}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
 
 
@@ -598,23 +541,23 @@ const ExampleForm = () => {
 
                 {/* Subcategory*/}
                 <div className="input-container">
-        <label className="input-label">Subcategory</label>
-        <select
-          name="subcategory"
-          className="input-field"
-          value={formData.subcategory}
-          onChange={handleChange}
-          disabled={!formData.category}
-        >
-          <option value="">Select Subcategory</option>
-          {formData.category &&
-            categoryOptions[formData.category].map((sub, index) => (
-              <option key={index} value={sub}>
-                {sub}
-              </option>
-            ))}
-        </select>
-      </div>
+                  <label className="input-label">Subcategory</label>
+                  <select
+                    name="subcategory"
+                    className="input-field"
+                    value={formData.subcategory}
+                    onChange={handleChange}
+                    disabled={!formData.category}
+                  >
+                    <option value="">Select Subcategory</option>
+                    {formData.category &&
+                      categoryOptions[formData.category].map((sub, index) => (
+                        <option key={index} value={sub}>
+                          {sub}
+                        </option>
+                      ))}
+                  </select>
+                </div>
               </div>
 
               {/* Narration*/}
@@ -648,9 +591,9 @@ const ExampleForm = () => {
                 </div>
               </div>
 
-               {/*Work  Date */}
-               <div className="bajubaju">
-               <div className="input-container">
+              {/*Work  Date */}
+              <div className="bajubaju">
+                <div className="input-container">
                   <label className="input-label">Work Date</label>
                   <input
                     type="date"
@@ -659,12 +602,12 @@ const ExampleForm = () => {
                     className="input-field"
                     value={formData.workdate}
                     onChange={handleChange}
-                    
+
                   />
                 </div>
 
-                 {/* Company Name */}
-                
+                {/* Company Name */}
+
                 <div className="input-container">
                   <label className="input-label">Company Name</label>
                   <select
@@ -676,32 +619,49 @@ const ExampleForm = () => {
                   >
                     <option value="">Select Company Name</option>
                     {[
-                      "YLPL","ARS"
+                      "YLPL", "ARS"
                     ].map((item, index) => (
                       <option key={index} value={item}>{item}</option>
                     ))}
                   </select>
                 </div>
-                </div>
+              </div>
 
-                 {/* Vehicle No*/}
-                 <div className="bajubaju">
-                 <div className="input-container">
+              {/* Vehicle No*/}
+              
+               
+              <div className="bajubaju">
+              <div className="input-container">
                   <label className="input-label">Vehicle No</label>
                   <input
                     type="text"
                     name="vehicleno"
-                    placeholder="Enter Vehicle No"
+                  
+                    placeholder="Enter vehicleno"
                     className="input-field"
                     value={formData.vehicleno}
-                    onChange={handleChange}
-                    
-
+                   onChange={handleVehicleInput}
+                    autoComplete="off"
+                          
                   />
+                  {showVehicleDropdown && (
+                    <div className="dropdown">
+                      {filteredVehicleNames.map((party, index) => (
+                        <div
+                          key={index}
+                          className="dropdown-item"
+                          onClick={() => selectVehicle(party)}
+                        >
+                          {party}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
+                
 
-                 {/*Part No */}
-                 <div className="input-container">
+                {/*Part No */}
+                <div className="input-container">
                   <label className="input-label">Part No</label>
                   <input
                     type="text"
@@ -710,13 +670,13 @@ const ExampleForm = () => {
                     className="input-field"
                     value={formData.partno}
                     onChange={handleChange}
-                    
+
 
                   />
                 </div>
-                </div>
+              </div>
 
-            
+
               {/* Cess Ledger*/}
               <div className="bajubaju">
                 <div className="input-container">
@@ -763,15 +723,6 @@ const ExampleForm = () => {
 
                 />
               </div>
-
-
-
-
-
-
-
-
-
 
 
               <button type="submit" className="submit-button">Submit</button>

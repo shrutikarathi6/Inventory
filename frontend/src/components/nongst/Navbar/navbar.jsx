@@ -50,7 +50,7 @@ const Navbar = () => {
           </>
         )}
       </div>
-      <div className="nav-right">YLPL/AVS</div>
+      <div className="nav-right">YLPL/ARS</div>
     </nav>
   );
 };

@@ -6,8 +6,8 @@ const NonGststudentRoutes = require("./routes/nongst/studentRoute");
 const authRoutes=require("./routes/common/authRoutes");
 const GstexcelRoute=require("./routes/gst/excelroute");
 const NonGstexcelRoute=require("./routes/nongst/excelroute");
-const GstSuggestions=require("./routes/gst/suggestionRoutes");
-const NongstSuggestions=require("./routes/nongst/suggestionRoute")
+
+
 const errorHandler = require("./middleware/errorHandler");
 require("dotenv").config();
 
@@ -22,8 +22,7 @@ app.use("/nongst/students", NonGststudentRoutes);
 app.use("/auth", authRoutes);
 app.use("/gst/excel", GstexcelRoute);
 app.use("/nongst/excel", NonGstexcelRoute);
-app.use("/gst/suggestions",GstSuggestions);
-app.use("/nongst/suggestions",NongstSuggestions);
+
 
 
 

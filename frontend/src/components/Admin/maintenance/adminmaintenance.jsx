@@ -4,6 +4,9 @@ import "./adminmaintennance.css";
 import { useNavigate } from "react-router-dom";
 import { FaPlus, FaTimes, FaEdit, FaTrash, FaEye, FaSave } from "react-icons/fa";
 
+import useAutocomplete from "../../../hooks/useAutocomplete";
+import VehicleNos from "../../../../data/vehicleno.jsx";
+
 
 const GstAdminsearch = () => {
     const navigate = useNavigate();
@@ -130,6 +133,12 @@ const GstAdminsearch = () => {
             alert("Failed to update entry.");
         }
     };
+
+     const { filteredOptions: filteredVehicleNames,
+             showDropdown: showVehicleDropdown,
+              handleInputChange: handleVehicleInput,
+               handleSelect: selectVehicle } =
+              useAutocomplete(VehicleNos, editedData, setEditedData, "vehicleno");
     
 
     return (
@@ -282,17 +291,38 @@ const GstAdminsearch = () => {
                                                 ) : student.km}
                                             </td>
 
-                                            
-                                           
-
                                             <td>
                                                 {editingId === student.uniqueid ? (
-                                                    <input
-                                                        type="text"
-                                                        value={editedData?.vehicleno || ""}
-                                                        onChange={(e) => handleEditChange(e, "vehicleno")}
-                                                    />
-                                                ) : student.vehicleno}
+                                                    <div style={{ position: "relative" }}>
+                                                        <input
+                                                            type="text"
+                                                            value={editedData?.vehicleno || ""}
+                                                            onChange={(e) => {
+                                                                handleEditChange(e, "vehicleno");
+                                                                handleVehicleInput(e);
+                                                            }}
+                                                            autoComplete="off"
+                                                        />
+                                                        {showVehicleDropdown && (
+                                                            <div className="dropdown">
+                                                                {filteredVehicleNames.map((party, index) => (
+                                                                    <div
+                                                                        key={index}
+                                                                        className="dropdown-item"
+                                                                        onClick={() => {
+                                                                            selectVehicle(party);
+                                                                            setEditedData((prev) => ({ ...prev, vehicleno: party }));
+                                                                        }}
+                                                                    >
+                                                                        {party}
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                ) : (
+                                                    student.vehicleno
+                                                )}
                                             </td>
 
                                             <td>

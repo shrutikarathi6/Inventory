@@ -54,7 +54,7 @@ router.get("/search", async (req, res) => {
         let query = { $and: [] };
 
         // Filters for text-based fields (Handles multiple values using $in)
-        ["uniqueid", "referenceno", "drlegdername", "category", "subcategory","companyname","vehicleno","partno"].forEach(field => {
+        ["uniqueid", "referenceno", "category", "subcategory","companyname","vehicleno","partno"].forEach(field => {
             if (req.query[field]) {
                 const valuesArray = req.query[field].split(",");
                 query.$and.push({ [field]: { $in: valuesArray.map(value => new RegExp(value, "i")) } });

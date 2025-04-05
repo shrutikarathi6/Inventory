@@ -48,8 +48,8 @@ const usermaintenance = () => {
                 if (filter.valueTo) acc[`${filter.type}To`] = filter.valueTo;
             } else if (["workdate"].includes(filter.type)) { 
                 // Generalized date handling
-                if (filter.valueFrom) acc[`${filter.type}From`] = new Date(filter.valueFrom).toISOString();
-                if (filter.valueTo) acc[`${filter.type}To`] = new Date(filter.valueTo).toISOString();
+                if (filter.valueFrom) acc[`${filter.type}From`] = new Date(filter.valueFrom).toISOString().split("T")[0];
+                if (filter.valueTo) acc[`${filter.type}To`] = new Date(filter.valueTo).toISOString().split("T")[0];
             } else {
                 // Handle text-based filters
                 if (!acc[filter.type]) acc[filter.type] = [];
@@ -57,7 +57,8 @@ const usermaintenance = () => {
             }
             return acc;
         }, {});
-        
+
+       
 
         // Convert filters to query string
         const queryParams = new URLSearchParams(groupedFilters).toString();
@@ -68,15 +69,19 @@ const usermaintenance = () => {
             axios.get(`http://localhost:5000/nongst/students/search?${queryParams}`)
         ]);
 
-        // Combine both results into a single array
-        const combinedResults = [...gstResponse.data.results, ...nongstResponse.data.results];
+       
+        // Ensure results exist
+        const combinedResults = [
+            ...(gstResponse.data.results || []), 
+            ...(nongstResponse.data.results || [])
+        ];
 
-        // Update state with the merged results
         setResults(combinedResults);
     } catch (error) {
         console.error("Error searching data:", error);
     }
 };
+
 
 
   return (

@@ -2,7 +2,11 @@ import "./formcss.css";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Navbar from "../Navbar/navbar";
-import categoryOptions from "../../../../categorysub";
+import categoryOptions from "../../../../data/categorysub";
+import useAutocomplete from "../../../hooks/useAutocomplete"; // Import the custom hook
+import PartyNames from "../../../../data/party_name.jsx";
+import drledgername from "../../../../data/drledgername.jsx";
+import VehicleNos from "../../../../data/vehicleno.jsx";
 
 const ExampleForm = () => {
 
@@ -14,6 +18,15 @@ const ExampleForm = () => {
 
 
   });
+
+    const { filteredOptions: filteredPartyNames, showDropdown: showPartyDropdown, handleInputChange: handlePartyInput, handleSelect: selectParty } =
+      useAutocomplete(PartyNames, formData, setFormData, "crledgername");
+
+      const { filteredOptions: filteredDrLedgerNames, showDropdown: showDrLedgerDropdown, handleInputChange: handleDrLedgerInput, handleSelect: selectDrLedger } =
+      useAutocomplete(drledgername, formData, setFormData, "drledgername");
+
+      const { filteredOptions: filteredVehicleNames, showDropdown: showVehicleDropdown, handleInputChange: handleVehicleInput, handleSelect: selectVehicle } =
+      useAutocomplete(VehicleNos, formData, setFormData, "vehicleno");
 
 
   const handleChange = (e) => {
@@ -139,10 +152,24 @@ const ExampleForm = () => {
                     placeholder="Enter Dr Ledger Name"
                     className="input-field"
                     value={formData.drledgername}
-                    onChange={handleChange}
+                   onChange={handleDrLedgerInput}
+                    autoComplete="off"
                     
         
                   />
+                  {showDrLedgerDropdown && (
+                    <div className="dropdown">
+                      {filteredDrLedgerNames.map((party, index) => (
+                        <div
+                          key={index}
+                          className="dropdown-item"
+                          onClick={() => selectDrLedger(party)}
+                        >
+                          {party}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                   
                 </div>
                 {/* Dr Amount */}
@@ -173,9 +200,22 @@ const ExampleForm = () => {
                     placeholder="Enter Cr Ledger Name"
                     className="input-field"
                     value={formData.crledgername}
-                    onChange={handleChange}
-                   
+                    onChange={handlePartyInput}
+                    autoComplete="off"
                   />
+                   {showPartyDropdown && (
+                    <div className="dropdown">
+                      {filteredPartyNames.map((party, index) => (
+                        <div
+                          key={index}
+                          className="dropdown-item"
+                          onClick={() => selectParty(party)}
+                        >
+                          {party}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                  
 
                 </div>
@@ -324,18 +364,32 @@ const ExampleForm = () => {
 
               {/* Vehicle No*/}
               <div className="bajubaju">
-                <div className="input-container">
+              <div className="input-container">
                   <label className="input-label">Vehicle No</label>
                   <input
                     type="text"
                     name="vehicleno"
-                    placeholder="Enter Vehicle No"
+                  
+                    placeholder="Enter vehicleno"
                     className="input-field"
                     value={formData.vehicleno}
-                    onChange={handleChange}
-                    
-
+                   onChange={handleVehicleInput}
+                    autoComplete="off"
+                          
                   />
+                  {showVehicleDropdown && (
+                    <div className="dropdown">
+                      {filteredVehicleNames.map((party, index) => (
+                        <div
+                          key={index}
+                          className="dropdown-item"
+                          onClick={() => selectVehicle(party)}
+                        >
+                          {party}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 {/*Part No */}
